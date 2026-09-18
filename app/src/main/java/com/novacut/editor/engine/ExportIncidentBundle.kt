@@ -70,7 +70,7 @@ data class ExportIncidentBundle(
         }
         appendLine("error: $errorClass — $reportError")
         appendLine("codec: $codecLabel via $encoderPath")
-        appendLine("output: $resolutionLabel @ ${frameRate}fps" + if (hdrRequested) "（已请求 HDR）" else "")
+        appendLine("输出：$resolutionLabel @ ${frameRate}fps" + if (hdrRequested) "（已请求 HDR）" else "")
         appendLine("仅音频：$exportAudioOnly，已尝试流复制：$streamCopyAttempted")
         appendLine("timeline: ${timelineDurationMs}ms, failed after ${elapsedMs}ms")
         appendLine("媒体：$mediaWarningCount 个警告，$mediaBlockingCount 个阻断问题")
@@ -374,8 +374,8 @@ object ExportIncidentBuilder {
             val hwEncoder = codecs.firstOrNull { !it.name.startsWith("c2.android.") }
             val swEncoder = codecs.firstOrNull { it.name.startsWith("c2.android.") }
             when {
-                hwEncoder != null -> "hardware: ${hwEncoder.name}"
-                swEncoder != null -> "software: ${swEncoder.name}"
+                hwEncoder != null -> "硬件编码器：${hwEncoder.name}"
+                swEncoder != null -> "软件编码器：${swEncoder.name}"
                 else -> codecs.first().name
             }
         } catch (_: Exception) {
