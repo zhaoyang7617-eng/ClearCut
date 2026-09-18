@@ -325,13 +325,13 @@ class OutputStreamingEngine @Inject constructor(
             AppLog.d(TAG, "start: local-network streaming is compiled out")
             return StreamStatus(
                 state = StreamState.ERROR,
-                errorMessage = "Live streaming is disabled in this build",
+                errorMessage = "此版本已禁用直播推流",
             )
         }
         AppLog.d(TAG, "start: stub — no live-streaming library wired (target=${destination.protocol})")
         return StreamStatus(
             state = StreamState.ERROR,
-            errorMessage = "Live streaming is not yet enabled in this build",
+            errorMessage = "此版本尚未启用直播推流",
         )
     }
 
