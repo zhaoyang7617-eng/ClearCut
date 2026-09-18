@@ -62,7 +62,7 @@ fun ChapterMarkerPanel(
 
     PremiumEditorPanel(
         title = stringResource(R.string.chapter_title),
-        subtitle = "Drop navigation points at the playhead so long edits feel structured and easy to skim.",
+        subtitle = "在播放头位置添加导航点，让长视频结构更清晰、更易浏览。",
         icon = Icons.Default.Bookmarks,
         accent = ClearCutAccents.Yellow,
         onClose = onClose,
@@ -87,7 +87,7 @@ fun ChapterMarkerPanel(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Chapter rail",
+                        text = "章节轨道",
                         style = MaterialTheme.typography.titleMedium,
                         color = semanticColors.text
                     )
@@ -106,11 +106,11 @@ fun ChapterMarkerPanel(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     PremiumPanelPill(
-                        text = "${chapters.size} chapters",
+                        text = "${chapters.size} 个章节",
                         accent = ClearCutAccents.Yellow
                     )
                     PremiumPanelPill(
-                        text = "Playhead ${formatChapterTimestamp(playheadMs)}",
+                        text = "播放头 ${formatChapterTimestamp(playheadMs)}",
                         accent = ClearCutAccents.Blue
                     )
                 }
@@ -138,14 +138,14 @@ fun ChapterMarkerPanel(
                         color = semanticColors.text
                     )
                     Text(
-                        text = "Use the add button to drop a chapter at the current playhead and start shaping the timeline.",
+                        text = "点击添加按钮，在当前播放头位置创建章节并开始整理时间线。",
                         style = MaterialTheme.typography.bodySmall,
                         color = semanticColors.subtext
                     )
                 }
             } else {
                 Text(
-                    text = "Chapter list",
+                    text = "章节列表",
                     style = MaterialTheme.typography.titleMedium,
                     color = semanticColors.text
                 )
@@ -281,7 +281,7 @@ private fun ChapterRow(
                 }
 
                 PremiumPanelPill(
-                    text = if (isEditing) "Editing" else "Jump",
+                    text = if (isEditing) "编辑中" else "跳转",
                     accent = if (isEditing) ClearCutAccents.Yellow else ClearCutAccents.Green
                 )
             }
@@ -293,7 +293,7 @@ private fun ChapterRow(
             ) {
                 ChapterAction(
                     icon = if (isEditing) Icons.Default.Check else Icons.Default.Edit,
-                    label = if (isEditing) "Save" else "Edit",
+                    label = if (isEditing) "保存" else "编辑",
                     accent = if (isEditing) ClearCutAccents.Green else semanticColors.subtext,
                     contentDescription = stringResource(
                         if (isEditing) R.string.cd_chapter_save else R.string.cd_chapter_edit
@@ -303,7 +303,7 @@ private fun ChapterRow(
                 Spacer(modifier = Modifier.width(8.dp))
                 ChapterAction(
                     icon = Icons.Default.Delete,
-                    label = "Delete",
+                    label = "删除",
                     accent = ClearCutAccents.Red,
                     contentDescription = stringResource(R.string.cd_chapter_delete),
                     onClick = onDelete
