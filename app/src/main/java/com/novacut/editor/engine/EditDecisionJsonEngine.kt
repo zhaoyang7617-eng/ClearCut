@@ -305,12 +305,12 @@ internal object EditDecisionJsonEngine {
         uriParser: (String) -> Uri?,
     ): List<Track> {
         if (array.length() > MAX_TRACKS) {
-            warnings += "Edit-decision file contains more than $MAX_TRACKS tracks; remaining tracks were ignored."
+            warnings += "剪辑决策文件包含超过 $MAX_TRACKS 条轨道；其余轨道已忽略。"
         }
         return (0 until array.length().coerceAtMost(MAX_TRACKS)).mapNotNull { index ->
             val json = array.optJSONObject(index)
             if (json == null) {
-                warnings += "Skipped malformed track at index $index."
+                warnings += "已跳过索引 $index 处格式错误的轨道。"
                 return@mapNotNull null
             }
             runCatching {
@@ -324,7 +324,7 @@ internal object EditDecisionJsonEngine {
                 Track(
                     id = json.optString("id", UUID.randomUUID().toString()).ifBlank { UUID.randomUUID().toString() },
                     type = enumOrDefault(json.optString("type"), TrackType.VIDEO) { raw ->
-                        warnings += "Unknown track type '$raw' at index $index; defaulted to VIDEO."
+                        warnings += "索引 $index 处存在未知轨道类型“$raw”；已默认按 VIDEO 处理。"
                     },
                     index = json.optInt("index", index).coerceAtLeast(0),
                     clips = clips,
@@ -337,7 +337,7 @@ internal object EditDecisionJsonEngine {
                     pan = json.safeFloat("pan", 0f).coerceIn(-1f, 1f),
                     opacity = json.safeFloat("opacity", 1f).coerceIn(0f, 1f),
                     blendMode = enumOrDefault(json.optString("blendMode"), BlendMode.NORMAL) { raw ->
-                        warnings += "Unknown track blend mode '$raw' at index $index; defaulted to normal."
+                        warnings += "索引 $index 处存在未知轨道混合模式“$raw”；已默认使用正常模式。"
                     },
                     isLinkedAV = json.optBoolean("isLinkedAV", true),
                     showWaveform = json.optBoolean("showWaveform", true),
@@ -345,7 +345,7 @@ internal object EditDecisionJsonEngine {
                     isCollapsed = json.optBoolean("isCollapsed", false),
                 )
             }.onFailure { error ->
-                warnings += "Skipped malformed track at index $index: ${error.message ?: error.javaClass.simpleName}."
+                warnings += "已跳过索引 $index 处格式错误的轨道：${error.message ?: error.javaClass.simpleName}。"
             }.getOrNull()
         }
     }
@@ -358,18 +358,18 @@ internal object EditDecisionJsonEngine {
         uriParser: (String) -> Uri?,
     ): List<Clip> {
         if (array.length() > MAX_CLIPS_PER_TRACK) {
-            warnings += "Track $trackIndex contains more than $MAX_CLIPS_PER_TRACK clips; remaining clips were ignored."
+            warnings += "轨道 $trackIndex 包含超过 $MAX_CLIPS_PER_TRACK 个片段；其余片段已忽略。"
         }
         return (0 until array.length().coerceAtMost(MAX_CLIPS_PER_TRACK)).mapNotNull { clipIndex ->
             val json = array.optJSONObject(clipIndex)
             if (json == null) {
-                warnings += "Skipped malformed clip at track $trackIndex, index $clipIndex."
+                warnings += "已跳过轨道 $trackIndex、索引 $clipIndex 处格式错误的片段。"
                 return@mapNotNull null
             }
             runCatching {
                 parseClip(json, trackIndex, clipIndex, warnings, unresolved, uriParser)
             }.onFailure { error ->
-                warnings += "Skipped malformed clip at track $trackIndex, index $clipIndex: ${error.message ?: error.javaClass.simpleName}."
+                warnings += "已跳过轨道 $trackIndex、索引 $clipIndex 处格式错误的片段：${error.message ?: error.javaClass.simpleName}。"
             }.getOrNull()
         }
     }
@@ -386,10 +386,10 @@ internal object EditDecisionJsonEngine {
             .take(MAX_URI_CHARS)
         val sourceUri = sourceRaw.takeIf { it.isNotBlank() }?.let(uriParser) ?: Uri.EMPTY
         if (sourceRaw.isBlank()) {
-            warnings += "Clip at track $trackIndex, index $clipIndex has no source URI."
+            warnings += "轨道 $trackIndex、索引 $clipIndex 处的片段没有源 URI。"
         } else if (sourceUri == Uri.EMPTY || sourceUri.scheme?.lowercase() !in PROBEABLE_URI_SCHEMES) {
             unresolved += sourceRaw
-            warnings += "Clip at track $trackIndex, index $clipIndex has media that requires relinking: $sourceRaw."
+            warnings += "轨道 $trackIndex、索引 $clipIndex 处的片段媒体需要重新链接：$sourceRaw。"
         }
 
         val sourceDurationMs = json.optLong("sourceDurationMs", 0L)
@@ -399,7 +399,7 @@ internal object EditDecisionJsonEngine {
         val trimEndMs = json.optLong("trimEndMs", sourceDurationMs)
             .coerceIn(trimStartMs, sourceDurationMs)
         if (trimEndMs <= trimStartMs) {
-            warnings += "Clip at track $trackIndex, index $clipIndex has an empty trim range and was skipped."
+            warnings += "轨道 $trackIndex、索引 $clipIndex 处的片段裁剪范围为空，已跳过。"
             return null
         }
 
@@ -429,12 +429,12 @@ internal object EditDecisionJsonEngine {
             fadeInMs = json.optLong("fadeInMs", 0L).coerceAtLeast(0L),
             fadeOutMs = json.optLong("fadeOutMs", 0L).coerceAtLeast(0L),
             blendMode = enumOrDefault(json.optString("blendMode"), BlendMode.NORMAL) { raw ->
-                warnings += "Unknown clip blend mode '$raw' at track $trackIndex, index $clipIndex; defaulted to normal."
+                warnings += "轨道 $trackIndex、索引 $clipIndex 处存在未知片段混合模式“$raw”；已默认使用正常模式。"
             },
             linkedClipId = json.optString("linkedClipId", "").takeIf { it.isNotBlank() },
             groupId = json.optString("groupId", "").takeIf { it.isNotBlank() },
             clipLabel = enumOrDefault(json.optString("clipLabel"), ClipLabel.NONE) { raw ->
-                warnings += "Unknown clip label '$raw' at track $trackIndex, index $clipIndex; defaulted to none."
+                warnings += "轨道 $trackIndex、索引 $clipIndex 处存在未知片段标签“$raw”；已默认设为无。"
             },
             captions = parseCaptions(json.optJSONArray("captions"), warnings, trackIndex, clipIndex),
             name = json.optString("name", "").takeIf { it.isNotBlank() }?.take(MAX_TEXT_CHARS),
@@ -452,7 +452,7 @@ internal object EditDecisionJsonEngine {
             val json = array.optJSONObject(index) ?: return@mapNotNull null
             val type = runCatching { EffectType.valueOf(json.optString("type")) }.getOrNull()
             if (type == null) {
-                warnings += "Unknown effect at track $trackIndex, clip $clipIndex, index $index; it was dropped."
+                warnings += "轨道 $trackIndex、片段 $clipIndex、索引 $index 处存在未知效果；已丢弃。"
                 return@mapNotNull null
             }
             val params = mutableMapOf<String, Float>()
@@ -477,7 +477,7 @@ internal object EditDecisionJsonEngine {
     ): List<Caption> {
         if (array == null) return emptyList()
         if (array.length() > MAX_CAPTIONS_PER_CLIP) {
-            warnings += "Clip at track $trackIndex, index $clipIndex has too many captions; remaining captions were ignored."
+            warnings += "轨道 $trackIndex、索引 $clipIndex 处的片段字幕过多；其余字幕已忽略。"
         }
         return (0 until array.length().coerceAtMost(MAX_CAPTIONS_PER_CLIP)).mapNotNull { index ->
             val json = array.optJSONObject(index) ?: return@mapNotNull null
@@ -493,7 +493,7 @@ internal object EditDecisionJsonEngine {
                     style = parseCaptionStyle(json.optJSONObject("style")),
                 )
             }.onFailure { error ->
-                warnings += "Skipped malformed caption at track $trackIndex, clip $clipIndex, index $index: ${error.message ?: error.javaClass.simpleName}."
+                warnings += "已跳过轨道 $trackIndex、片段 $clipIndex、索引 $index 处格式错误的字幕：${error.message ?: error.javaClass.simpleName}。"
             }.getOrNull()
         }
     }
@@ -532,7 +532,7 @@ internal object EditDecisionJsonEngine {
     private fun parseMarkers(array: JSONArray?, warnings: MutableList<String>): List<TimelineMarker> {
         if (array == null) return emptyList()
         if (array.length() > MAX_MARKERS) {
-            warnings += "Edit-decision file contains more than $MAX_MARKERS markers; remaining markers were ignored."
+            warnings += "剪辑决策文件包含超过 $MAX_MARKERS 个标记；其余标记已忽略。"
         }
         return (0 until array.length().coerceAtMost(MAX_MARKERS)).mapNotNull { index ->
             val json = array.optJSONObject(index) ?: return@mapNotNull null
@@ -545,7 +545,7 @@ internal object EditDecisionJsonEngine {
                     notes = json.optString("notes", "").take(MAX_TEXT_CHARS),
                 )
             }.onFailure { error ->
-                warnings += "Skipped malformed timeline marker at index $index: ${error.message ?: error.javaClass.simpleName}."
+                warnings += "已跳过索引 $index 处格式错误的时间线标记：${error.message ?: error.javaClass.simpleName}。"
             }.getOrNull()
         }
     }
@@ -553,7 +553,7 @@ internal object EditDecisionJsonEngine {
     private fun parseTextOverlays(array: JSONArray?, warnings: MutableList<String>): List<TextOverlay> {
         if (array == null) return emptyList()
         if (array.length() > MAX_TEXT_OVERLAYS) {
-            warnings += "Edit-decision file contains more than $MAX_TEXT_OVERLAYS text overlays; remaining overlays were ignored."
+            warnings += "剪辑决策文件包含超过 $MAX_TEXT_OVERLAYS 个文字叠加层；其余叠加层已忽略。"
         }
         return (0 until array.length().coerceAtMost(MAX_TEXT_OVERLAYS)).mapNotNull { index ->
             val json = array.optJSONObject(index) ?: return@mapNotNull null
@@ -589,7 +589,7 @@ internal object EditDecisionJsonEngine {
                     wordStaggerMs = json.optLong("wordStaggerMs", 0L).coerceAtLeast(0L),
                 )
             }.onFailure { error ->
-                warnings += "Skipped malformed text overlay at index $index: ${error.message ?: error.javaClass.simpleName}."
+                warnings += "已跳过索引 $index 处格式错误的文字叠加层：${error.message ?: error.javaClass.simpleName}。"
             }.getOrNull()
         }
     }
