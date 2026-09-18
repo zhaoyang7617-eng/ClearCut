@@ -153,7 +153,7 @@ class StabilizationProfileManager @Inject constructor(
                 schemaVersion = envelope.schemaVersion,
                 contentHash = envelope.contentHash,
                 provenanceSource = envelope.source,
-                warnings = listOf("Profile metadata is incomplete or outside the supported bounds."),
+                warnings = listOf("配置元数据不完整，或超出支持范围。"),
                 reasonCode = "PROFILE_MISSING_REQUIRED_METADATA",
             )
         }
@@ -190,7 +190,7 @@ class StabilizationProfileManager @Inject constructor(
             validation.copy(
                 profile = null,
                 failure = StabilizationProfileFailure.UNREADABLE,
-                warnings = validation.warnings + "Profile could not be saved; the previous active profile remains in use.",
+                warnings = validation.warnings + "无法保存配置；将继续使用之前的当前配置。",
                 reasonCode = "PROFILE_INSTALL_FAILED",
             )
         }
