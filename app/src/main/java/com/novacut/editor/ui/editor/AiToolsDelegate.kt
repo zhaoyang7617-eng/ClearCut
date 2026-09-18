@@ -244,7 +244,7 @@ class AiToolsDelegate(
                 val s = stateFlow.value
                 val template = templateManager.saveTemplate(
                     name = name,
-                    description = "${s.tracks.size} tracks, ${s.textOverlays.size} text overlays",
+                    description = "${s.tracks.size} 条轨道，${s.textOverlays.size} 个文字叠加层",
                     project = s.project,
                     tracks = s.tracks,
                     textOverlays = s.textOverlays
