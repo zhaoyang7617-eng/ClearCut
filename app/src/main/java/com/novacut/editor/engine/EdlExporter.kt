@@ -37,7 +37,7 @@ class EdlExporter @Inject constructor(
         try {
             val safeFrameRate = frameRate.coerceIn(1, 240)
             val sb = StringBuilder()
-            sb.appendLine("TITLE: ${edlSafeText(projectName, fallback = "ClearCut Project")}")
+            sb.appendLine("TITLE: ${edlSafeText(projectName, fallback = "ClearCut 项目")}")
             sb.appendLine("FCM: NON-DROP FRAME")
             sb.appendLine()
 
@@ -92,7 +92,7 @@ class EdlExporter @Inject constructor(
 
                 // Effects as comments
                 for (effect in clip.effects.filter { it.enabled }) {
-                    sb.appendLine("* EFFECT NAME: ${edlSafeText(effect.type.displayName, fallback = "Effect")}")
+                    sb.appendLine("* EFFECT NAME: ${edlSafeText(effect.type.displayName, fallback = "效果")}")
                 }
 
                 sb.appendLine()
