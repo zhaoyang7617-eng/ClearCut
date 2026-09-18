@@ -42,11 +42,11 @@ val builtInTextTemplates = listOf(
         id = "lt_modern", name = "Modern Lower Third",
         category = TextTemplateCategory.LOWER_THIRD,
         layers = listOf(
-            TextOverlay(text = "SPEAKER NAME", fontSize = 32f, color = 0xFFFFFFFF, bold = true,
+            TextOverlay(text = "人物姓名", fontSize = 32f, color = 0xFFFFFFFF, bold = true,
                 positionX = 0.15f, positionY = 0.82f, alignment = TextAlignment.LEFT,
                 strokeWidth = 0f, backgroundColor = 0xCC1E1E2E,
                 animationIn = TextAnimation.SLIDE_LEFT, animationOut = TextAnimation.SLIDE_LEFT),
-            TextOverlay(text = "Title or Role", fontSize = 22f, color = 0xFFCBA6F7,
+            TextOverlay(text = "标题或身份", fontSize = 22f, color = 0xFFCBA6F7,
                 positionX = 0.15f, positionY = 0.88f, alignment = TextAlignment.LEFT,
                 animationIn = TextAnimation.SLIDE_LEFT, animationOut = TextAnimation.SLIDE_LEFT)
         ),
@@ -56,7 +56,7 @@ val builtInTextTemplates = listOf(
         id = "lt_minimal", name = "Minimal Lower Third",
         category = TextTemplateCategory.LOWER_THIRD,
         layers = listOf(
-            TextOverlay(text = "Name Here", fontSize = 28f, color = 0xFFFFFFFF,
+            TextOverlay(text = "在此输入姓名", fontSize = 28f, color = 0xFFFFFFFF,
                 positionX = 0.5f, positionY = 0.85f, alignment = TextAlignment.CENTER,
                 animationIn = TextAnimation.FADE, animationOut = TextAnimation.FADE,
                 letterSpacing = 4f)
@@ -67,10 +67,10 @@ val builtInTextTemplates = listOf(
         id = "lt_news", name = "News Banner",
         category = TextTemplateCategory.LOWER_THIRD,
         layers = listOf(
-            TextOverlay(text = "BREAKING NEWS", fontSize = 20f, color = 0xFFFFFFFF, bold = true,
+            TextOverlay(text = "突发新闻", fontSize = 20f, color = 0xFFFFFFFF, bold = true,
                 positionX = 0.5f, positionY = 0.82f, backgroundColor = 0xFFF38BA8,
                 animationIn = TextAnimation.SLIDE_UP, animationOut = TextAnimation.SLIDE_DOWN),
-            TextOverlay(text = "Headline text goes here", fontSize = 26f, color = 0xFFFFFFFF,
+            TextOverlay(text = "在此输入标题文字", fontSize = 26f, color = 0xFFFFFFFF,
                 positionX = 0.5f, positionY = 0.88f, backgroundColor = 0xDD1E1E2E,
                 animationIn = TextAnimation.SLIDE_UP, animationOut = TextAnimation.SLIDE_DOWN)
         ),
@@ -82,11 +82,11 @@ val builtInTextTemplates = listOf(
         id = "tc_centered", name = "Centered Title",
         category = TextTemplateCategory.TITLE_CARD,
         layers = listOf(
-            TextOverlay(text = "YOUR TITLE", fontSize = 56f, color = 0xFFFFFFFF, bold = true,
+            TextOverlay(text = "你的标题", fontSize = 56f, color = 0xFFFFFFFF, bold = true,
                 positionX = 0.5f, positionY = 0.45f, letterSpacing = 6f,
                 animationIn = TextAnimation.SCALE, animationOut = TextAnimation.FADE,
                 shadowOffsetX = 2f, shadowOffsetY = 2f, shadowBlur = 8f),
-            TextOverlay(text = "Subtitle or tagline", fontSize = 24f, color = 0xFFA6ADC8,
+            TextOverlay(text = "副标题或标语", fontSize = 24f, color = 0xFFA6ADC8,
                 positionX = 0.5f, positionY = 0.55f,
                 animationIn = TextAnimation.FADE, animationOut = TextAnimation.FADE)
         ),
@@ -96,7 +96,7 @@ val builtInTextTemplates = listOf(
         id = "tc_glitch", name = "Glitch Title",
         category = TextTemplateCategory.TITLE_CARD,
         layers = listOf(
-            TextOverlay(text = "GLITCH", fontSize = 64f, color = 0xFFF38BA8, bold = true,
+            TextOverlay(text = "故障风", fontSize = 64f, color = 0xFFF38BA8, bold = true,
                 positionX = 0.5f, positionY = 0.5f, letterSpacing = 8f,
                 animationIn = TextAnimation.GLITCH, animationOut = TextAnimation.GLITCH,
                 glowColor = 0xFFF38BA8, glowRadius = 10f)
@@ -107,7 +107,7 @@ val builtInTextTemplates = listOf(
         id = "tc_cinematic", name = "Cinematic",
         category = TextTemplateCategory.TITLE_CARD,
         layers = listOf(
-            TextOverlay(text = "CINEMATIC", fontSize = 48f, color = 0xFFF9E2AF, bold = true,
+            TextOverlay(text = "电影感", fontSize = 48f, color = 0xFFF9E2AF, bold = true,
                 positionX = 0.5f, positionY = 0.5f, letterSpacing = 12f,
                 fontFamily = "serif",
                 animationIn = TextAnimation.FADE, animationOut = TextAnimation.FADE,
@@ -121,11 +121,11 @@ val builtInTextTemplates = listOf(
         id = "es_subscribe", name = "Subscribe CTA",
         category = TextTemplateCategory.END_SCREEN,
         layers = listOf(
-            TextOverlay(text = "SUBSCRIBE", fontSize = 40f, color = 0xFFF38BA8, bold = true,
+            TextOverlay(text = "订阅", fontSize = 40f, color = 0xFFF38BA8, bold = true,
                 positionX = 0.5f, positionY = 0.4f,
                 animationIn = TextAnimation.BOUNCE, animationOut = TextAnimation.FADE,
                 glowColor = 0xFFF38BA8, glowRadius = 8f),
-            TextOverlay(text = "for more content like this", fontSize = 22f, color = 0xFFCDD6F4,
+            TextOverlay(text = "查看更多类似内容", fontSize = 22f, color = 0xFFCDD6F4,
                 positionX = 0.5f, positionY = 0.5f,
                 animationIn = TextAnimation.FADE, animationOut = TextAnimation.FADE)
         ),
@@ -135,7 +135,7 @@ val builtInTextTemplates = listOf(
         id = "es_thanks", name = "Thanks for Watching",
         category = TextTemplateCategory.END_SCREEN,
         layers = listOf(
-            TextOverlay(text = "Thanks for watching!", fontSize = 44f, color = 0xFFFFFFFF,
+            TextOverlay(text = "感谢观看！", fontSize = 44f, color = 0xFFFFFFFF,
                 positionX = 0.5f, positionY = 0.45f, fontFamily = "cursive",
                 animationIn = TextAnimation.SCALE, animationOut = TextAnimation.FADE)
         ),
@@ -147,7 +147,7 @@ val builtInTextTemplates = listOf(
         id = "cta_link", name = "Link CTA",
         category = TextTemplateCategory.CALL_TO_ACTION,
         layers = listOf(
-            TextOverlay(text = "LINK IN BIO", fontSize = 28f, color = 0xFF1E1E2E, bold = true,
+            TextOverlay(text = "主页链接", fontSize = 28f, color = 0xFF1E1E2E, bold = true,
                 positionX = 0.5f, positionY = 0.85f, backgroundColor = 0xFFF9E2AF,
                 animationIn = TextAnimation.SLIDE_UP, animationOut = TextAnimation.SLIDE_DOWN,
                 strokeWidth = 0f)
@@ -160,7 +160,7 @@ val builtInTextTemplates = listOf(
         id = "social_handle", name = "Social Handle",
         category = TextTemplateCategory.SOCIAL,
         layers = listOf(
-            TextOverlay(text = "@yourhandle", fontSize = 30f, color = 0xFFCBA6F7,
+            TextOverlay(text = "@你的账号", fontSize = 30f, color = 0xFFCBA6F7,
                 positionX = 0.5f, positionY = 0.9f,
                 animationIn = TextAnimation.ELASTIC, animationOut = TextAnimation.FADE,
                 letterSpacing = 2f)
@@ -171,12 +171,12 @@ val builtInTextTemplates = listOf(
         id = "social_impact_meme", name = "Impact Meme",
         category = TextTemplateCategory.SOCIAL,
         layers = listOf(
-            TextOverlay(text = "TOP TEXT", fontSize = 56f, color = 0xFFFFFFFF, bold = true,
+            TextOverlay(text = "顶部文字", fontSize = 56f, color = 0xFFFFFFFF, bold = true,
                 fontFamily = "sans-serif-condensed",
                 strokeColor = 0xFF000000, strokeWidth = 8f, letterSpacing = 2f,
                 positionX = 0.5f, positionY = 0.1f,
                 animationIn = TextAnimation.SCALE, animationOut = TextAnimation.NONE),
-            TextOverlay(text = "BOTTOM TEXT", fontSize = 56f, color = 0xFFFFFFFF, bold = true,
+            TextOverlay(text = "底部文字", fontSize = 56f, color = 0xFFFFFFFF, bold = true,
                 fontFamily = "sans-serif-condensed",
                 strokeColor = 0xFF000000, strokeWidth = 8f, letterSpacing = 2f,
                 positionX = 0.5f, positionY = 0.9f,
@@ -188,7 +188,7 @@ val builtInTextTemplates = listOf(
         id = "social_tiktok_caption", name = "TikTok Caption",
         category = TextTemplateCategory.SOCIAL,
         layers = listOf(
-            TextOverlay(text = "add caption here", fontSize = 36f, color = 0xFF000000, bold = true,
+            TextOverlay(text = "在此添加字幕", fontSize = 36f, color = 0xFF000000, bold = true,
                 backgroundColor = 0xEEFFFFFF,
                 positionX = 0.5f, positionY = 0.75f, alignment = TextAlignment.CENTER,
                 animationIn = TextAnimation.SLIDE_UP, animationOut = TextAnimation.FADE)
@@ -199,7 +199,7 @@ val builtInTextTemplates = listOf(
         id = "social_reels_hook", name = "Reels Hook",
         category = TextTemplateCategory.SOCIAL,
         layers = listOf(
-            TextOverlay(text = "WAIT FOR IT…", fontSize = 52f, color = 0xFFFFFFFF, bold = true,
+            TextOverlay(text = "精彩马上来…", fontSize = 52f, color = 0xFFFFFFFF, bold = true,
                 strokeColor = 0xFF11111B, strokeWidth = 4f,
                 shadowColor = 0xCC000000, shadowOffsetX = 2f, shadowOffsetY = 2f, shadowBlur = 8f,
                 positionX = 0.5f, positionY = 0.18f, letterSpacing = 3f,
@@ -211,11 +211,11 @@ val builtInTextTemplates = listOf(
         id = "social_pov", name = "POV Meme",
         category = TextTemplateCategory.SOCIAL,
         layers = listOf(
-            TextOverlay(text = "POV:", fontSize = 34f, color = 0xFFFFFFFF, bold = true,
+            TextOverlay(text = "第一视角：", fontSize = 34f, color = 0xFFFFFFFF, bold = true,
                 backgroundColor = 0xBB000000,
                 positionX = 0.5f, positionY = 0.14f, alignment = TextAlignment.CENTER,
                 animationIn = TextAnimation.TYPEWRITER, animationOut = TextAnimation.FADE),
-            TextOverlay(text = "you forgot to hit record", fontSize = 28f, color = 0xFFFFFFFF,
+            TextOverlay(text = "你忘了按下录制", fontSize = 28f, color = 0xFFFFFFFF,
                 backgroundColor = 0x99000000,
                 positionX = 0.5f, positionY = 0.22f, alignment = TextAlignment.CENTER,
                 animationIn = TextAnimation.TYPEWRITER, animationOut = TextAnimation.FADE)
@@ -226,7 +226,7 @@ val builtInTextTemplates = listOf(
         id = "social_neon_glow", name = "Neon Glow",
         category = TextTemplateCategory.SOCIAL,
         layers = listOf(
-            TextOverlay(text = "VIBES", fontSize = 64f, color = 0xFFF5C2E7, bold = true,
+            TextOverlay(text = "氛围感", fontSize = 64f, color = 0xFFF5C2E7, bold = true,
                 glowColor = 0xFFF5C2E7, glowRadius = 20f, letterSpacing = 6f,
                 positionX = 0.5f, positionY = 0.5f,
                 animationIn = TextAnimation.BLUR_IN, animationOut = TextAnimation.FADE)
@@ -237,7 +237,7 @@ val builtInTextTemplates = listOf(
         id = "social_caption_word", name = "Word Burst",
         category = TextTemplateCategory.SOCIAL,
         layers = listOf(
-            TextOverlay(text = "BIG", fontSize = 96f, color = 0xFFF9E2AF, bold = true,
+            TextOverlay(text = "大字", fontSize = 96f, color = 0xFFF9E2AF, bold = true,
                 strokeColor = 0xFF1E1E2E, strokeWidth = 5f,
                 positionX = 0.5f, positionY = 0.5f,
                 animationIn = TextAnimation.ELASTIC, animationOut = TextAnimation.SCALE)
@@ -250,10 +250,10 @@ val builtInTextTemplates = listOf(
         id = "min_quote", name = "Quote",
         category = TextTemplateCategory.MINIMAL,
         layers = listOf(
-            TextOverlay(text = "\"Your quote here\"", fontSize = 36f, color = 0xFFFFFFFF,
+            TextOverlay(text = "\"在此输入引用内容\"", fontSize = 36f, color = 0xFFFFFFFF,
                 positionX = 0.5f, positionY = 0.45f, fontFamily = "serif", italic = true,
                 animationIn = TextAnimation.FADE, animationOut = TextAnimation.FADE),
-            TextOverlay(text = "- Author Name", fontSize = 20f, color = 0xFFA6ADC8,
+            TextOverlay(text = "- 作者姓名", fontSize = 20f, color = 0xFFA6ADC8,
                 positionX = 0.5f, positionY = 0.55f,
                 animationIn = TextAnimation.FADE, animationOut = TextAnimation.FADE)
         ),
@@ -263,10 +263,10 @@ val builtInTextTemplates = listOf(
         id = "min_chapter", name = "Chapter Title",
         category = TextTemplateCategory.MINIMAL,
         layers = listOf(
-            TextOverlay(text = "Chapter 1", fontSize = 20f, color = 0xFFA6ADC8,
+            TextOverlay(text = "第 1 章", fontSize = 20f, color = 0xFFA6ADC8,
                 positionX = 0.5f, positionY = 0.42f, letterSpacing = 6f,
                 animationIn = TextAnimation.FADE, animationOut = TextAnimation.FADE),
-            TextOverlay(text = "THE BEGINNING", fontSize = 42f, color = 0xFFFFFFFF, bold = true,
+            TextOverlay(text = "开始", fontSize = 42f, color = 0xFFFFFFFF, bold = true,
                 positionX = 0.5f, positionY = 0.5f, letterSpacing = 4f,
                 animationIn = TextAnimation.FADE, animationOut = TextAnimation.FADE)
         ),
@@ -895,7 +895,7 @@ private fun animatedTextTemplates(): List<AnimatedTextTemplateDefinition> = list
         category = TextTemplateCategory.LOWER_THIRD,
         previewText = "HOST NAME",
         previewNote = "New episode",
-        description = "A polished host intro with strong lateral movement.",
+        description = "精致的主持人开场，带有明显的横向运动。",
         accent = ClearCutAccents.Sapphire,
         animation = TextAnimation.SLIDE_LEFT,
         durationMs = 3500L
@@ -906,7 +906,7 @@ private fun animatedTextTemplates(): List<AnimatedTextTemplateDefinition> = list
         category = TextTemplateCategory.TITLE_CARD,
         previewText = "3 2 1",
         previewNote = "Launch",
-        description = "Great for cold opens, beats, and punchy scene intros.",
+        description = "适合冷开场、节拍点和有冲击力的场景引入。",
         accent = ClearCutAccents.Yellow,
         animation = TextAnimation.BOUNCE,
         durationMs = 3000L
@@ -917,7 +917,7 @@ private fun animatedTextTemplates(): List<AnimatedTextTemplateDefinition> = list
         category = TextTemplateCategory.TITLE_CARD,
         previewText = "NEON",
         previewNote = "Night drive",
-        description = "A vivid hero title with glow-led reveal energy.",
+        description = "鲜明的主视觉标题，以发光揭示营造能量感。",
         accent = ClearCutAccents.Pink,
         animation = TextAnimation.SCALE,
         durationMs = 3200L
@@ -928,7 +928,7 @@ private fun animatedTextTemplates(): List<AnimatedTextTemplateDefinition> = list
         category = TextTemplateCategory.CALL_TO_ACTION,
         previewText = "SUBSCRIBE",
         previewNote = "Weekly drops",
-        description = "A clean CTA for end cards and creator reminders.",
+        description = "干净的行动号召样式，适合片尾卡和创作者提醒。",
         accent = ClearCutAccents.Red,
         animation = TextAnimation.ELASTIC,
         durationMs = 3600L
@@ -939,7 +939,7 @@ private fun animatedTextTemplates(): List<AnimatedTextTemplateDefinition> = list
         category = TextTemplateCategory.SOCIAL,
         previewText = "@NOVA",
         previewNote = "Follow along",
-        description = "Fast social ID tag for reels, shorts, and cutdowns.",
+        description = "快速社交身份标签，适合 Reels、Shorts 和精简版视频。",
         accent = ClearCutAccents.Mauve,
         animation = TextAnimation.SLIDE_UP,
         durationMs = 2800L
@@ -950,7 +950,7 @@ private fun animatedTextTemplates(): List<AnimatedTextTemplateDefinition> = list
         category = TextTemplateCategory.END_SCREEN,
         previewText = "THANK YOU",
         previewNote = "See you next cut",
-        description = "A softer sign-off treatment for polished endings.",
+        description = "更柔和的收尾样式，适合精致片尾。",
         accent = ClearCutAccents.Teal,
         animation = TextAnimation.FADE,
         durationMs = 4000L
@@ -961,7 +961,7 @@ private fun animatedTextTemplates(): List<AnimatedTextTemplateDefinition> = list
         category = TextTemplateCategory.MINIMAL,
         previewText = "\"BREATHE\"",
         previewNote = "Scene note",
-        description = "A restrained pull-quote for narrative or documentary edits.",
+        description = "克制的引用样式，适合叙事或纪录片剪辑。",
         accent = ClearCutAccents.Lavender,
         animation = TextAnimation.SLIDE_RIGHT,
         durationMs = 3600L
@@ -972,7 +972,7 @@ private fun animatedTextTemplates(): List<AnimatedTextTemplateDefinition> = list
         category = TextTemplateCategory.CALL_TO_ACTION,
         previewText = "LINK IN BIO",
         previewNote = "Open now",
-        description = "A bold conversion card designed for vertical social posts.",
+        description = "醒目的转化卡片，专为竖屏社交内容设计。",
         accent = ClearCutAccents.Peach,
         animation = TextAnimation.BOUNCE,
         durationMs = 2800L
