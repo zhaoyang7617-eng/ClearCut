@@ -83,7 +83,7 @@ object MediaHealth {
                 type = MediaHealthIssueType.DUPLICATE_ASSET_ID,
                 severity = MediaHealthSeverity.BLOCKING,
                 subjectId = assetId,
-                message = "Multiple media assets share the same asset ID."
+                message = "多个媒体素材使用了相同的素材 ID。"
             )
         }
 
@@ -98,7 +98,7 @@ object MediaHealth {
                     severity = MediaHealthSeverity.WARNING,
                     subjectId = diagnostic.uri,
                     uri = diagnostic.uri,
-                    message = "Media diagnostics are unavailable for ${redactedDiagnosticUri(diagnostic.uri)}: $error"
+                    message = "无法获取 ${redactedDiagnosticUri(diagnostic.uri)} 的媒体诊断信息：$error"
                 )
             }
             diagnostic.timestampRisk?.let { risk ->
@@ -108,7 +108,7 @@ object MediaHealth {
                     subjectId = diagnostic.uri,
                     uri = diagnostic.uri,
                     message = diagnostic.exportWarningMessages().firstOrNull { it.contains("timestamp risk") }
-                        ?: "Media timestamp risk for ${redactedDiagnosticUri(diagnostic.uri)}: $risk"
+                        ?: "${redactedDiagnosticUri(diagnostic.uri)} 存在媒体时间戳风险：$risk"
                 )
             }
             diagnostic.colorRisk?.let { risk ->
@@ -118,7 +118,7 @@ object MediaHealth {
                     subjectId = diagnostic.uri,
                     uri = diagnostic.uri,
                     message = diagnostic.exportWarningMessages().firstOrNull { it.contains("color risk") }
-                        ?: "Media color risk for ${redactedDiagnosticUri(diagnostic.uri)}: $risk"
+                        ?: "${redactedDiagnosticUri(diagnostic.uri)} 存在媒体色彩风险：$risk"
                 )
             }
         }
@@ -153,7 +153,7 @@ object MediaHealth {
                             severity = MediaHealthSeverity.WARNING,
                             subjectId = reference.id,
                             uri = reference.uri.toString(),
-                            message = "Media is provider-backed or remote and is not represented by a managed local asset."
+                            message = "该媒体来自内容提供器或远程位置，尚未对应为受管理的本地素材。"
                         )
                     }
                 }
@@ -163,7 +163,7 @@ object MediaHealth {
                         severity = MediaHealthSeverity.WARNING,
                         subjectId = reference.id,
                         uri = reference.uri.toString(),
-                        message = "Media URI scheme is not probeable."
+                        message = "无法检查该媒体 URI 类型。"
                     )
                 }
             }
@@ -175,7 +175,7 @@ object MediaHealth {
                         severity = MediaHealthSeverity.WARNING,
                         subjectId = reference.id,
                         uri = reference.uri.toString(),
-                        message = "Timeline media reference has no stable asset ID."
+                        message = "时间线媒体引用缺少稳定的素材 ID。"
                     )
                 } else if (reference.assetId !in assetsById) {
                     issues += MediaHealthIssue(
@@ -183,7 +183,7 @@ object MediaHealth {
                         severity = MediaHealthSeverity.BLOCKING,
                         subjectId = reference.id,
                         uri = reference.uri.toString(),
-                        message = "Timeline media reference points to an asset ID that is not in the project manifest."
+                        message = "时间线媒体引用指向的素材 ID 不在项目清单中。"
                     )
                 }
             } else if (references.isNotEmpty()) {
@@ -191,7 +191,7 @@ object MediaHealth {
                     type = MediaHealthIssueType.MISSING_ASSET_MANIFEST,
                     severity = MediaHealthSeverity.WARNING,
                     subjectId = state.projectId,
-                    message = "Project has media references but no media asset manifest."
+                    message = "项目包含媒体引用，但缺少媒体素材清单。"
                 )
             }
 
@@ -204,7 +204,7 @@ object MediaHealth {
                     severity = MediaHealthSeverity.WARNING,
                     subjectId = reference.id,
                     uri = reference.uri.toString(),
-                    message = "Timeline media URI does not match the managed or original URI in its asset manifest entry."
+                    message = "时间线媒体 URI 与素材清单中的受管理 URI 或原始 URI 不一致。"
                 )
             }
 
@@ -217,7 +217,7 @@ object MediaHealth {
                             severity = MediaHealthSeverity.WARNING,
                             subjectId = reference.id,
                             uri = proxyUri.toString(),
-                            message = "Preview proxy exists but is empty; ClearCut should fall back to source media."
+                            message = "预览代理存在但为空；ClearCut 将回退使用源媒体。"
                         )
                         LocalFileState.MISSING,
                         LocalFileState.INVALID -> issues += MediaHealthIssue(
@@ -225,7 +225,7 @@ object MediaHealth {
                             severity = MediaHealthSeverity.WARNING,
                             subjectId = reference.id,
                             uri = proxyUri.toString(),
-                            message = "Preview proxy is missing; ClearCut should fall back to source media."
+                            message = "预览代理缺失；ClearCut 将回退使用源媒体。"
                         )
                     }
                 }
@@ -250,7 +250,7 @@ object MediaHealth {
                 severity = MediaHealthSeverity.BLOCKING,
                 subjectId = asset.assetId.ifBlank { "<blank>" },
                 uri = asset.managedUri.takeIf { it.isNotBlank() },
-                message = "Media asset manifest entry is missing its stable identity or managed URI."
+                message = "媒体素材清单条目缺少稳定标识或受管理 URI。"
             )
         }
         if (asset.managedUri.isNotBlank() && uriScheme(asset.managedUri) == "file") {
@@ -273,7 +273,7 @@ object MediaHealth {
                 severity = MediaHealthSeverity.BLOCKING,
                 subjectId = subjectId,
                 uri = uri,
-                message = "Local media file exists but is empty."
+                message = "本地媒体文件存在，但内容为空。"
             )
             LocalFileState.MISSING,
             LocalFileState.INVALID -> MediaHealthIssue(
@@ -281,7 +281,7 @@ object MediaHealth {
                 severity = MediaHealthSeverity.BLOCKING,
                 subjectId = subjectId,
                 uri = uri,
-                message = "Local media file is missing or cannot be resolved."
+                message = "本地媒体文件缺失或无法解析。"
             )
             LocalFileState.READY -> error("READY does not produce a media health issue")
         }
