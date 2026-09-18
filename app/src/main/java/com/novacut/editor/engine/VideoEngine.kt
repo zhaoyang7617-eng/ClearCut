@@ -60,12 +60,11 @@ private fun formatTransformerFallback(
     fallback: TransformationRequest,
 ): String {
     fun describe(request: TransformationRequest): String =
-        "video=${request.videoMimeType ?: "default"}, " +
-            "audio=${request.audioMimeType ?: "default"}, " +
-            "height=${request.outputHeight}, hdrMode=${request.hdrMode}"
+        "视频=${request.videoMimeType ?: "默认"}，" +
+            "音频=${request.audioMimeType ?: "默认"}，" +
+            "高度=${request.outputHeight}，HDR 模式=${request.hdrMode}"
 
-    return "Media3 export fallback applied: requested [${describe(original)}], " +
-        "actual [${describe(fallback)}]"
+    return "Media3 已应用导出后备方案：请求 [${describe(original)}]，实际 [${describe(fallback)}]"
 }
 
 /**
@@ -120,12 +119,10 @@ internal fun reverseRenderFallbackMessage(
     maxDurationMs: Long = MAX_REVERSE_CLIP_DURATION_MS,
 ): String? {
     if (!reverseRenderAvailable) {
-        return "Clip $clipId is reversed, but reverse rendering is unavailable on this device. " +
-            "It would be exported playing forward."
+        return "片段 $clipId 已设置为倒放，但此设备无法进行倒放渲染。若继续，将按正向播放导出。"
     }
     if (clipDurationMs <= maxDurationMs) return null
-    return "Clip $clipId is reversed and ${clipDurationMs / 1000}s long, over the " +
-        "${maxDurationMs / 1000}s reverse limit. It would be exported playing forward."
+    return "片段 $clipId 已设置为倒放，时长 ${clipDurationMs / 1000} 秒，超过 ${maxDurationMs / 1000} 秒的倒放上限。若继续，将按正向播放导出。"
 }
 
 internal fun playbackSessionNeedsReset(
@@ -796,7 +793,7 @@ class VideoEngine @Inject constructor(
         } catch (e: Exception) {
             AppLog.e(TAG, "Export setup failed", e)
             preRenderTempFiles.forEach { it.delete() }
-            failExport(ExportFailureCause.SETUP_FAILED, e.message ?: "Export setup failed")
+            failExport(ExportFailureCause.SETUP_FAILED, e.message ?: "导出初始化失败")
             _exportState.value = ExportState.ERROR
             _exportProgress.value = 0f
             activeTransformer = null
@@ -1008,7 +1005,7 @@ class VideoEngine @Inject constructor(
                 _exportState.value = ExportState.CANCELLED
             }
         } else {
-            failExport(ExportFailureCause.AUDIO_ENCODE_FAILED, message ?: "Audio export failed")
+            failExport(ExportFailureCause.AUDIO_ENCODE_FAILED, message ?: "音频导出失败")
             _exportState.value = ExportState.ERROR
         }
         _exportProgress.value = 0f
@@ -1109,8 +1106,7 @@ class VideoEngine @Inject constructor(
                 throw ExportStageException(
                     stage = "reverse-render",
                     subjectId = clip.id,
-                    message = "Reverse rendering failed for clip ${clip.id}. " +
-                        "Export stopped so it cannot ship forward video in place of the reversed clip."
+                    message = "片段 ${clip.id} 的倒放渲染失败。导出已停止，以避免用正向播放视频替代倒放结果。"
                 )
             }
         }
@@ -1144,7 +1140,7 @@ class VideoEngine @Inject constructor(
             throw ExportStageException(
                 stage = "cfr-normalize",
                 subjectId = null,
-                message = "Constant frame-rate export requires the bundled frame-normalization backend.",
+                message = "恒定帧率导出需要内置的帧率规范化后端。",
             )
         }
 
@@ -1168,7 +1164,7 @@ class VideoEngine @Inject constructor(
                 throw ExportStageException(
                     stage = "cfr-normalize",
                     subjectId = clip.id,
-                    message = "Constant frame-rate normalization failed for clip ${clip.id}.",
+                    message = "片段 ${clip.id} 的恒定帧率规范化失败。",
                 )
             }
             val normalizedDurationMs = getVideoDuration(Uri.fromFile(tempFile))
@@ -1307,7 +1303,7 @@ class VideoEngine @Inject constructor(
                         val eligibility = streamCopyEngine.analyze(runTracks, hasEffectsOrOverlays = false)
                         if (!eligibility.eligible) {
                             throw IllegalStateException(
-                                "Mixed stream-copy run ${execution.index} is not eligible: ${eligibility.reason}"
+                                "混合流复制区间 ${execution.index} 不符合条件：${eligibility.reason}"
                             )
                         }
                         requireStorageImmediatelyBeforeOutput(
@@ -1327,7 +1323,7 @@ class VideoEngine @Inject constructor(
                             }
                         )
                         if (!ok) {
-                            throw IllegalStateException("Mixed stream-copy run ${execution.index} failed")
+                            throw IllegalStateException("混合流复制区间 ${execution.index} 失败")
                         }
                     }
                     MixedRenderComposer.Engine.TRANSFORMER -> {
@@ -1375,7 +1371,7 @@ class VideoEngine @Inject constructor(
                 }
                 ensureVerifiedExportOutput(
                     outputFile = runOutput,
-                    label = "Mixed run ${execution.index}",
+                    label = "混合区间 ${execution.index}",
                     expectedDurationMs = execution.run.durationMs,
                     config = config,
                 )
@@ -1387,7 +1383,7 @@ class VideoEngine @Inject constructor(
             ensureExportActive("mixed concat")
             val concat = plan.concat ?: return false
             val concatInputs = concat.inputs.map { name ->
-                outputsByName[name] ?: throw IllegalStateException("Mixed concat input missing: $name")
+                outputsByName[name] ?: throw IllegalStateException("混合拼接缺少输入文件：$name")
             }
             requireStorageImmediatelyBeforeOutput(
                 request = ExportStoragePolicy.request(
@@ -1411,11 +1407,11 @@ class VideoEngine @Inject constructor(
                 }
             )
             if (!concatOk) {
-                throw IllegalStateException("Mixed FFmpeg concat failed")
+                throw IllegalStateException("混合 FFmpeg 拼接失败")
             }
             ensureVerifiedExportOutput(
                 outputFile = outputFile,
-                label = "Mixed concat",
+                label = "混合拼接",
                 expectedDurationMs = tracks.maxOfOrNull { track ->
                     track.clips.maxOfOrNull { clip -> track.effectiveTimelineEndMs(clip) } ?: 0L
                 }?.coerceAtLeast(0L) ?: 0L,
@@ -1440,7 +1436,7 @@ class VideoEngine @Inject constructor(
             throw e
         } catch (e: Exception) {
             AppLog.e(TAG, "Mixed export failed", e)
-            failExport(ExportFailureCause.MIXED_RENDER_FAILED, e.message ?: "Mixed export failed")
+            failExport(ExportFailureCause.MIXED_RENDER_FAILED, e.message ?: "混合导出失败")
             _exportState.value = ExportState.ERROR
             _exportProgress.value = 0f
             activeTransformer = null
@@ -1466,7 +1462,7 @@ class VideoEngine @Inject constructor(
             )
             val eligibility = streamCopyEngine.analyze(runTracks, hasEffectsOrOverlays = false)
             if (!eligibility.eligible) {
-                return "stream-copy run ${execution.index} is not eligible: ${eligibility.reason}"
+                return "流复制区间 ${execution.index} 不符合条件：${eligibility.reason}"
             }
         }
         return null
@@ -1475,17 +1471,17 @@ class VideoEngine @Inject constructor(
     private fun ensureExportActive(step: String) {
         when (_exportState.value) {
             ExportState.EXPORTING -> Unit
-            ExportState.CANCELLED -> throw CancellationException("Export cancelled during $step")
+            ExportState.CANCELLED -> throw CancellationException("导出在 $step 阶段被取消")
             ExportState.ERROR -> throw IllegalStateException(
-                _exportErrorMessage.value ?: "Export failed during $step"
+                _exportErrorMessage.value ?: "导出在 $step 阶段失败"
             )
-            else -> throw CancellationException("Export stopped during $step")
+            else -> throw CancellationException("导出在 $step 阶段停止")
         }
     }
 
     private fun ensureNonEmptyExportOutput(outputFile: File, label: String) {
         if (!outputFile.exists() || outputFile.length() <= 0L) {
-            throw IllegalStateException("$label produced an empty output file")
+            throw IllegalStateException("$label 生成了空输出文件")
         }
     }
 
@@ -1504,7 +1500,7 @@ class VideoEngine @Inject constructor(
         )
         if (!verification.valid) {
             throw IllegalStateException(
-                "$label failed output verification: ${verification.reason ?: "invalid output"}"
+                "$label 未通过输出验证：${verification.reason ?: "输出无效"}"
             )
         }
     }
@@ -2569,7 +2565,7 @@ class VideoEngine @Inject constructor(
                     // unplayable artifact and trust that it succeeded. Surface as ERROR instead.
                     if (!outputFile.exists() || outputFile.length() <= 0L) {
                         AppLog.e(TAG, "Transformer reported COMPLETE but output file is empty: ${outputFile.redacted()}")
-                        failExport(ExportFailureCause.EMPTY_OUTPUT, "Export produced an empty file")
+                        failExport(ExportFailureCause.EMPTY_OUTPUT, "导出生成了空文件")
                         _exportState.value = ExportState.ERROR
                         _exportProgress.value = 0f
                         activeExportOutputFile = null
@@ -2626,7 +2622,7 @@ class VideoEngine @Inject constructor(
                             TAG,
                             "Post-export verification failed (${verification.deliveryStatus}): ${verification.reason}",
                         )
-                        failExport(ExportFailureCause.VERIFICATION_FAILED, verification.reason ?: "Export verification failed")
+                        failExport(ExportFailureCause.VERIFICATION_FAILED, verification.reason ?: "导出验证失败")
                         _exportState.value = ExportState.ERROR
                         _exportProgress.value = 0f
                         activeExportOutputFile = null
@@ -2654,7 +2650,7 @@ class VideoEngine @Inject constructor(
                     // Guard against callbacks arriving after cancellation or timeout
                     if (_exportState.value != ExportState.EXPORTING) return
                     AppLog.e(TAG, "Export failed", exportException)
-                    failExport(ExportFailureCause.ENCODER_FAILED, exportException.message ?: "Export encoding failed")
+                    failExport(ExportFailureCause.ENCODER_FAILED, exportException.message ?: "导出编码失败")
                     _exportState.value = ExportState.ERROR
                     _exportProgress.value = 0f
                     activeExportOutputFile = null
@@ -2720,17 +2716,17 @@ class VideoEngine @Inject constructor(
             if (stallPolls >= stallTimeoutPolls && _exportState.value == ExportState.EXPORTING && !terminalReached) {
                 AppLog.w(TAG, "Export made no progress for 10 minutes — treating as a hang")
                 cancelTransformerAndAwaitTermination(transformer)
-                failExport(ExportFailureCause.STALLED, "Export stalled — no progress for 10 minutes")
+                failExport(ExportFailureCause.STALLED, "导出已停滞 — 10 分钟没有进度")
                 _exportState.value = ExportState.ERROR
                 _exportProgress.value = 0f
                 outputFile.delete()
                 runCatching { resumeFromFile?.delete() }
                 activeExportOutputFile = null
                 terminalReached = true
-                onError(Exception("Export stalled"))
+                onError(Exception("导出已停滞"))
             }
             if (_exportState.value == ExportState.ERROR && !terminalReached) {
-                val message = _exportErrorMessage.value ?: "Export failed"
+                val message = _exportErrorMessage.value ?: "导出失败"
                 outputFile.delete()
                 runCatching { resumeFromFile?.delete() }
                 activeExportOutputFile = null
