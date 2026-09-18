@@ -20,11 +20,11 @@ data class Mask(
 }
 
 enum class MaskType(val displayName: String) {
-    RECTANGLE("Rectangle"),
-    ELLIPSE("Ellipse"),
-    FREEHAND("Freehand"),
-    LINEAR_GRADIENT("Linear Gradient"),
-    RADIAL_GRADIENT("Radial Gradient")
+    RECTANGLE("矩形"),
+    ELLIPSE("椭圆"),
+    FREEHAND("自由绘制"),
+    LINEAR_GRADIENT("线性渐变"),
+    RADIAL_GRADIENT("径向渐变")
 }
 
 data class MaskPoint(
