@@ -513,7 +513,7 @@ internal fun importUriToManagedMediaWithProgress(
             } catch (copyErr: Exception) {
                 partialFile.delete()
                 destinationFile.delete()
-                return IngestResult.Failed("Rename and fallback copy both failed: ${copyErr.message}")
+                return IngestResult.Failed("重命名和后备复制均失败：${copyErr.message}")
             }
         }
 
@@ -527,7 +527,7 @@ internal fun importUriToManagedMediaWithProgress(
     } catch (e: Exception) {
         partialFile.delete()
         destinationFile.delete()
-        IngestResult.Failed(e.message ?: "Unknown error")
+        IngestResult.Failed(e.message ?: "未知错误")
     }
 }
 
