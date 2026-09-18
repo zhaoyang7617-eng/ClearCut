@@ -88,10 +88,10 @@ data class MediaDiagnostic(
 
     fun exportWarningMessages(): List<String> = buildList {
         timestampRisk?.let { risk ->
-            add("Media diagnostics (${redactedDiagnosticUri(uri)}): timestamp risk — $risk")
+            add("媒体诊断（${redactedDiagnosticUri(uri)}）：时间戳风险 — $risk")
         }
         colorRisk?.let { risk ->
-            add("Media diagnostics (${redactedDiagnosticUri(uri)}): color risk — $risk")
+            add("媒体诊断（${redactedDiagnosticUri(uri)}）：色彩风险 — $risk")
         }
     }
 }
