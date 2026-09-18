@@ -65,8 +65,8 @@ class TimelineExchangeValidator @Inject constructor() {
             get() = when {
                 errors.isNotEmpty() -> "${errors.size} 个阻断问题，${warnings.size} 个有损问题"
                 warnings.isNotEmpty() -> "${warnings.size} 个有损问题"
-                infos.isNotEmpty() -> "${infos.size} note(s)"
-                else -> "No issues"
+                infos.isNotEmpty() -> "${infos.size} 条说明"
+                else -> "没有问题"
             }
     }
 
