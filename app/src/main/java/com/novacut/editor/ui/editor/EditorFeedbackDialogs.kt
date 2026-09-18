@@ -130,7 +130,7 @@ private fun BackupImportReportBody(
         )
         feedback.errorMessage?.let {
             ReportCallout(
-                title = "Reason",
+                title = "原因",
                 body = it,
                 accent = ClearCutAccents.Red
             )
@@ -146,7 +146,7 @@ private fun BackupImportReportBody(
         }
         if (report.mediaMissing > 0) {
             ReportCallout(
-                title = "Missing media",
+                title = "缺失媒体",
                 body = "${report.mediaMissing} linked file(s) were not bundled or could not be restored. Relink them before export.",
                 accent = ClearCutAccents.Peach
             )
@@ -154,14 +154,14 @@ private fun BackupImportReportBody(
                 ReportIssueRow(
                     severity = "Media",
                     path = uri,
-                    message = "Still points to the original location.",
+                    message = "仍指向原始位置。",
                     suggestedFix = "Open Media Manager and relink this asset.",
                     accent = ClearCutAccents.Peach
                 )
             }
             if (report.unresolvedMediaUris.size > 4) {
                 Text(
-                    text = "+${report.unresolvedMediaUris.size - 4} more missing media reference(s)",
+                    text = "另外还有 ${report.unresolvedMediaUris.size - 4} 个缺失媒体引用",
                     color = semanticColors.subtext,
                     style = MaterialTheme.typography.bodySmall
                 )
@@ -242,7 +242,7 @@ private fun TimelineExchangeReportBody(
         )
         feedback.outputFileName?.let {
             ReportCallout(
-                title = "Saved file",
+                title = "已保存文件",
                 body = it,
                 accent = ClearCutAccents.Green
             )
@@ -272,7 +272,7 @@ private fun TimelineExchangeReportBody(
         }
         if (report.issues.size > 8) {
             Text(
-                text = "+${report.issues.size - 8} more issue(s)",
+                text = "另外还有 ${report.issues.size - 8} 个问题",
                 color = semanticColors.subtext,
                 style = MaterialTheme.typography.bodySmall
             )
