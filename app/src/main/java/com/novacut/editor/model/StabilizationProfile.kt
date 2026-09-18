@@ -7,7 +7,7 @@ package com.novacut.editor.model
  */
 data class StabilizationProfile(
     val id: String = "balanced-handheld",
-    val name: String = "Balanced handheld",
+    val name: String = "均衡手持",
     val lens: StabilizationLensProfile = StabilizationLensProfile(),
     val motion: StabilizationMotionProfile = StabilizationMotionProfile(),
     val cropScale: Float = 1.1f,
