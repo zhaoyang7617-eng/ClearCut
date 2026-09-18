@@ -58,7 +58,7 @@ data class ExportIncidentBundle(
      * captions, or paths that generic redaction cannot recognize.
      */
     fun toCopyableReport(includeRawErrorText: Boolean = false): String = buildString {
-        appendLine("ClearCut export failure report")
+        appendLine("ClearCut 导出失败报告")
         appendLine("incident: ${id.take(8)}")
         appendLine("app: $appVersion (Android SDK $androidSdk)")
         appendLine("device: $deviceModel")
@@ -70,10 +70,10 @@ data class ExportIncidentBundle(
         }
         appendLine("error: $errorClass — $reportError")
         appendLine("codec: $codecLabel via $encoderPath")
-        appendLine("output: $resolutionLabel @ ${frameRate}fps" + if (hdrRequested) " (HDR requested)" else "")
-        appendLine("audio-only: $exportAudioOnly, stream-copy attempted: $streamCopyAttempted")
+        appendLine("output: $resolutionLabel @ ${frameRate}fps" + if (hdrRequested) "（已请求 HDR）" else "")
+        appendLine("仅音频：$exportAudioOnly，已尝试流复制：$streamCopyAttempted")
         appendLine("timeline: ${timelineDurationMs}ms, failed after ${elapsedMs}ms")
-        appendLine("media: $mediaWarningCount warning(s), $mediaBlockingCount blocker(s)")
+        appendLine("媒体：$mediaWarningCount 个警告，$mediaBlockingCount 个阻断问题")
         if (subjectAssetId != null) appendLine("clip: $subjectAssetId")
         appendLine("what to try: $remediation")
     }
@@ -92,13 +92,13 @@ object ExportRemediation {
         failedPhase.equals("storage", ignoreCase = true) ->
             "Free up device storage, or export at a lower resolution, then try again."
         failedPhase.equals("subtitle-burn", ignoreCase = true) ->
-            "Export without burned-in subtitles to confirm, then re-add them one caption track at a time."
+            "先关闭字幕烧录导出以确认问题，再逐条字幕轨道重新添加。"
         failedPhase.equals("audio-encoder", ignoreCase = true) ->
             "Try a different audio codec in Export settings; AAC is supported on every device."
         failedPhase.equals("encoder", ignoreCase = true) && hdrRequested ->
             "Turn off HDR metadata in Export settings — this device's encoder rejected the HDR profile."
         failedPhase.equals("encoder", ignoreCase = true) && streamCopyAttempted ->
-            "Turn off fast stream-copy in Export settings so the timeline is fully re-encoded."
+            "在导出设置中关闭快速流复制，让时间线完整重新编码。"
         failedPhase.equals("encoder", ignoreCase = true) ->
             "Try a lower resolution or the H.264 codec; this device's encoder rejected the current settings."
         failedPhase.equals("setup", ignoreCase = true) ->
@@ -317,7 +317,7 @@ object ExportIncidentBuilder {
         val encoderPath = detectEncoderPath(codecLabel)
         val errorClassName = error?.javaClass?.simpleName ?: "Unknown"
         val safeMessage = DiagnosticExportEngine.redactSensitive(
-            errorMessage ?: error?.message ?: "No error details"
+            errorMessage ?: error?.message ?: "没有错误详情"
         )
         val boundedSamples = if (progressSamples.size > MAX_PROGRESS_SAMPLES) {
             val step = progressSamples.size.toFloat() / MAX_PROGRESS_SAMPLES
