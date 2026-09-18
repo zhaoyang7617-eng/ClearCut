@@ -69,7 +69,7 @@ class MediaRelinkProbe @Inject constructor(
          */
         val userMessage: String
             get() = when (state) {
-                RelinkState.OK -> "Source available"
+                RelinkState.OK -> "源文件可用"
                 RelinkState.MISSING -> reason?.let { "源文件缺失 — $it" } ?: "源文件缺失"
                 RelinkState.UNKNOWN -> reason?.let { "源文件未验证 — $it" } ?: "源文件未验证"
             }
