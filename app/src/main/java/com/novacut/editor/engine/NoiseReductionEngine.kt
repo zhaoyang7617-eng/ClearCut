@@ -75,11 +75,11 @@ class NoiseReductionEngine @Inject constructor(
     }
 
     enum class NoiseReductionMode(val displayName: String) {
-        OFF("Off"),
-        LIGHT("Light -- subtle cleanup"),
-        MODERATE("Moderate -- balanced"),
-        AGGRESSIVE("Aggressive -- maximum removal"),
-        SPECTRAL_GATE("Spectral Gate -- non-ML fallback")
+        OFF("关闭"),
+        LIGHT("轻度 — 轻微清理"),
+        MODERATE("中度 — 均衡"),
+        AGGRESSIVE("强力 — 最大限度去除"),
+        SPECTRAL_GATE("频谱门 — 非 ML 后备方案")
     }
 
     data class NoiseProfile(
@@ -185,14 +185,14 @@ class NoiseReductionEngine @Inject constructor(
             reportProgress(onProgress, 1f)
             return@withContext NoiseReductionResult(
                 outcome = NoiseReductionOutcome.NO_OP,
-                detail = "Noise reduction is off; the clip was left unchanged."
+                detail = "降噪已关闭；片段保持不变。"
             )
         }
 
         if (!ffmpegEngine.isAvailable()) {
             return@withContext NoiseReductionResult(
                 outcome = NoiseReductionOutcome.UNAVAILABLE,
-                detail = "Audio decoding is unavailable on this device, so no noise reduction ran."
+                detail = "此设备无法进行音频解码，因此未执行降噪。"
             )
         }
 
@@ -233,8 +233,7 @@ class NoiseReductionEngine @Inject constructor(
             AppLog.w(TAG, "Noise reduction failed: ${e.message}", e)
             NoiseReductionResult(
                 outcome = NoiseReductionOutcome.FAILED,
-                detail = "Noise reduction failed: ${e.message ?: e::class.java.simpleName}. " +
-                    "The clip was left unchanged."
+                detail = "降噪失败：${e.message ?: e::class.java.simpleName}。片段保持不变。"
             )
         }
     }
@@ -300,7 +299,7 @@ class NoiseReductionEngine @Inject constructor(
                     originalSnrDb = sourceProfile.estimatedSnrDb,
                     processedSnrDb = cleanedProfile.estimatedSnrDb,
                     noiseProfile = sourceProfile,
-                    detail = "No measurable improvement (%.1f dB); the clip was left unchanged."
+                    detail = "未检测到可测量的改善（%.1f dB）；片段保持不变。"
                         .format(improvementDb)
                 )
             }
@@ -324,8 +323,14 @@ class NoiseReductionEngine @Inject constructor(
                 originalSnrDb = sourceProfile.estimatedSnrDb,
                 processedSnrDb = cleanedProfile.estimatedSnrDb,
                 noiseProfile = sourceProfile,
-                detail = "Reduced %s noise; measured SNR %.1f dB → %.1f dB.".format(
-                    sourceProfile.type,
+                detail = "已降低 %s；实测 SNR %.1f dB → %.1f dB。".format(
+                    when (sourceProfile.type) {
+                        "hiss" -> "嘶声噪声"
+                        "hum" -> "嗡声噪声"
+                        "broadband" -> "宽带噪声"
+                        "clean" -> "背景噪声"
+                        else -> "噪声"
+                    },
                     sourceProfile.estimatedSnrDb,
                     cleanedProfile.estimatedSnrDb
                 )
