@@ -155,7 +155,7 @@ class CompoundNavStack {
      *   but it's localizable so the caller owns the phrasing).
      */
     fun formatBreadcrumb(
-        rootLabel: String = "Project",
+        rootLabel: String = "项目",
         separator: String = " ▸ ",
         fallbackParentName: (depth: Int) -> String = { "Group $it" },
     ): String {
