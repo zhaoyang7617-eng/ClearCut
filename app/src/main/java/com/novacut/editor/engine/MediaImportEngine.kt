@@ -230,7 +230,7 @@ class MediaImportEngine @Inject constructor(
                 MediaFormat.COLOR_STANDARD_BT709 -> "BT.709"
                 MediaFormat.COLOR_STANDARD_BT601_NTSC -> "BT.601 NTSC"
                 MediaFormat.COLOR_STANDARD_BT601_PAL -> "BT.601 PAL"
-                else -> "standard:$this"
+                else -> "色彩标准：$this"
             }
         }
 
@@ -238,9 +238,9 @@ class MediaImportEngine @Inject constructor(
             return when (this) {
                 MediaFormat.COLOR_TRANSFER_ST2084 -> "ST 2084"
                 MediaFormat.COLOR_TRANSFER_HLG -> "HLG"
-                MediaFormat.COLOR_TRANSFER_SDR_VIDEO -> "SDR video"
-                MediaFormat.COLOR_TRANSFER_LINEAR -> "Linear"
-                else -> "transfer:$this"
+                MediaFormat.COLOR_TRANSFER_SDR_VIDEO -> "SDR 视频"
+                MediaFormat.COLOR_TRANSFER_LINEAR -> "线性"
+                else -> "传递函数：$this"
             }
         }
     }
