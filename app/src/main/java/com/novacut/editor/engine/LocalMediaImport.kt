@@ -470,7 +470,7 @@ internal fun importUriToManagedMediaWithProgress(
 
     val destinationDir = managedMediaDir(context)
     if (!destinationDir.exists() && !destinationDir.mkdirs() && !destinationDir.exists()) {
-        return IngestResult.Failed("Failed to create managed media directory")
+        return IngestResult.Failed("无法创建受管理的媒体目录")
     }
 
     sweepAbandonedPartials(destinationDir)
@@ -484,7 +484,7 @@ internal fun importUriToManagedMediaWithProgress(
 
     return try {
         val inputStream = context.contentResolver.openInputStream(uri)
-            ?: return IngestResult.Failed("Cannot open input stream").also { partialFile.delete() }
+            ?: return IngestResult.Failed("无法打开输入流").also { partialFile.delete() }
 
         inputStream.use { input ->
             partialFile.outputStream().use { output ->
@@ -499,7 +499,7 @@ internal fun importUriToManagedMediaWithProgress(
 
         if (partialFile.length() <= 0L) {
             partialFile.delete()
-            return IngestResult.Failed("Imported file was empty")
+            return IngestResult.Failed("导入的文件为空")
         }
 
         if (!partialFile.renameTo(destinationFile)) {
