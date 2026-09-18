@@ -107,7 +107,7 @@ object MediaHealth {
                     severity = MediaHealthSeverity.WARNING,
                     subjectId = diagnostic.uri,
                     uri = diagnostic.uri,
-                    message = diagnostic.exportWarningMessages().firstOrNull { it.contains("timestamp risk") }
+                    message = diagnostic.exportWarningMessages().firstOrNull { it.contains("时间戳风险") }
                         ?: "${redactedDiagnosticUri(diagnostic.uri)} 存在媒体时间戳风险：$risk"
                 )
             }
@@ -117,7 +117,7 @@ object MediaHealth {
                     severity = MediaHealthSeverity.WARNING,
                     subjectId = diagnostic.uri,
                     uri = diagnostic.uri,
-                    message = diagnostic.exportWarningMessages().firstOrNull { it.contains("color risk") }
+                    message = diagnostic.exportWarningMessages().firstOrNull { it.contains("色彩风险") }
                         ?: "${redactedDiagnosticUri(diagnostic.uri)} 存在媒体色彩风险：$risk"
                 )
             }
