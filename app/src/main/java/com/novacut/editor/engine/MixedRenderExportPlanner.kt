@@ -24,47 +24,47 @@ object MixedRenderExportPlanner {
         hasLottieOverlays: Boolean = false,
         hasTrackedObjects: Boolean = false,
     ): String? {
-        if (config.forceConstantFrameRate) return "constant frame rate requested"
-        if (!config.allowStreamCopy) return "stream-copy disabled"
-        if (tracks.any { it.timelineOffsetMs != 0L }) return "per-track timeline offset present"
-        if (config.scrubMetadata) return "metadata scrub requested"
+        if (config.forceConstantFrameRate) return "已请求恒定帧率"
+        if (!config.allowStreamCopy) return "流复制已关闭"
+        if (tracks.any { it.timelineOffsetMs != 0L }) return "存在逐轨时间线偏移"
+        if (config.scrubMetadata) return "已请求清除元数据"
         if (config.preserveSourceLocationMetadata || config.preserveSourceStreamMetadata) {
-            return "source metadata opt-in requested"
+            return "已请求保留源元数据"
         }
-        if (textOverlays.isNotEmpty()) return "text overlays present"
-        if (hasImageOverlays) return "image overlays present"
-        if (hasLottieOverlays) return "Lottie overlays present"
-        if (hasTrackedObjects) return "tracked-object overlays present"
-        if (config.chapters.isNotEmpty()) return "chapter markers requested"
-        if (config.subtitleFormat != null) return "subtitle sidecar requested"
-        if (config.transparentBackground) return "transparent export requested"
-        if (config.exportAsGif) return "GIF export requested"
-        if (config.captureFrameOnly) return "frame capture requested"
-        if (config.exportAsContactSheet) return "contact-sheet export requested"
-        if (config.exportAudioOnly) return "audio-only export requested"
-        if (config.exportStemsOnly) return "stem export requested"
-        if (config.watermark != null) return "watermark requested"
-        if (config.targetSizeBytes != null) return "target-size bitrate requested"
+        if (textOverlays.isNotEmpty()) return "存在文字叠加层"
+        if (hasImageOverlays) return "存在图片叠加层"
+        if (hasLottieOverlays) return "存在 Lottie 叠加层"
+        if (hasTrackedObjects) return "存在跟踪对象叠加层"
+        if (config.chapters.isNotEmpty()) return "已请求章节标记"
+        if (config.subtitleFormat != null) return "已请求字幕侧车文件"
+        if (config.transparentBackground) return "已请求透明背景导出"
+        if (config.exportAsGif) return "已请求 GIF 导出"
+        if (config.captureFrameOnly) return "已请求画面捕获"
+        if (config.exportAsContactSheet) return "已请求联系表导出"
+        if (config.exportAudioOnly) return "已请求仅音频导出"
+        if (config.exportStemsOnly) return "已请求音频分轨导出"
+        if (config.watermark != null) return "已请求水印"
+        if (config.targetSizeBytes != null) return "已请求目标文件大小码率"
 
         val visibleVideoTracks = tracks.filter {
             it.type == TrackType.VIDEO && it.isVisible && it.clips.any { clip -> clip.durationMs > 0L }
         }
-        if (visibleVideoTracks.size != 1) return "mixed render requires one visible video track"
+        if (visibleVideoTracks.size != 1) return "混合渲染需要且仅需要一条可见视频轨道"
 
         val hasVisibleOverlayTracks = tracks.any {
             it.type == TrackType.OVERLAY && it.isVisible && it.clips.any { clip -> clip.durationMs > 0L }
         }
-        if (hasVisibleOverlayTracks) return "overlay track present"
+        if (hasVisibleOverlayTracks) return "存在叠加轨道"
 
         val hasVisibleAdjustmentTracks = tracks.any {
             it.type == TrackType.ADJUSTMENT && it.isVisible && it.clips.any { clip -> clip.durationMs > 0L }
         }
-        if (hasVisibleAdjustmentTracks) return "adjustment track present"
+        if (hasVisibleAdjustmentTracks) return "存在调整轨道"
 
         val hasVisibleAudioTracks = tracks.any {
             it.type == TrackType.AUDIO && it.isVisible && it.clips.any { clip -> clip.durationMs > 0L }
         }
-        if (hasVisibleAudioTracks) return "separate audio track present"
+        if (hasVisibleAudioTracks) return "存在独立音频轨道"
 
         return null
     }
