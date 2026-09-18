@@ -163,7 +163,7 @@ data class ProjectDependencyManifest(
                 destination += ProjectDependencyRequest(
                     kind = ProjectDependencyKind.MODEL,
                     reference = SEGMENTATION_MODEL_DEPENDENCY,
-                    label = "Background-removal model",
+                    label = "背景移除模型",
                     archivePolicy = ProjectDependencyArchivePolicy.REFERENCE_ONLY,
                 )
             }
