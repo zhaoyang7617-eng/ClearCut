@@ -71,7 +71,7 @@ class AutoChapterEngine @Inject constructor(
                 .joinToString(" ") { it.text }
                 .trim()
                 .take(TITLE_MAX_CHARS)
-            val title = rawTitle.ifBlank { "Chapter ${out.size + 1}" }
+            val title = rawTitle.ifBlank { "章节 ${out.size + 1}" }
             // Skip duplicate titles — they arise on repetitive transcripts
             // and look embarrassing in a YouTube description.
             if (title.lowercase() in usedTitles) continue
