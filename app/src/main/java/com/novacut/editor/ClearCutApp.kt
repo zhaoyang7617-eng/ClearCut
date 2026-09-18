@@ -103,7 +103,7 @@ class ClearCutApp : Application(), Configuration.Provider {
             "Export Progress",
             NotificationManager.IMPORTANCE_LOW
         ).apply {
-            description = "Shows video export progress"
+            description = "显示视频导出进度"
             setShowBadge(false)
         }
         val nm = getSystemService(NotificationManager::class.java)
