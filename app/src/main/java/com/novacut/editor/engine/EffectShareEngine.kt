@@ -257,12 +257,12 @@ class EffectShareEngine @Inject constructor(
                     provenanceSource = envelope.source,
                     minAppVersion = envelope.minAppVersion,
                     requiredCapabilities = envelope.requiredCapabilities,
-                    warnings = listOf("This JSON document is not a ClearCut effect pack."),
+                    warnings = listOf("此 JSON 文档不是 ClearCut 效果包。"),
                     reasonCode = EffectPackFailure.WRONG_KIND.name,
                 )
             }
 
-            val name = json.optString("name", "Imported")
+            val name = json.optString("name", "已导入")
             val strictEntries = envelope.schemaVersion >= DeclarativePackContract.CURRENT_SCHEMA_VERSION
             val warnings = envelope.warnings.toMutableList()
             var invalidEntries = 0
@@ -307,7 +307,7 @@ class EffectShareEngine @Inject constructor(
                     provenanceSource = envelope.source,
                     minAppVersion = envelope.minAppVersion,
                     requiredCapabilities = envelope.requiredCapabilities,
-                    warnings = listOf("Embedded LUT is malformed, oversized, or uses an unsupported format."),
+                    warnings = listOf("嵌入式 LUT 格式错误、体积过大，或使用了不支持的格式。"),
                 )
             }
             val embeddedLut = embeddedLutParse.payload
@@ -380,12 +380,12 @@ class EffectShareEngine @Inject constructor(
                     minAppVersion = envelope.minAppVersion,
                     requiredCapabilities = envelope.requiredCapabilities,
                     warnings = listOf(
-                        "Effect pack contains $invalidEntries unsupported or invalid effect entr${if (invalidEntries == 1) "y" else "ies"}."
+                        "效果包包含 $invalidEntries 个不支持或无效的效果条目。"
                     ),
                 )
             }
             if (invalidEntries > 0) {
-                warnings.add("Skipped $invalidEntries unsupported legacy effect entr${if (invalidEntries == 1) "y" else "ies"}.")
+                warnings.add("已跳过 $invalidEntries 个不支持的旧版效果条目。")
             }
             val imported = ImportedEffects(
                 name = name,
