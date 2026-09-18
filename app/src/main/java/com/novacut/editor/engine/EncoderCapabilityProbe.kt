@@ -48,9 +48,9 @@ object EncoderCapabilityProbe {
     }
 
     enum class DeviceEncodingTier(val displayName: String) {
-        STANDARD("Standard"),
-        ADVANCED("Advanced"),
-        PREMIUM("Premium")
+        STANDARD("标准"),
+        ADVANCED("高级"),
+        PREMIUM("旗舰")
     }
 
     /**
@@ -87,8 +87,7 @@ object EncoderCapabilityProbe {
             get() = HdrExportFormat.DOLBY_VISION_PROFILE_10 in supportedFormats
 
         fun featureFailureReason(): String {
-            return "HDR export is unavailable for ${codec.label}: the selected encoder does not report " +
-                "$FEATURE_HDR_EDITING or $FEATURE_HLG_EDITING. Choose SDR or another codec."
+            return "无法使用 ${codec.label} 进行 HDR 导出：所选编码器未报告 $FEATURE_HDR_EDITING 或 $FEATURE_HLG_EDITING。请选择 SDR 或其他编码格式。"
         }
     }
 
@@ -129,7 +128,7 @@ object EncoderCapabilityProbe {
         bitrate: Int
     ): Capability {
         if (width <= 0 || height <= 0 || framerate <= 0 || bitrate <= 0) {
-            return Capability(false, "Invalid export dimensions")
+            return Capability(false, "导出尺寸无效")
         }
         val mimeType = codec.mimeType
         val codecInfos = try {
@@ -140,14 +139,14 @@ object EncoderCapabilityProbe {
             AppLog.w(TAG, "MediaCodecList lookup failed for ${codec.label}", e)
             return Capability(
                 supported = false,
-                reason = "Encoder capability could not be queried; output will be verified after export.",
+                reason = "无法查询编码器能力；导出完成后将再验证输出文件。",
                 known = false,
             )
         }
         if (codecInfos.isEmpty()) {
             return Capability(
                 false,
-                "No ${codec.label} encoder present — falling back to H.264 is safer."
+                "设备上没有 ${codec.label} 编码器；回退到 H.264 更稳妥。"
             )
         }
 
@@ -165,24 +164,22 @@ object EncoderCapabilityProbe {
             val videoCaps = caps.videoCapabilities ?: continue
 
             if (!videoCaps.isSizeSupported(width, height)) {
-                firstReason = firstReason ?: "${codec.label} on this device tops out at " +
+                firstReason = firstReason ?: "此设备上的 ${codec.label} 最高支持 " +
                     "${videoCaps.supportedWidths.upper}×${videoCaps.supportedHeights.upper}"
                 continue
             }
             if (!videoCaps.areSizeAndRateSupported(width, height, framerate.toDouble())) {
-                firstReason = firstReason ?: "${codec.label} at ${width}×${height} " +
-                    "is capped to ${videoCaps.getSupportedFrameRatesFor(width, height).upper.toInt()} fps on this device"
+                firstReason = firstReason ?: "此设备上的 ${codec.label} 在 ${width}×${height} 下最高支持 ${videoCaps.getSupportedFrameRatesFor(width, height).upper.toInt()} fps"
                 continue
             }
             val bitrateRange = videoCaps.bitrateRange
             if (bitrate !in bitrateRange.lower..bitrateRange.upper) {
-                firstReason = firstReason ?: "${codec.label} bitrate is capped at " +
-                    "${bitrateRange.upper / 1_000_000} Mbps on this device"
+                firstReason = firstReason ?: "此设备上的 ${codec.label} 码率上限为 ${bitrateRange.upper / 1_000_000} Mbps"
                 continue
             }
             return Capability(true)
         }
-        return Capability(false, firstReason ?: "${codec.label} can't encode this configuration")
+        return Capability(false, firstReason ?: "${codec.label} 无法编码当前配置")
     }
 
     /**
@@ -289,25 +286,25 @@ object EncoderCapabilityProbe {
             DeviceEncodingTier.PREMIUM -> {
                 val hdr = formatHdrList(hdrFormats)
                 if (hdr.isNotBlank()) {
-                    "Hardware AV1 and VP9 encoders detected with $hdr HDR profile support."
+                    "检测到硬件 AV1 和 VP9 编码器，并支持 $hdr HDR 配置。"
                 } else {
-                    "Hardware AV1 and VP9 encoders detected for efficient modern exports."
+                    "检测到硬件 AV1 和 VP9 编码器，可用于高效的现代编码导出。"
                 }
             }
             DeviceEncodingTier.ADVANCED -> {
                 val codecs = availableCodecs
                     .filter { it != VideoCodec.H264 }
                     .joinToString(", ") { it.label }
-                    .ifBlank { "modern codec" }
+                    .ifBlank { "现代编码格式" }
                 val hdr = formatHdrList(hdrFormats)
                 if (hdr.isNotBlank()) {
-                    "$codecs encode is available with $hdr HDR profile support."
+                    "可使用 $codecs 编码，并支持 $hdr HDR 配置。"
                 } else {
-                    "$codecs encode is available. HDR support depends on the selected codec and source."
+                    "可使用 $codecs 编码。HDR 支持取决于所选编码格式和源素材。"
                 }
             }
             DeviceEncodingTier.STANDARD ->
-                "Baseline H.264 export path detected. Choose conservative settings for long renders."
+                "检测到基础 H.264 导出路径。较长时间线建议使用更保守的导出设置。"
         }
 
         return DeviceEncodingTierHint(
