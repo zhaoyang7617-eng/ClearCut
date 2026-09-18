@@ -439,7 +439,7 @@ class AudioEngine @Inject constructor(
             issues.add(AudioConformanceIssue(
                 type = AudioConformanceIssueType.MIXED_SAMPLE_RATES,
                 clipId = "",
-                message = "Clips have mixed sample rates (${rates.joinToString()}). Audio will be resampled to ${outputSampleRate} Hz.",
+                message = "片段的采样率不一致（${rates.joinToString()}）。音频将重采样为 ${outputSampleRate} Hz。",
                 isBlocking = false
             ))
         }
@@ -448,7 +448,7 @@ class AudioEngine @Inject constructor(
             issues.add(AudioConformanceIssue(
                 type = AudioConformanceIssueType.MIXED_CHANNEL_COUNTS,
                 clipId = "",
-                message = "Clips have mixed channel layouts (${channels.joinToString()}). Audio will be normalized to $outputChannels channels.",
+                message = "片段的声道布局不一致（${channels.joinToString()}）。音频将统一为 $outputChannels 声道。",
                 isBlocking = false
             ))
         }
@@ -458,7 +458,7 @@ class AudioEngine @Inject constructor(
                 issues.add(AudioConformanceIssue(
                     type = AudioConformanceIssueType.UNCOMMON_SAMPLE_RATE,
                     clipId = clipId,
-                    message = "Clip uses uncommon sample rate ${info.sampleRate} Hz.",
+                    message = "片段使用了较少见的采样率 ${info.sampleRate} Hz。",
                     isBlocking = false
                 ))
             }
