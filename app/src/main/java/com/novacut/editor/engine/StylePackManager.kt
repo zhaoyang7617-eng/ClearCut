@@ -256,7 +256,7 @@ class StylePackManager @Inject constructor(
             return Validation(
                 StylePackImportResult(
                     failure = StylePackFailure.INVALID_STYLE_ENTRY,
-                    warnings = listOf("Pack contains ${parsedStyles.invalidEntries} invalid style entr${if (parsedStyles.invalidEntries == 1) "y" else "ies"}.")
+                    warnings = listOf("样式包包含 ${parsedStyles.invalidEntries} 个无效样式条目。")
                 )
             )
         }
@@ -274,7 +274,7 @@ class StylePackManager @Inject constructor(
 
         val warnings = envelope.warnings.toMutableList()
         if (pack.styles.size > MAX_STYLES_PER_PACK) {
-            warnings.add("Pack contains ${pack.styles.size} styles; only the first $MAX_STYLES_PER_PACK will be imported.")
+            warnings.add("样式包包含 ${pack.styles.size} 个样式；只会导入前 $MAX_STYLES_PER_PACK 个。")
         }
 
         val styleIds = pack.styles.map { it.id }
@@ -286,7 +286,7 @@ class StylePackManager @Inject constructor(
             ?: return Validation(StylePackImportResult(failure = StylePackFailure.MISSING_REQUIRED_FIELDS))
 
         if (file.exists()) {
-            warnings.add("Installing will replace the previously installed pack \"${pack.name}\".")
+            warnings.add("安装后将替换之前已安装的样式包“${pack.name}”。")
         }
 
         val incomingStyleIds = pack.styles.map { it.id }.toSet()
