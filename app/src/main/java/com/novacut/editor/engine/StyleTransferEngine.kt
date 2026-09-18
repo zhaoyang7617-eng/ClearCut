@@ -87,7 +87,7 @@ class StyleTransferEngine @Inject constructor(
         /** Satoshi Kon (Paprika) anime style. Surreal, detailed. */
         ANIME_PAPRIKA(
             "Anime (Paprika)", "animegan2_paprika.onnx", 8_600_000L,
-            ModelFamily.ANIME_GAN, "Surreal, detailed animation style"
+            ModelFamily.ANIME_GAN, "超现实、细节丰富的动画风格"
         ),
         /** Roman mosaic tile pattern. */
         MOSAIC(
