@@ -1078,7 +1078,7 @@ class ExportDelegate(
         val baseChapters = if (config.includeChapterMarkers && config.chapters.isEmpty()) {
             currentState.timelineMarkers
                 .sortedBy { it.timeMs }
-                .map { ChapterMarker(timeMs = it.timeMs, title = it.label.ifBlank { "Chapter" }) }
+                .map { ChapterMarker(timeMs = it.timeMs, title = it.label.ifBlank { "章节" }) }
         } else config.chapters
         val slicedExport = resolvedRange?.let { range ->
             TimelineRangeExportEngine.slice(
@@ -1197,7 +1197,7 @@ class ExportDelegate(
                         .flatMap { it.clips }
                         .sortedBy { it.timelineStartMs }
                     if (allClips.isEmpty()) {
-                        val message = "No video clips"
+                        val message = "没有视频片段"
                         updateExport {
                             it.copy(
                                 state = ExportState.ERROR,
@@ -1246,7 +1246,7 @@ class ExportDelegate(
                         )
                         showToast(appContext.getString(R.string.export_contact_sheet_toast, finalizedSheetFile.name))
                     } else {
-                        val message = "Contact sheet render failed"
+                        val message = "联系表渲染失败"
                         updateExport {
                             it.copy(
                                 state = ExportState.ERROR,
@@ -1286,7 +1286,7 @@ class ExportDelegate(
                 } catch (e: Exception) {
                     com.novacut.editor.engine.AppLog.w("ExportDelegate", "Contact sheet export failed", e)
                     sheetFile?.delete()
-                    val message = e.message ?: "Contact sheet export failed"
+                    val message = e.message ?: "联系表导出失败"
                     updateExport {
                         it.copy(
                             state = ExportState.ERROR,
@@ -1335,7 +1335,7 @@ class ExportDelegate(
                         tracks.filter { it.type == TrackType.OVERLAY }.flatMap { it.clips }
                     }).sortedBy { it.timelineStartMs }
                     if (allClips.isEmpty()) {
-                        val message = "No video clips"
+                        val message = "没有视频片段"
                         updateExport {
                             it.copy(
                                 state = ExportState.ERROR,
@@ -1510,7 +1510,7 @@ class ExportDelegate(
                         com.novacut.editor.engine.AppLog.w("ExportDelegate", "GIF export failed", e)
                     }
                     gifFile?.delete()
-                    val message = if (noFramesExtracted) "No frames extracted" else {
+                    val message = if (noFramesExtracted) "未提取到画面" else {
                         e.message ?: "GIF export failed"
                     }
                     updateExport {
