@@ -113,9 +113,9 @@ internal fun timestampRiskFor(
     stats: MediaTimestampStats,
     isVideo: Boolean,
 ): String? = when {
-    stats.sampleCount == 0 -> "No readable samples were found."
-    stats.hasNonMonotonicTimestamps -> "Sample timestamps are not monotonic."
-    isVideo && !stats.hasSyncFrames -> "No video sync frames were reported."
+    stats.sampleCount == 0 -> "未找到可读取的媒体采样。"
+    stats.hasNonMonotonicTimestamps -> "媒体采样时间戳不是单调递增。"
+    isVideo && !stats.hasSyncFrames -> "未检测到视频同步帧。"
     else -> null
 }
 
@@ -450,21 +450,21 @@ class MediaDiagnosticsProbe @Inject constructor(
         MediaFormat.COLOR_STANDARD_BT709 -> "BT.709"
         MediaFormat.COLOR_STANDARD_BT601_NTSC -> "BT.601 NTSC"
         MediaFormat.COLOR_STANDARD_BT601_PAL -> "BT.601 PAL"
-        else -> "standard:$this"
+        else -> "色彩标准：$this"
     }
 
     private fun Int.toColorTransferName(): String = when (this) {
         MediaFormat.COLOR_TRANSFER_ST2084 -> "ST 2084"
         MediaFormat.COLOR_TRANSFER_HLG -> "HLG"
-        MediaFormat.COLOR_TRANSFER_SDR_VIDEO -> "SDR video"
-        MediaFormat.COLOR_TRANSFER_LINEAR -> "Linear"
-        else -> "transfer:$this"
+        MediaFormat.COLOR_TRANSFER_SDR_VIDEO -> "SDR 视频"
+        MediaFormat.COLOR_TRANSFER_LINEAR -> "线性"
+        else -> "传递函数：$this"
     }
 
     private fun Int.toColorRangeName(): String = when (this) {
-        MediaFormat.COLOR_RANGE_FULL -> "Full"
-        MediaFormat.COLOR_RANGE_LIMITED -> "Limited"
-        else -> "range:$this"
+        MediaFormat.COLOR_RANGE_FULL -> "全范围"
+        MediaFormat.COLOR_RANGE_LIMITED -> "有限范围"
+        else -> "范围：$this"
     }
 
     companion object {
