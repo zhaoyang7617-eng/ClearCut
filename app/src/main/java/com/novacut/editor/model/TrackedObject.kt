@@ -22,7 +22,7 @@ import java.util.UUID
 @Immutable
 data class TrackedObject(
     val id: String = UUID.randomUUID().toString(),
-    /** Human-readable label set at creation ("Person", "License plate", "Subject"). */
+    /** Human-readable label set at creation ("人物", "车牌", "Subject"). */
     val label: String,
     /** Source clip the track was generated against — keyframes are clip-relative ms. */
     val sourceClipId: String,
@@ -68,14 +68,14 @@ enum class TrackedObjectSource {
 }
 
 enum class TrackedObjectCategory(val displayName: String) {
-    UNKNOWN("Unknown"),
-    PERSON("Person"),
-    FACE("Face"),
-    VEHICLE("Vehicle"),
-    LICENSE_PLATE("License plate"),
-    ANIMAL("Animal"),
-    TEXT("Text"),
-    PRODUCT("Product")
+    UNKNOWN("未知"),
+    PERSON("人物"),
+    FACE("人脸"),
+    VEHICLE("车辆"),
+    LICENSE_PLATE("车牌"),
+    ANIMAL("动物"),
+    TEXT("文字"),
+    PRODUCT("商品")
 }
 
 /**
