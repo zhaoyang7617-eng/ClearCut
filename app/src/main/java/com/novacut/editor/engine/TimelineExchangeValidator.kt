@@ -63,8 +63,8 @@ class TimelineExchangeValidator @Inject constructor() {
         val canProceed: Boolean = errors.isEmpty()
         val summary: String
             get() = when {
-                errors.isNotEmpty() -> "${errors.size} blocking, ${warnings.size} lossy"
-                warnings.isNotEmpty() -> "${warnings.size} lossy"
+                errors.isNotEmpty() -> "${errors.size} 个阻断问题，${warnings.size} 个有损问题"
+                warnings.isNotEmpty() -> "${warnings.size} 个有损问题"
                 infos.isNotEmpty() -> "${infos.size} note(s)"
                 else -> "No issues"
             }
@@ -85,7 +85,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.ERROR,
                 path = format.displayName,
-                message = "Format is not yet supported for export.",
+                message = "此格式暂不支持导出。",
                 suggestedFix = "Pick a supported format (OTIO, FCPXML, EDL)."
             )
             return Report(format, Direction.EXPORT, issues)
@@ -95,7 +95,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.WARNING,
                 path = "Project",
-                message = "Frame rate '$frameRate' is non-positive; default 30 fps will be used.",
+                message = "帧率“$frameRate”无效；将使用默认 30 fps。",
                 suggestedFix = "Set the project frame rate before export."
             )
         }
@@ -112,7 +112,7 @@ class TimelineExchangeValidator @Inject constructor() {
                 issues += Issue(
                     Severity.WARNING,
                     path = "Tracks",
-                    message = "EDL CMX 3600 is single-track. Only the first video track will export.",
+                    message = "EDL CMX 3600 仅支持单轨。只会导出第一条视频轨道。",
                     suggestedFix = "Use OTIO or FCPXML for multi-track projects."
                 )
             }
@@ -120,7 +120,7 @@ class TimelineExchangeValidator @Inject constructor() {
                 issues += Issue(
                     Severity.INFO,
                     path = "Audio",
-                    message = "EDL audio rows export, but per-clip audio effects do not.",
+                    message = "EDL 可以导出音频行，但不会保留逐片段音频效果。",
                 )
             }
         }
@@ -129,7 +129,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.WARNING,
                 path = "Adjustment layers",
-                message = "$adjustmentTrackCount adjustment track(s) have no equivalent in $format and will be dropped.",
+                message = "$adjustmentTrackCount 条调整轨道在 $format 中没有对应结构，将被丢弃。",
                 suggestedFix = "Bake adjustment-layer effects onto each affected clip before export."
             )
         }
@@ -141,7 +141,7 @@ class TimelineExchangeValidator @Inject constructor() {
                 issues += Issue(
                     Severity.WARNING,
                     path = trackPath,
-                    message = "Track blend mode '${track.blendMode.name}' has no $format equivalent.",
+                    message = "轨道混合模式“${track.blendMode.name}”在 $format 中没有对应项。",
                     suggestedFix = "Pre-composite the blend or expect 'normal' on import."
                 )
             }
@@ -150,7 +150,7 @@ class TimelineExchangeValidator @Inject constructor() {
                 issues += Issue(
                     Severity.WARNING,
                     path = trackPath,
-                    message = "${track.audioEffects.size} track-level audio effect(s) won't be carried by $format.",
+                    message = "$format 不会保留 ${track.audioEffects.size} 个轨道级音频效果。",
                 )
             }
 
@@ -166,7 +166,7 @@ class TimelineExchangeValidator @Inject constructor() {
                 issues += Issue(
                     Severity.ERROR,
                     path = path,
-                    message = "Overlay end time (${overlay.endTimeMs} ms) is not after start (${overlay.startTimeMs} ms).",
+                    message = "叠加层结束时间（${overlay.endTimeMs} ms）不晚于开始时间（${overlay.startTimeMs} ms）。",
                     suggestedFix = "Drag the overlay to a positive duration before exporting."
                 )
             }
@@ -174,13 +174,13 @@ class TimelineExchangeValidator @Inject constructor() {
                 issues += Issue(
                     Severity.WARNING,
                     path = path,
-                    message = "EDL has no text track; overlay '${overlay.text.take(40)}' will be dropped.",
+                    message = "EDL 不支持文字轨道；叠加文字“${overlay.text.take(40)}”将被丢弃。",
                 )
             } else if (format != TimelineExchangeFormat.OTIO && format != TimelineExchangeFormat.FCPXML) {
                 issues += Issue(
                     Severity.WARNING,
                     path = path,
-                    message = "Text overlay styling will be lost outside OTIO/FCPXML.",
+                    message = "除 OTIO/FCPXML 外，文字叠加层样式将丢失。",
                 )
             }
         }
@@ -207,7 +207,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.ERROR,
                 path = format.displayName,
-                message = "Format is not supported for import.",
+                message = "此格式不支持导入。",
                 suggestedFix = "Re-export the timeline as OTIO, FCPXML, or EDL."
             )
             return Report(format, Direction.IMPORT, issues)
@@ -221,7 +221,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.WARNING,
                 path = "Effects",
-                message = "$droppedEffects effect(s) had no ClearCut equivalent and were dropped.",
+                message = "$droppedEffects 个效果在 ClearCut 中没有对应项，已丢弃。",
                 suggestedFix = "Re-apply effects manually after import."
             )
         }
@@ -230,7 +230,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.ERROR,
                 path = "Media: $uri",
-                message = "Source media file could not be found.",
+                message = "找不到源媒体文件。",
                 suggestedFix = "Use 'Relink media' to point at the file's new location."
             )
         }
@@ -239,7 +239,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.ERROR,
                 path = "Timeline",
-                message = "Imported timeline contains no tracks or overlays.",
+                message = "导入的时间线不包含轨道或叠加层。",
                 suggestedFix = "Verify the source file isn't an empty project."
             )
         }
@@ -254,7 +254,7 @@ class TimelineExchangeValidator @Inject constructor() {
                     issues += Issue(
                         Severity.ERROR,
                         path = "$trackPath → Clip ${clipIdx + 1}",
-                        message = "Clip trim range is empty (${clip.trimStartMs}..${clip.trimEndMs} ms).",
+                        message = "片段裁剪范围为空（${clip.trimStartMs}..${clip.trimEndMs} ms）。",
                         suggestedFix = "Re-export from the source NLE; this clip is unrecoverable."
                     )
                 }
@@ -262,7 +262,7 @@ class TimelineExchangeValidator @Inject constructor() {
                     issues += Issue(
                         Severity.ERROR,
                         path = "$trackPath → Clip ${clipIdx + 1}",
-                        message = "Clip has no source URI.",
+                        message = "片段没有源 URI。",
                         suggestedFix = "Use 'Relink media' to point at the source file."
                     )
                 }
@@ -272,7 +272,7 @@ class TimelineExchangeValidator @Inject constructor() {
                     issues += Issue(
                         Severity.ERROR,
                         path = "$trackPath → Clip ${clipIdx + 1}",
-                        message = "Media URI scheme '${clip.sourceUri.scheme ?: "<none>"}' cannot be verified.",
+                        message = "无法验证媒体 URI 类型“${clip.sourceUri.scheme ?: "<无>"}”。",
                         suggestedFix = "Use 'Relink media' to choose a content:// or file:// source."
                     )
                 }
@@ -292,7 +292,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.ERROR,
                 path = clipPath,
-                message = "Clip has no source URI; importer will not find any media.",
+                message = "片段没有源 URI；导入器将无法找到媒体。",
                 suggestedFix = "Relink the clip to a file before exporting."
             )
         }
@@ -301,7 +301,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.ERROR,
                 path = clipPath,
-                message = "Clip trim range is empty (${clip.trimStartMs}..${clip.trimEndMs} ms).",
+                message = "片段裁剪范围为空（${clip.trimStartMs}..${clip.trimEndMs} ms）。",
                 suggestedFix = "Drag the clip handles to give it a positive duration."
             )
         }
@@ -310,7 +310,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.WARNING,
                 path = clipPath,
-                message = "Compound clips are flattened to a single clip on export.",
+                message = "导出时复合片段会展平为单个片段。",
                 suggestedFix = "Open the compound to bake child timing if precision matters."
             )
         }
@@ -319,7 +319,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.WARNING,
                 path = clipPath,
-                message = "Reverse playback is preview-only; exported clip will play forward.",
+                message = "倒放仅用于预览；导出的片段会正向播放。",
                 suggestedFix = "Pre-render the reversed clip with FFmpegX once it ships."
             )
         }
@@ -328,7 +328,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.WARNING,
                 path = clipPath,
-                message = "Speed ramp (curved) flattens to a constant time-warp on export.",
+                message = "导出时曲线变速会被展平为恒定时间重映射。",
                 suggestedFix = "Bake the ramp into a rendered clip if timing matters."
             )
         }
@@ -337,7 +337,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.WARNING,
                 path = clipPath,
-                message = "Clip blend mode '${clip.blendMode.name}' has no $format equivalent.",
+                message = "片段混合模式“${clip.blendMode.name}”在 $format 中没有对应项。",
             )
         }
 
@@ -345,7 +345,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.WARNING,
                 path = clipPath,
-                message = "${clip.masks.size} mask(s) won't survive ${format.displayName} export.",
+                message = "${format.displayName} 导出不会保留 ${clip.masks.size} 个蒙版。",
             )
         }
 
@@ -353,7 +353,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.WARNING,
                 path = clipPath,
-                message = "Color grade is not represented in $format and will be dropped.",
+                message = "$format 无法表示当前调色，将被丢弃。",
                 suggestedFix = "Export an accompanying .cube LUT alongside the timeline."
             )
         }
@@ -362,7 +362,7 @@ class TimelineExchangeValidator @Inject constructor() {
             issues += Issue(
                 Severity.INFO,
                 path = clipPath,
-                message = "${clip.effects.size} effect(s) export as named markers; the receiving NLE must re-apply them manually.",
+                message = "${clip.effects.size} 个效果会作为命名标记导出；接收端剪辑软件需要手动重新应用。",
             )
         }
 
@@ -372,7 +372,7 @@ class TimelineExchangeValidator @Inject constructor() {
                     issues += Issue(
                         Severity.WARNING,
                         path = clipPath,
-                        message = "EDL only supports cut/dissolve; '${transition.type.name}' downgrades to a dissolve.",
+                        message = "EDL 只支持硬切和叠化；“${transition.type.name}”将降级为叠化。",
                     )
                 }
             }
