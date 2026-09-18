@@ -161,7 +161,7 @@ object ExportMediaPreflight {
                 canExport = true,
                 blockingCount = 0,
                 warningCount = 0,
-                message = "Media ready for export.",
+                message = "媒体已准备好，可以导出。",
                 audioConformance = audioConformance,
                 dependencies = dependencies,
                 blockers = distinctBlockers,
