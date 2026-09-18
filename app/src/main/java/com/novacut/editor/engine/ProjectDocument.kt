@@ -144,7 +144,7 @@ object ProjectDocumentApplicator {
                     )
                 }
                 val restored = AutoSaveState.deserializeWithReport(raw)
-                val warnings = mutableListOf("Legacy project state was wrapped in the current document format.")
+                val warnings = mutableListOf("旧版项目状态已封装为当前文档格式。")
                 appendRestoreWarning(warnings, restored.report)
                 return ProjectDocumentReadResult.Loaded(
                     document = fromState(restored.state),
@@ -177,12 +177,12 @@ object ProjectDocumentApplicator {
             val warnings = mutableListOf<String>()
             val unknownKeys = root.keys().asSequence().filterNot(knownEnvelopeKeys::contains).toList()
             if (unknownKeys.isNotEmpty()) {
-                warnings += "Ignored unknown project document fields: ${unknownKeys.joinToString()}"
+                warnings += "已忽略未知的项目文档字段：${unknownKeys.joinToString()}"
             }
             appendRestoreWarning(warnings, restored.report)
             val projectJson = root.optJSONObject(PROJECT_KEY)
             val project = if (projectJson == null) {
-                warnings += "Project metadata was missing; defaults were synthesized."
+                warnings += "项目元数据缺失；已使用默认值补全。"
                 Project(id = restored.state.projectId)
             } else {
                 projectFromJson(projectJson, restored.state.projectId, warnings)
@@ -190,7 +190,7 @@ object ProjectDocumentApplicator {
             val normalizedProject = if (project.id == restored.state.projectId) {
                 project
             } else {
-                warnings += "Project metadata id did not match the edit document; the document id won."
+                warnings += "项目元数据 ID 与编辑文档不一致；已以文档 ID 为准。"
                 project.copy(id = restored.state.projectId)
             }
             ProjectDocumentReadResult.Loaded(
@@ -208,7 +208,7 @@ object ProjectDocumentApplicator {
         report: ProjectRestoreReport,
     ) {
         if (report.isPartial) {
-            warnings += "Project document was partially restored: ${report.summary()}."
+            warnings += "项目文档仅部分恢复：${report.summary()}。"
         }
     }
 
@@ -253,14 +253,14 @@ object ProjectDocumentApplicator {
         warnings: MutableList<String>,
     ): T {
         if (raw.isBlank()) {
-            warnings += "Project metadata field $field was missing; defaulted to ${fallback.name}."
+            warnings += "项目元数据字段 $field 缺失；已默认设为 ${fallback.name}。"
             return fallback
         }
         @Suppress("UNCHECKED_CAST")
         val match = fallback.javaClass.enumConstants
             ?.firstOrNull { (it as Enum<*>).name == raw } as? T
         return match ?: run {
-            warnings += "Unknown project metadata value $field=$raw; defaulted to ${fallback.name}."
+            warnings += "项目元数据值 $field=$raw 未知；已默认设为 ${fallback.name}。"
             fallback
         }
     }
