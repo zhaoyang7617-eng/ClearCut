@@ -29,15 +29,18 @@ jobs:
         run: chmod +x gradlew
       - name: Build debug APK
         run: ./gradlew assembleDebug --stacktrace --dependency-verification=off
-      - name: Collect APK
+      - name: Collect arm64-v8a APK only
         if: success()
         run: |
           mkdir -p out
-          find app/build/outputs/apk -type f -name "*.apk" -exec cp {} out/ \;
+          APK="$(find app/build/outputs/apk -type f -name "*arm64-v8a*.apk" | head -n 1)"
+          test -n "$APK"
+          cp "$APK" out/ClearCut-v3.81.0-zhCN-arm64-v8a-debug.apk
+          ls -lh out/
       - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: ClearCut-v3.81.0-zhCN-debug
+          name: ClearCut-v3.81.0-zhCN-arm64-v8a
           path: out/*.apk
           if-no-files-found: error
