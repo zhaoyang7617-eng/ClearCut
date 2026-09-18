@@ -134,7 +134,7 @@ object MetadataSidecarPolicy {
                 kind = MetadataSidecarKind.GPS,
                 mimeType = normalized,
                 language = language,
-                unsupportedReason = "GPS telemetry was detected, but this codec is not a locally decoded format.",
+                unsupportedReason = "检测到 GPS 遥测数据，但此编码格式无法在本机解码。",
             )
             normalized.startsWith("application/") || normalized.startsWith("metadata/") ->
                 MetadataSidecarTrack(
@@ -142,7 +142,7 @@ object MetadataSidecarPolicy {
                     kind = MetadataSidecarKind.OTHER,
                     mimeType = normalized,
                     language = language,
-                    unsupportedReason = "This metadata track was detected, but ClearCut has no local sidecar decoder for it.",
+                    unsupportedReason = "检测到此元数据轨道，但 ClearCut 没有对应的本地侧车解码器。",
                 )
             else -> null
         }
@@ -257,7 +257,7 @@ class MetadataSidecarEngine @Inject constructor(
     ): MetadataSidecarExportResult = withContext(Dispatchers.IO) {
         if (format !in track.supportedFormats) {
             return@withContext MetadataSidecarExportResult.Unsupported(
-                track.unsupportedReason ?: "This sidecar format is not supported for the detected track."
+                track.unsupportedReason ?: "检测到的轨道不支持此侧车格式。"
             )
         }
 
@@ -265,7 +265,7 @@ class MetadataSidecarEngine @Inject constructor(
         val temporary = runCatching {
             File.createTempFile("metadata-sidecar-", ".tmp", outputDir)
         }.getOrElse {
-            return@withContext MetadataSidecarExportResult.Failed("ClearCut could not create a local sidecar file.")
+            return@withContext MetadataSidecarExportResult.Failed("ClearCut 无法创建本地侧车文件。")
         }
 
         try {
@@ -286,12 +286,12 @@ class MetadataSidecarEngine @Inject constructor(
             }
             val finalFile = nextOutputFile(outputDir, track, format, now)
             if (!installTemporary(temporary, finalFile)) {
-                return@withContext MetadataSidecarExportResult.Failed("ClearCut could not finalize the local sidecar.")
+                return@withContext MetadataSidecarExportResult.Failed("ClearCut 无法完成本地侧车文件。")
             }
             pruneOldSidecars(outputDir)
             MetadataSidecarExportResult.Success(finalFile, format)
         } catch (_: Exception) {
-            MetadataSidecarExportResult.Failed("ClearCut could not export this metadata sidecar locally.")
+            MetadataSidecarExportResult.Failed("ClearCut 无法在本机导出此元数据侧车文件。")
         } finally {
             temporary.delete()
         }
