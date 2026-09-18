@@ -277,7 +277,7 @@ fun MediaManagerPanel(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     PremiumPanelPill(
-                        text = if (isAnalyzing) "Analyzing..." else formatFileSize(totalSize),
+                        text = if (isAnalyzing) "正在分析…" else formatFileSize(totalSize),
                         accent = ClearCutAccents.Peach
                     )
                     PremiumPanelPill(
