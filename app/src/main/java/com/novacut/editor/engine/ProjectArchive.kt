@@ -70,11 +70,11 @@ object ProjectArchive {
         val mediaMissing: Int get() = mediaTotal - mediaResolved
         val canProceed: Boolean get() = !schemaTooNew
         val summary: String get() = buildString {
-            append("schema v$schemaVersion")
-            if (schemaTooNew) append(" (too new)")
-            if (mediaMissing > 0) append(" · $mediaMissing missing media")
-            if (projectIdCollided) append(" · ID collision (${idCollisionPolicy.name.lowercase()})")
-            if (warnings.isNotEmpty()) append(" · ${warnings.size} warning(s)")
+            append("架构 v$schemaVersion")
+            if (schemaTooNew) append("（版本过新）")
+            if (mediaMissing > 0) append(" · 缺失 $mediaMissing 个媒体")
+            if (projectIdCollided) append(" · ID 冲突（${idCollisionPolicy.name.lowercase()}）")
+            if (warnings.isNotEmpty()) append(" · ${warnings.size} 个警告")
         }
     }
 
@@ -177,7 +177,7 @@ object ProjectArchive {
                         entryName = null,
                         archivePolicy = ProjectDependencyArchivePolicy.REFERENCE_ONLY.name,
                         fallbackAllowed = true,
-                        fallbackName = "Original reference"
+                        fallbackName = "原始引用"
                     ))
                 }
             }
@@ -251,7 +251,7 @@ object ProjectArchive {
                 ?: return@withContext PreviewResult(
                     report = blankFailureReport(IdCollisionPolicy.REGENERATE),
                     packagedMedia = 0,
-                    errorMessage = "Could not open archive"
+                    errorMessage = "无法打开归档"
                 )
             var projectJson: String? = null
             var mediaManifestJson: String? = null
@@ -313,7 +313,7 @@ object ProjectArchive {
                         targetDirCreated = false
                     ),
                     packagedMedia = 0,
-                    errorMessage = "Archive schema is newer than this app supports"
+                    errorMessage = "归档架构版本高于当前应用支持范围"
                 )
             }
             if (schemaVersion < AutoSaveState.FORMAT_VERSION) {
@@ -341,10 +341,10 @@ object ProjectArchive {
                     it.archivePolicy == ProjectDependencyArchivePolicy.INCLUDE.name && it.entryName != null
                 }
             } else {
-                warnings += "Legacy archive payload inventory will be verified during intentional import."
+                warnings += "旧版归档的载荷清单将在正式导入时验证。"
                 0
             }
-            warnings += "Payload bytes and checksums are verified only during intentional import."
+            warnings += "载荷字节和校验和只会在正式导入时验证。"
 
             PreviewResult(
                 report = ImportReport(
@@ -478,7 +478,7 @@ object ProjectArchive {
                             warnings = warnings,
                             targetDirCreated = false
                         ),
-                        errorMessage = "Archive schema is newer than this app supports"
+                        errorMessage = "归档架构版本高于当前应用支持范围"
                     )
                 }
                 if (schemaVersion < AutoSaveState.FORMAT_VERSION) {
@@ -770,7 +770,7 @@ object ProjectArchive {
                 }
                 else -> {
                     AppLog.w("ProjectArchive", "Skipping unsupported archive entry: ${entry.name}")
-                    warnings += "Skipped unsupported entry: ${entry.name}"
+                    warnings += "已跳过不支持的条目：${entry.name}"
                 }
             }
         }
@@ -1209,13 +1209,13 @@ object ProjectArchive {
             }
             if (entry.kind !in knownKinds) {
                 if (entry.required) throw IOException("Unknown required dependency kind: ${entry.kind}")
-                warnings += "Ignored optional dependency kind: ${entry.kind}"
+                warnings += "已忽略可选依赖类型：${entry.kind}"
                 return@forEach
             }
             if (entry.archivePolicy == ProjectDependencyArchivePolicy.REFERENCE_ONLY.name) return@forEach
             if (entry.archivePolicy != ProjectDependencyArchivePolicy.INCLUDE.name) {
                 if (entry.required) throw IOException("Required dependency has unsupported archive policy")
-                warnings += "Ignored optional dependency with archive policy ${entry.archivePolicy}"
+                warnings += "已忽略归档策略为 ${entry.archivePolicy} 的可选依赖"
                 return@forEach
             }
             val archiveName = entry.entryName
@@ -1232,7 +1232,7 @@ object ProjectArchive {
             if (expectedLength == null || expectedLength < 0L || expectedLength > MAX_ARCHIVE_TOTAL_BYTES ||
                 expectedSha?.matches(Regex("[0-9a-fA-F]{64}")) != true
             ) {
-                handleInvalidManifestEntry(entry, warnings, "missing or invalid integrity metadata")
+                handleInvalidManifestEntry(entry, warnings, "缺少或存在无效的完整性元数据")
             }
         }
     }
@@ -1274,14 +1274,14 @@ object ProjectArchive {
             }
             if (entry.kind !in knownKinds) {
                 if (entry.required) throw IOException("Unknown required dependency kind: ${entry.kind}")
-                warnings += "Ignored optional dependency kind: ${entry.kind}"
+                warnings += "已忽略可选依赖类型：${entry.kind}"
                 entry.entryName?.let(invalidOptionalEntries::add)
                 return@forEach
             }
             if (entry.archivePolicy == ProjectDependencyArchivePolicy.REFERENCE_ONLY.name) return@forEach
             if (entry.archivePolicy != ProjectDependencyArchivePolicy.INCLUDE.name) {
                 if (entry.required) throw IOException("Required dependency has unsupported archive policy")
-                warnings += "Ignored optional dependency with archive policy ${entry.archivePolicy}"
+                warnings += "已忽略归档策略为 ${entry.archivePolicy} 的可选依赖"
                 entry.entryName?.let(invalidOptionalEntries::add)
                 return@forEach
             }
@@ -1297,13 +1297,13 @@ object ProjectArchive {
             }
             val file = extractedFiles[archiveName]
             if (file == null) {
-                if (handleInvalidManifestEntry(entry, warnings, "missing archive entry")) {
+                if (handleInvalidManifestEntry(entry, warnings, "缺少归档条目")) {
                     invalidOptionalEntries += archiveName
                 }
                 return@forEach
             }
             if (!file.isFile) {
-                if (handleInvalidManifestEntry(entry, warnings, "unreadable archive entry")) {
+                if (handleInvalidManifestEntry(entry, warnings, "归档条目无法读取")) {
                     invalidOptionalEntries += archiveName
                 }
                 return@forEach
@@ -1311,14 +1311,14 @@ object ProjectArchive {
             val expectedLength = entry.byteLength
             val expectedSha = entry.sha256
             if (expectedLength == null || expectedLength < 0L || expectedSha?.matches(Regex("[0-9a-fA-F]{64}")) != true) {
-                if (handleInvalidManifestEntry(entry, warnings, "missing integrity metadata")) {
+                if (handleInvalidManifestEntry(entry, warnings, "缺少完整性元数据")) {
                     invalidOptionalEntries += archiveName
                 }
                 return@forEach
             }
             val actualSha = file.inputStream().use(::sha256)
             if (file.length() != expectedLength || !actualSha.equals(expectedSha, ignoreCase = true)) {
-                if (handleInvalidManifestEntry(entry, warnings, "integrity check failed")) {
+                if (handleInvalidManifestEntry(entry, warnings, "完整性检查失败")) {
                     invalidOptionalEntries += archiveName
                 }
             }
@@ -1332,7 +1332,7 @@ object ProjectArchive {
         reason: String
     ): Boolean {
         if (entry.required) throw IOException("Required ${entry.kind} dependency $reason: ${entry.logicalReference}")
-        warnings += "Optional ${entry.kind} dependency $reason: ${entry.logicalReference}"
+        warnings += "可选 ${entry.kind} 依赖$reason：${entry.logicalReference}"
         return true
     }
 
