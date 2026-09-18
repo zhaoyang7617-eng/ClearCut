@@ -538,7 +538,7 @@ class TimelineExchangeEngine @Inject constructor(
                 )
             }
             if (schema != InterchangeContracts.OTIO_ROOT_SCHEMA) {
-                warnings.add("Unexpected root schema: $schema (expected Timeline)")
+                warnings.add("根架构异常：$schema（应为 Timeline）")
             }
 
             val metadata = root.optJSONObject("metadata")
@@ -574,7 +574,7 @@ class TimelineExchangeEngine @Inject constructor(
             }
 
             val stack = root.optJSONObject("tracks") ?: run {
-                warnings.add("No tracks found in OTIO document")
+                warnings.add("OTIO 文档中未找到轨道")
                 return ExchangeResult(emptyList(), emptyList(), warnings)
             }
 
@@ -705,14 +705,14 @@ class TimelineExchangeEngine @Inject constructor(
                 }
                 else -> {
                     if (childSchema.isNotBlank()) {
-                        warnings.add("Unsupported OTIO schema in track: $childSchema")
+                        warnings.add("轨道中存在不支持的 OTIO 架构：$childSchema")
                     }
                 }
             }
         }
 
         if (children.length() > MAX_OTIO_CHILDREN) {
-            warnings.add("OTIO track contains more than $MAX_OTIO_CHILDREN children; remaining items were ignored")
+            warnings.add("OTIO 轨道包含超过 $MAX_OTIO_CHILDREN 个子项；其余项目已忽略")
         }
 
         return clips
@@ -860,7 +860,7 @@ class TimelineExchangeEngine @Inject constructor(
                 childSchema.startsWith("Clip") -> {
                     val mediaRef = child.optJSONObject("media_reference") ?: continue
                     if (!mediaRef.optString("generator_kind", "").equals("TextOverlay", ignoreCase = true)) {
-                        warnings.add("Unsupported generator reference in text overlay track")
+                        warnings.add("文字叠加轨道中存在不支持的生成器引用")
                         continue
                     }
                     val params = mediaRef.optJSONObject("parameters") ?: continue
@@ -869,12 +869,12 @@ class TimelineExchangeEngine @Inject constructor(
                     val startMs = if (sourceStartMs > timelinePositionMs) sourceStartMs else timelinePositionMs
                     val text = params.optString("text", "")
                     if (text.isBlank()) {
-                        warnings.add("Skipped blank text overlay")
+                        warnings.add("已跳过空白文字叠加层")
                         timelinePositionMs = startMs + durationMs
                         continue
                     }
                     if (durationMs <= 0L) {
-                        warnings.add("Skipped text overlay '$text' with non-positive duration")
+                        warnings.add("已跳过时长无效的文字叠加层“$text”")
                         continue
                     }
 
@@ -890,7 +890,7 @@ class TimelineExchangeEngine @Inject constructor(
                     ))
                     timelinePositionMs = safeAdd(startMs, durationMs)
                 }
-                else -> warnings.add("Unsupported OTIO schema in text overlay track: $childSchema")
+                else -> warnings.add("文字叠加轨道中存在不支持的 OTIO 架构：$childSchema")
             }
         }
     }
@@ -942,12 +942,12 @@ class TimelineExchangeEngine @Inject constructor(
                 )
             }
             if (assetNodes.length > MAX_FCPXML_ASSETS) {
-                warnings.add("FCPXML contains more than $MAX_FCPXML_ASSETS assets; remaining assets were ignored")
+                warnings.add("FCPXML 包含超过 $MAX_FCPXML_ASSETS 个素材；其余素材已忽略")
             }
 
             val spine = document.getElementsByTagName("spine").item(0) as? Element
             if (spine == null) {
-                warnings.add("FCPXML document has no primary storyline")
+                warnings.add("FCPXML 文档没有主故事线")
             } else {
                 var cursorMs = 0L
                 val children = spine.childNodes
@@ -960,7 +960,7 @@ class TimelineExchangeEngine @Inject constructor(
                             cursorMs = safeAdd(cursorMs, duration)
                         }
                         "transition" -> {
-                            warnings.add("FCPXML transition was not mapped to a named ClearCut transition")
+                            warnings.add("FCPXML 转场无法映射到 ClearCut 的已命名转场")
                         }
                         "asset-clip" -> {
                             val assetId = element.getAttribute("ref").trim()
@@ -968,13 +968,13 @@ class TimelineExchangeEngine @Inject constructor(
                             val rawUri = asset?.sourceUri.orEmpty()
                             if (rawUri.isBlank()) {
                                 unresolved += assetId.ifBlank { "<missing-ref>" }
-                                warnings.add("FCPXML asset-clip has no resolvable media reference: $assetId")
+                                warnings.add("FCPXML 素材片段没有可解析的媒体引用：$assetId")
                                 continue
                             }
                             val uri = uriParser(rawUri)
                             if (uri == null) {
                                 unresolved += rawUri
-                                warnings.add("FCPXML asset-clip has an invalid media URI")
+                                warnings.add("FCPXML 素材片段的媒体 URI 无效")
                                 continue
                             }
                             if (!isProbeableUri(uri)) unresolved += rawUri
@@ -985,7 +985,7 @@ class TimelineExchangeEngine @Inject constructor(
                             val durationMs = parseFcpxmlSeconds(element.getAttribute("duration"))
                                 ?.let(::secondsToMs) ?: 0L
                             if (durationMs <= 0L) {
-                                warnings.add("FCPXML asset-clip '${element.getAttribute("name")}' has non-positive duration")
+                                warnings.add("FCPXML 素材片段“${element.getAttribute("name")}”的时长无效")
                                 continue
                             }
                             val sourceDurationMs = (asset?.sourceDurationMs ?: 0L)
@@ -1007,11 +1007,11 @@ class TimelineExchangeEngine @Inject constructor(
                     }
                 }
                 if (children.length > MAX_FCPXML_CHILDREN) {
-                    warnings.add("FCPXML storyline contains more than $MAX_FCPXML_CHILDREN children; remaining items were ignored")
+                    warnings.add("FCPXML 故事线包含超过 $MAX_FCPXML_CHILDREN 个子项；其余项目已忽略")
                 }
             }
         } catch (e: Exception) {
-            warnings.add("Failed to parse FCPXML: ${e.message ?: e::class.java.simpleName}")
+            warnings.add("FCPXML 解析失败：${e.message ?: e::class.java.simpleName}")
         }
         return ExchangeResult(
             tracks = clips.takeIf { it.isNotEmpty() }
@@ -1057,7 +1057,7 @@ class TimelineExchangeEngine @Inject constructor(
                 if (sourceIn == null || sourceOut == null || recordIn == null || recordOut == null ||
                     sourceOut <= sourceIn || recordOut <= recordIn
                 ) {
-                    warnings.add("EDL event has invalid timecode: ${line.trim()}")
+                    warnings.add("EDL 事件的时间码无效：${line.trim()}")
                     currentClips = null
                     currentIndex = -1
                     continue
@@ -1088,7 +1088,7 @@ class TimelineExchangeEngine @Inject constructor(
                 line.trim().startsWith("* FROM CLIP NAME:", ignoreCase = true)
             }
             if (fromClip != null && currentClips != null && currentIndex >= 0) {
-                val name = fromClip.trim().ifBlank { "unknown" }
+                val name = fromClip.trim().ifBlank { "未知" }
                 val uriText = if (name.contains("://")) name else "file:///$name"
                 val uri = uriParser(uriText)
                 if (uri == null) {
@@ -1113,7 +1113,7 @@ class TimelineExchangeEngine @Inject constructor(
             }
         }
         if (droppedEffects[0] > 0) {
-            warnings.add("${droppedEffects[0]} EDL effect comment(s) require manual re-application")
+            warnings.add("${droppedEffects[0]} 个 EDL 效果注释需要手动重新应用")
         }
         val tracks = buildList {
             if (videoClips.isNotEmpty()) add(Track(type = TrackType.VIDEO, index = 0, clips = videoClips))
@@ -1323,7 +1323,7 @@ class TimelineExchangeEngine @Inject constructor(
                 }
                 .getOrDefault(TimelineTimebase(30))
         }
-        warnings.add("OTIO timebase metadata is incomplete or invalid; defaulted to 30 fps.")
+        warnings.add("OTIO 时间基准元数据不完整或无效；已默认使用 30 fps。")
         return TimelineTimebase(30)
     }
 
@@ -1386,7 +1386,7 @@ class TimelineExchangeEngine @Inject constructor(
     private fun parseBlendMode(raw: String?, warnings: MutableList<String>): BlendMode {
         if (raw.isNullOrBlank()) return BlendMode.NORMAL
         return runCatching { BlendMode.valueOf(raw) }.getOrElse {
-            warnings.add("Unknown blend mode '$raw'; defaulted to normal")
+            warnings.add("未知混合模式“$raw”；已默认使用正常模式")
             BlendMode.NORMAL
         }
     }
@@ -1471,7 +1471,7 @@ class TimelineExchangeEngine @Inject constructor(
         }.also {
             if (array.length() > MAX_EFFECTS) {
                 diagnostics.droppedEffects += array.length() - MAX_EFFECTS
-                warnings.add("Too many effect metadata entries; remaining effects were dropped")
+                warnings.add("效果元数据条目过多；其余效果已丢弃")
             }
         }
     }
