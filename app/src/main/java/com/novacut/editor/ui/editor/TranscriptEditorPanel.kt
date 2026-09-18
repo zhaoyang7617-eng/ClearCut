@@ -81,12 +81,12 @@ fun TranscriptEditorPanel(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 PremiumPanelPill(
-                    text = "${transcript.words.size} words",
+                    text = "${transcript.words.size} 个词",
                     accent = ClearCutAccents.Blue
                 )
                 if (selectedWordIndices.isNotEmpty()) {
                     PremiumPanelPill(
-                        text = "${selectedWordIndices.size} selected",
+                        text = "已选择 ${selectedWordIndices.size} 个",
                         accent = ClearCutAccents.Peach
                     )
                 }
@@ -190,7 +190,7 @@ private fun TranscriptWord(
             .semantics {
                 role = Role.Checkbox
                 selected = isSelected
-                contentDescription = if (isSelected) "$text (selected for removal)" else text
+                contentDescription = if (isSelected) "$text（已选中，待移除）" else text
             }
     )
 }
