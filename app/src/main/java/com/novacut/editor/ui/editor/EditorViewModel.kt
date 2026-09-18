@@ -2745,7 +2745,7 @@ class EditorViewModel @Inject constructor(
         val snapshot = ProjectSnapshot(
             projectId = s.project.id,
             timestamp = System.currentTimeMillis(),
-            label = label.ifEmpty { "Snapshot ${s.projectSnapshots.size + 1}" },
+            label = label.ifEmpty { "快照 ${s.projectSnapshots.size + 1}" },
             stateJson = json
         )
         _state.update { it.copy(projectSnapshots = it.projectSnapshots + snapshot) }
@@ -3012,7 +3012,7 @@ class EditorViewModel @Inject constructor(
                                 media.copy(
                                     backupImportFeedback = BackupImportFeedback(
                                         succeeded = true,
-                                        title = "Backup imported with notes",
+                                        title = "归档已导入（含备注）",
                                         body = "ClearCut restored the timeline, but this archive needs review before you export or hand it off.",
                                         report = report
                                     )
@@ -3028,7 +3028,7 @@ class EditorViewModel @Inject constructor(
                             media.copy(
                                 backupImportFeedback = BackupImportFeedback(
                                     succeeded = false,
-                                    title = "Backup import failed",
+                                    title = "归档导入失败",
                                     body = "ClearCut left the current project unchanged.",
                                     report = result.report,
                                     errorMessage = reason
@@ -5234,7 +5234,7 @@ class EditorViewModel @Inject constructor(
                     media.copy(
                         timelineExchangeFeedback = TimelineExchangeFeedback(
                             succeeded = false,
-                            title = "$formatName export blocked",
+                            title = "$formatName 导出被阻止",
                             body = "ClearCut found a timeline issue that would make the handoff unreliable.",
                             outputFileName = null,
                             report = result.report,
@@ -5264,7 +5264,7 @@ class EditorViewModel @Inject constructor(
                     media.copy(
                         timelineExchangeFeedback = TimelineExchangeFeedback(
                             succeeded = true,
-                            title = "$formatName exported with notes",
+                            title = "$formatName 已导出（含备注）",
                             body = "The file was written, but the receiving editor may need manual cleanup.",
                             outputFileName = file.name,
                             report = result.report,
