@@ -88,30 +88,30 @@ data class TextTemplate(
 )
 
 enum class TextTemplateCategory(val displayName: String) {
-    LOWER_THIRD("Lower Thirds"),
-    TITLE_CARD("Title Cards"),
-    END_SCREEN("End Screens"),
-    CALL_TO_ACTION("Call to Action"),
-    SOCIAL("Social Media"),
-    MINIMAL("Minimal")
+    LOWER_THIRD("下三分之一"),
+    TITLE_CARD("标题卡"),
+    END_SCREEN("片尾画面"),
+    CALL_TO_ACTION("行动号召"),
+    SOCIAL("社交媒体"),
+    MINIMAL("极简")
 }
 
 enum class TextAlignment { LEFT, CENTER, RIGHT }
 
 enum class TextAnimation(val displayName: String) {
-    NONE("None"),
-    FADE("Fade"),
-    SLIDE_UP("Slide Up"),
-    SLIDE_DOWN("Slide Down"),
-    SLIDE_LEFT("Slide Left"),
-    SLIDE_RIGHT("Slide Right"),
-    SCALE("Scale"),
-    TYPEWRITER("Typewriter"),
-    BOUNCE("Bounce"),
-    SPIN("Spin"),
-    BLUR_IN("Blur In"),
-    GLITCH("Glitch"),
-    WAVE("Wave"),
-    ELASTIC("Elastic"),
-    FLIP("Flip")
+    NONE("无"),
+    FADE("淡入淡出"),
+    SLIDE_UP("向上滑入"),
+    SLIDE_DOWN("向下滑入"),
+    SLIDE_LEFT("向左滑入"),
+    SLIDE_RIGHT("向右滑入"),
+    SCALE("缩放"),
+    TYPEWRITER("打字机"),
+    BOUNCE("弹跳"),
+    SPIN("旋转"),
+    BLUR_IN("模糊入场"),
+    GLITCH("故障"),
+    WAVE("波浪"),
+    ELASTIC("弹性"),
+    FLIP("翻转")
 }
