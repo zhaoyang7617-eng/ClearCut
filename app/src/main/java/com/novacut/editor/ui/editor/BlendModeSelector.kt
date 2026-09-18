@@ -210,8 +210,8 @@ private data class BlendModeSection(
 
 private fun blendModeSections(): List<BlendModeSection> = listOf(
     BlendModeSection(
-        title = "Foundation",
-        subtitle = "The most-used blend modes for everyday compositing, contrast, and soft overlays.",
+        title = "基础",
+        subtitle = "常用混合模式，适合日常合成、对比调整和柔和叠加。",
         accent = ClearCutAccents.Peach,
         modes = listOf(
             BlendMode.NORMAL,
@@ -221,8 +221,8 @@ private fun blendModeSections(): List<BlendModeSection> = listOf(
         )
     ),
     BlendModeSection(
-        title = "Light and Shadow",
-        subtitle = "Push exposure up or down, then lean into harsher additive or subtractive blends.",
+        title = "明暗",
+        subtitle = "提升或降低曝光，并使用更强烈的加法或减法混合。",
         accent = ClearCutAccents.Yellow,
         modes = listOf(
             BlendMode.DARKEN,
@@ -234,8 +234,8 @@ private fun blendModeSections(): List<BlendModeSection> = listOf(
         )
     ),
     BlendModeSection(
-        title = "Contrast",
-        subtitle = "Use these when you want the layer interaction to feel punchier, more graphic, or more unpredictable.",
+        title = "对比",
+        subtitle = "需要更强冲击、更图形化或更不可预测的图层互动时使用。",
         accent = ClearCutAccents.Mauve,
         modes = listOf(
             BlendMode.HARD_LIGHT,
@@ -245,8 +245,8 @@ private fun blendModeSections(): List<BlendModeSection> = listOf(
         )
     ),
     BlendModeSection(
-        title = "Color Channels",
-        subtitle = "Borrow hue, saturation, or luminance from one layer while keeping the rest from another.",
+        title = "色彩通道",
+        subtitle = "从一个图层借用色相、饱和度或明度，同时保留另一图层的其他信息。",
         accent = ClearCutAccents.Blue,
         modes = listOf(
             BlendMode.HUE,
