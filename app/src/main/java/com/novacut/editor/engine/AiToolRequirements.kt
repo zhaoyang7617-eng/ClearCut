@@ -217,7 +217,7 @@ object AiToolRequirements {
         ),
         Tool.AI_STABILIZE to ToolRequirement(
             tool = Tool.AI_STABILIZE,
-            modelDisplayName = "ClearCut offline motion analysis",
+            modelDisplayName = "ClearCut 离线运动分析",
             estimatedBytes = 0L,
             license = "Android platform APIs",
             sourceUrl = "https://developer.android.com/reference/android/media/MediaMetadataRetriever",
@@ -230,7 +230,7 @@ object AiToolRequirements {
         ),
         Tool.AI_STYLE to ToolRequirement(
             tool = Tool.AI_STYLE,
-            modelDisplayName = "AnimeGANv2 / Fast NST (per style)",
+            modelDisplayName = "AnimeGANv2 / Fast NST（按风格）",
             estimatedBytes = 9_000_000L,
             license = "Review required (per style)",
             sourceUrl = "https://github.com/TachibanaYoshino/AnimeGANv2",
@@ -269,7 +269,7 @@ object AiToolRequirements {
         ),
         Tool.OBJECT_REMOVE to ToolRequirement(
             tool = Tool.OBJECT_REMOVE,
-            modelDisplayName = "LaMa-Dilated (Qualcomm AI Hub export)",
+            modelDisplayName = "LaMa-Dilated（Qualcomm AI Hub 导出）",
             estimatedBytes = 183_000_000L,
             license = "Apache-2.0 (model: see NOTICE)",
             sourceUrl = "https://huggingface.co/qualcomm/LaMa-Dilated",
@@ -282,7 +282,7 @@ object AiToolRequirements {
         ),
         Tool.TAP_SEGMENT to ToolRequirement(
             tool = Tool.TAP_SEGMENT,
-            modelDisplayName = "SAM 2.1 Hiera Tiny (ONNX) / MobileSAM fallback",
+            modelDisplayName = "SAM 2.1 Hiera Tiny（ONNX）/ MobileSAM 后备",
             estimatedBytes = 160_000_000L,
             license = "Apache-2.0",
             sourceUrl = "https://huggingface.co/onnx-community/sam2.1-hiera-tiny-ONNX",
@@ -295,7 +295,7 @@ object AiToolRequirements {
         ),
         Tool.REDUCE_NOISE to ToolRequirement(
             tool = Tool.REDUCE_NOISE,
-            modelDisplayName = "DeepFilterNet 3 (native AAR)",
+            modelDisplayName = "DeepFilterNet 3（原生 AAR）",
             estimatedBytes = 27_000_000L,
             license = "Apache-2.0",
             sourceUrl = "https://github.com/Rikorose/DeepFilterNet",
@@ -308,7 +308,7 @@ object AiToolRequirements {
         ),
         Tool.STEM_SEPARATION to ToolRequirement(
             tool = Tool.STEM_SEPARATION,
-            modelDisplayName = "Demucs htdemucs (ONNX quantised)",
+            modelDisplayName = "Demucs htdemucs（ONNX 量化）",
             estimatedBytes = 80_000_000L,
             license = "MIT (model: research)",
             sourceUrl = "https://github.com/facebookresearch/demucs",
@@ -321,7 +321,7 @@ object AiToolRequirements {
         ),
         Tool.GENERATIVE_VIDEO to ToolRequirement(
             tool = Tool.GENERATIVE_VIDEO,
-            modelDisplayName = "Wan 2.2 / HunyuanVideo (cloud)",
+            modelDisplayName = "Wan 2.2 / HunyuanVideo（云端）",
             estimatedBytes = 0L,
             license = "ProviderTerms",
             sourceUrl = "https://github.com/Wan-Video/Wan2.2",
@@ -335,7 +335,7 @@ object AiToolRequirements {
         ),
         Tool.LIP_SYNC to ToolRequirement(
             tool = Tool.LIP_SYNC,
-            modelDisplayName = "MuseTalk / Wav2Lip (cloud)",
+            modelDisplayName = "MuseTalk / Wav2Lip（云端）",
             estimatedBytes = 0L,
             license = "Mixed (per provider; some research-only)",
             sourceUrl = "https://github.com/TMElyralab/MuseTalk",
@@ -349,7 +349,7 @@ object AiToolRequirements {
         ),
         Tool.VOICE_CLONE to ToolRequirement(
             tool = Tool.VOICE_CLONE,
-            modelDisplayName = "XTTS v2 (via Sherpa-ONNX)",
+            modelDisplayName = "XTTS v2（通过 Sherpa-ONNX）",
             estimatedBytes = 400_000_000L,
             license = "Review required (voice model)",
             sourceUrl = "https://github.com/k2-fsa/sherpa-onnx",
@@ -363,7 +363,7 @@ object AiToolRequirements {
         ),
         Tool.TTS_OFFLINE to ToolRequirement(
             tool = Tool.TTS_OFFLINE,
-            modelDisplayName = "Piper VITS (per voice)",
+            modelDisplayName = "Piper VITS（按语音）",
             estimatedBytes = 50_000_000L,
             license = "MIT/GPL review (per voice)",
             sourceUrl = "https://github.com/rhasspy/piper",
@@ -376,7 +376,7 @@ object AiToolRequirements {
         ),
         Tool.CAPTION_TRANSLATE to ToolRequirement(
             tool = Tool.CAPTION_TRANSLATE,
-            modelDisplayName = "MADLAD-400 3B (Q4) / Bergamot per-pair",
+            modelDisplayName = "MADLAD-400 3B（Q4）/ Bergamot（按语言对）",
             estimatedBytes = 1_500_000_000L,
             license = "Apache-2.0 / MPL-2.0",
             sourceUrl = "https://huggingface.co/google/madlad400-3b-mt",
