@@ -62,7 +62,7 @@ class ProcessExitRecorder private constructor(
         writeHistory(
             records = merged,
             capturedAtEpochMs = nowEpochMs.coerceAtLeast(0L),
-            unsupportedReason = if (source.supported) null else "ApplicationExitInfo requires Android 11 / API 30 or newer."
+            unsupportedReason = if (source.supported) null else "ApplicationExitInfo 需要 Android 11 / API 30 或更高版本。"
         )
     }
 
@@ -95,7 +95,7 @@ class ProcessExitRecorder private constructor(
         return buildHistoryJson(
             records = emptyList(),
             capturedAtEpochMs = capturedAtEpochMs,
-            unsupportedReason = if (source.supported) null else "ApplicationExitInfo requires Android 11 / API 30 or newer."
+            unsupportedReason = if (source.supported) null else "ApplicationExitInfo 需要 Android 11 / API 30 或更高版本。"
         )
     }
 
