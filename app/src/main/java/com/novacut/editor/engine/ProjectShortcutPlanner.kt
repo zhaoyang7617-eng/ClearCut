@@ -97,8 +97,8 @@ object ProjectShortcutPlanner {
         if (state.hasRecoveryForLast) {
             out += DynamicShortcut(
                 shortcutId = ShortcutId.RESUME_RECOVERED,
-                shortLabel = "Resume",
-                longLabel = "Resume recovered draft",
+                shortLabel = "继续恢复",
+                longLabel = "继续编辑已恢复草稿",
                 action = ACTION_RESUME_RECOVERED,
                 extras = mapOf(EXTRA_PROJECT_ID to state.lastProjectId),
                 rank = 0,
@@ -107,11 +107,11 @@ object ProjectShortcutPlanner {
 
         val openLabel = state.lastProjectName?.trim()?.takeIf { it.isNotEmpty() }
             ?.let { it.take(OPEN_LABEL_MAX_CHARS) }
-            ?: "Last Project"
+            ?: "最近项目"
         out += DynamicShortcut(
             shortcutId = ShortcutId.OPEN_LAST_PROJECT,
             shortLabel = openLabel,
-            longLabel = "Open $openLabel",
+            longLabel = "打开 $openLabel",
             action = ACTION_OPEN_LAST_PROJECT,
             extras = mapOf(EXTRA_PROJECT_ID to state.lastProjectId),
             rank = 1,
