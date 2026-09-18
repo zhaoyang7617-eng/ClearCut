@@ -93,7 +93,7 @@ class DirectPublishEngine @Inject constructor(
             FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
         } catch (e: Exception) {
             AppLog.w(TAG, "FileProvider failed for ${RedactedLog.path(filePath)}", e)
-            return@withContext Result(null, Method.NONE, "Export is not in a shareable ClearCut location")
+            return@withContext Result(null, Method.NONE, "导出文件不在 ClearCut 可安全分享的位置")
         }
         val intent = buildShareIntent(uri, target, meta)
         val targetInstalled = target.packageName != null && isInstalled(target.packageName)
@@ -110,7 +110,7 @@ class DirectPublishEngine @Inject constructor(
         Result(
             intent = launchIntent,
             used = Method.SHARE_INTENT,
-            message = "Opening ${target.displayName} for user-controlled posting...",
+            message = "正在打开 ${target.displayName}，由你确认并发布…",
             capability = capability
         )
     }
@@ -142,10 +142,10 @@ internal fun platformCapabilityFor(
 ): DirectPublishEngine.PlatformCapability {
     return DirectPublishEngine.PlatformCapability(
         target = target,
-        shareHandoffLabel = "Open in ${target.displayName}",
+        shareHandoffLabel = "在 ${target.displayName} 中打开",
         apiUpload = DirectPublishEngine.ApiUploadCapability(
             available = false,
-            unavailableReason = "API upload requires OAuth consent, credential storage, platform approval, and resumable upload adapters."
+            unavailableReason = "API 上传需要 OAuth 授权、凭据存储、平台审批以及断点续传适配器。"
         ),
         requiresManualDisclosureReview = target.hasAiDisclosureControl
     )
@@ -161,10 +161,10 @@ private const val MAX_SHARE_BODY_CHARS = 8_000
 private val SAFE_HASHTAG_CHARS = Regex("[^A-Za-z0-9_]")
 
 internal fun validatePublishableFile(file: File): String? = when {
-    !file.exists() -> "Export file not found"
-    !file.isFile -> "Export path is not a video file"
-    file.length() <= 0L -> "Export file is empty"
-    !file.canRead() -> "Export file is not readable"
+    !file.exists() -> "找不到导出文件"
+    !file.isFile -> "导出路径不是视频文件"
+    file.length() <= 0L -> "导出文件为空"
+    !file.canRead() -> "无法读取导出文件"
     else -> null
 }
 
@@ -178,12 +178,12 @@ internal fun buildPublishShareText(
         if (safeMeta.description.isNotBlank()) append("\n\n").append(safeMeta.description)
         if (safeMeta.aiDisclosureSummary.isNotBlank()) {
             append("\n\n")
-                .append("AI disclosure reminder: ")
+                .append("AI 使用披露提醒：")
                 .append(safeMeta.aiDisclosureSummary)
             if (target?.hasAiDisclosureControl == true) {
-                append(" Review ")
+                append(" 请在发布前检查 ")
                     .append(target.displayName)
-                    .append("'s AI disclosure controls before posting.")
+                    .append(" 的 AI 内容披露设置。")
             }
         }
         if (safeMeta.chapters.isNotBlank()) append("\n\n").append(safeMeta.chapters)
@@ -198,7 +198,7 @@ internal fun normalizePublishMeta(
     meta: DirectPublishEngine.PublishMeta
 ): DirectPublishEngine.PublishMeta {
     return meta.copy(
-        title = normalizeShareText(meta.title, fallback = "ClearCut export", maxChars = MAX_SHARE_TITLE_CHARS),
+        title = normalizeShareText(meta.title, fallback = "ClearCut 导出", maxChars = MAX_SHARE_TITLE_CHARS),
         description = normalizeShareText(
             raw = meta.description,
             fallback = "",
