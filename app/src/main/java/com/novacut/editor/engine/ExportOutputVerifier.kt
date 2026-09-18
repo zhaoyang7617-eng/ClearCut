@@ -89,10 +89,10 @@ object ExportOutputVerifier {
         requireFastStart: Boolean = false,
     ): ExportVerificationResult {
         if (!outputFile.exists()) {
-            return ExportVerificationResult(false, reason = "Output file does not exist")
+            return ExportVerificationResult(false, reason = "输出文件不存在")
         }
         if (outputFile.length() <= 0L) {
-            return ExportVerificationResult(false, reason = "Output file is empty")
+            return ExportVerificationResult(false, reason = "输出文件为空")
         }
 
         val extractor = MediaExtractor()
@@ -102,7 +102,7 @@ object ExportOutputVerifier {
             if (trackCount <= 0) {
                 return ExportVerificationResult(
                     false,
-                    reason = "Output file has no media tracks",
+                    reason = "输出文件不包含媒体轨道",
                     trackCount = 0
                 )
             }
@@ -150,7 +150,7 @@ object ExportOutputVerifier {
             if (expectVideo && !hasVideo) {
                 return ExportVerificationResult(
                     false,
-                    reason = "Expected video track but output has none",
+                    reason = "预期存在视频轨道，但输出中没有",
                     hasVideo = false, hasAudio = hasAudio,
                     durationMs = durationMs, width = width, height = height,
                     trackCount = trackCount
@@ -165,7 +165,7 @@ object ExportOutputVerifier {
             if (!expectVideo && hasVideo) {
                 return ExportVerificationResult(
                     false,
-                    reason = "Audio-only export unexpectedly contains a video track",
+                    reason = "仅音频导出中意外包含视频轨道",
                     hasVideo = true, hasAudio = hasAudio,
                     durationMs = durationMs, width = width, height = height,
                     trackCount = trackCount
@@ -175,7 +175,7 @@ object ExportOutputVerifier {
             if (expectAudio && !hasAudio) {
                 return ExportVerificationResult(
                     false,
-                    reason = "Expected audio track but output has none",
+                    reason = "预期存在音频轨道，但输出中没有",
                     hasVideo = hasVideo, hasAudio = false,
                     durationMs = durationMs, width = width, height = height,
                     trackCount = trackCount
@@ -185,7 +185,7 @@ object ExportOutputVerifier {
             if (durationMs <= 0L) {
                 return ExportVerificationResult(
                     false,
-                    reason = "Output has zero duration",
+                    reason = "输出文件时长为零",
                     hasVideo = hasVideo, hasAudio = hasAudio,
                     durationMs = 0L, width = width, height = height,
                     trackCount = trackCount,
@@ -285,7 +285,7 @@ object ExportOutputVerifier {
             AppLog.e(TAG, "Verification failed for ${outputFile.redacted()}", e)
             return ExportVerificationResult(
                 false,
-                reason = "Cannot read output: ${e.javaClass.simpleName}: ${e.message}"
+                reason = "无法读取输出文件：${e.javaClass.simpleName}：${e.message}"
             )
         } finally {
             runCatching { extractor.release() }
