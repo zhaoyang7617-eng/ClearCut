@@ -239,14 +239,14 @@ object TemplateCompatibilityEngine {
         if (metadata.schemaVersion > currentSchemaVersion) {
             issues += TemplateCompatibilityIssue(
                 code = "future_schema",
-                message = "Template schema ${metadata.schemaVersion} requires a newer ClearCut template parser.",
+                message = "模板架构版本 ${metadata.schemaVersion} 需要更新版本的 ClearCut 模板解析器。",
                 blocking = true
             )
         }
         if (metadata.minVersionCode > currentVersionCode) {
             issues += TemplateCompatibilityIssue(
                 code = "future_app_version",
-                message = "Template requires ClearCut ${metadata.minVersionName}.",
+                message = "模板需要 ClearCut ${metadata.minVersionName}。",
                 blocking = true
             )
         }
@@ -256,7 +256,7 @@ object TemplateCompatibilityEngine {
             if (!supported) {
                 issues += TemplateCompatibilityIssue(
                     code = "unsupported_feature",
-                    message = "Template uses unsupported feature: ${feature.displayName}.",
+                    message = "模板使用了不支持的功能：${feature.displayName}。",
                     blocking = feature.required
                 )
             }
@@ -394,7 +394,7 @@ object TemplateCompatibilityEngine {
         TemplateFeatureRequirement(
             type = TemplateFeatureType.UNKNOWN,
             key = "FEATURE_LIMIT_EXCEEDED",
-            displayName = "Too many template features",
+            displayName = "模板功能过多",
             required = true
         )
 
