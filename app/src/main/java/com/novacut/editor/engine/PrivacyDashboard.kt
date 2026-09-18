@@ -21,29 +21,29 @@ package com.novacut.editor.engine
 object PrivacyDashboard {
 
     enum class Category(val displayName: String) {
-        PROJECT_CONTENT("Project content (clips, overlays, timelines, captions)"),
-        MEDIA_METADATA("Media metadata (durations, codecs, dimensions)"),
-        ML_MODELS("Downloaded ML models (Whisper, MediaPipe)"),
-        APP_PREFERENCES("App preferences (theme, export defaults)"),
-        TEMPLATE_LIBRARY("Saved templates / effect packs"),
-        SETTINGS_RESET_REPORTS("Settings reset reports (preferences recovery)"),
-        DIAGNOSTIC_LOGS("Diagnostic logs and export-incident summaries (redacted)"),
-        CRASH_RECORDS("Crash records (fatal exception breadcrumbs)"),
-        PROCESS_EXIT_HISTORY("Process-death history (ANR, low-memory, native crash)"),
-        CLOUD_GENERATIVE("Cloud generative video calls (consent-gated)"),
-        MEDIAPIPE_METRICS("MediaPipe on-device task metrics (Google, consent-gated)"),
-        AI_USAGE_LEDGER("AI usage ledger (per-project disclosure history)"),
-        OPT_IN_TELEMETRY("Opt-in usage telemetry (Sentry / Glean)"),
-        UPDATE_CHECK("App update check (sideload / GitHub-release version lookup)"),
+        PROJECT_CONTENT("项目内容（片段、叠加层、时间线、字幕）"),
+        MEDIA_METADATA("媒体元数据（时长、编码、尺寸）"),
+        ML_MODELS("已下载的 ML 模型（Whisper、MediaPipe）"),
+        APP_PREFERENCES("应用偏好设置（主题、默认导出设置）"),
+        TEMPLATE_LIBRARY("已保存的模板 / 效果包"),
+        SETTINGS_RESET_REPORTS("设置重置报告（偏好恢复）"),
+        DIAGNOSTIC_LOGS("诊断日志和导出故障摘要（已脱敏）"),
+        CRASH_RECORDS("崩溃记录（致命异常线索）"),
+        PROCESS_EXIT_HISTORY("进程退出历史（ANR、低内存、原生崩溃）"),
+        CLOUD_GENERATIVE("云端生成视频调用（需授权）"),
+        MEDIAPIPE_METRICS("MediaPipe 本机任务指标（Google，需授权）"),
+        AI_USAGE_LEDGER("AI 使用记录（按项目保存的披露历史）"),
+        OPT_IN_TELEMETRY("主动开启的使用遥测（Sentry / Glean）"),
+        UPDATE_CHECK("应用更新检查（侧载 / GitHub Release 版本查询）"),
     }
 
     /**
      * Where the data physically lives.
      */
     enum class StorageLocation(val displayName: String) {
-        DEVICE_INTERNAL("On this device, app private"),
-        DEVICE_SHARED("On this device, shared with other apps"),
-        CLOUD_ON_DEMAND("Cloud service (only when explicitly invoked)"),
+        DEVICE_INTERNAL("本设备 · 应用私有存储"),
+        DEVICE_SHARED("本设备 · 可与其他应用共享"),
+        CLOUD_ON_DEMAND("云服务（仅在明确触发时使用）"),
     }
 
     /**
@@ -101,140 +101,126 @@ object PrivacyDashboard {
             location = StorageLocation.DEVICE_INTERNAL,
             controls = Controls(canExport = true, canDelete = true, hasOptOut = false),
             collectedBy = listOf("ProjectAutoSave", "ProjectDatabase", "ProjectArchive", "OverlayAssetStore"),
-            retentionPolicy = "Kept on this device until the project/media copy is deleted or app storage " +
-                "is cleared. Android cloud backup carries the project documents only (the database and " +
-                "autosave JSON) because Auto Backup is capped at 25 MB per app and fails entirely when that " +
-                "is exceeded; generated timeline media (freeze frames, voiceovers, TTS, noise-reduced audio, " +
-                "stabilized clips) travels only via device-to-device transfer or a project archive you export " +
-                "yourself, so a cloud restore returns projects with that media missing.",
+            retentionPolicy = "保存在本设备上，直到项目/媒体副本被删除或应用存储被清除。Android 云备份只包含项目文档（数据库和自动保存 JSON），因为 Auto Backup 对每个应用有 25 MB 上限，超过后会整体失败；时间线生成媒体（定格帧、旁白、TTS、降噪音频、稳定处理片段）只会通过设备间迁移或你主动导出的项目归档传输，因此云端恢复后的项目可能缺少这些媒体。",
             collectedByDefault = true,
-            controlLocation = "Projects screen — project menu → Export archive, or Move to trash",
+            controlLocation = "项目页 → 项目菜单 → 导出归档，或移到回收站",
         ),
         DashboardEntry(
             category = Category.MEDIA_METADATA,
             location = StorageLocation.DEVICE_INTERNAL,
             controls = Controls(canExport = true, canDelete = true, hasOptOut = false),
             collectedBy = listOf("MediaImportEngine", "MediaPickerSheet"),
-            retentionPolicy = "Discarded when the source clip is removed from any project.",
+            retentionPolicy = "当源片段从所有项目中移除后删除。",
             collectedByDefault = true,
-            controlLocation = "Editor → Media Manager → remove the clip from the project",
+            controlLocation = "编辑器 → 媒体管理器 → 从项目中移除片段",
         ),
         DashboardEntry(
             category = Category.ML_MODELS,
             location = StorageLocation.DEVICE_INTERNAL,
             controls = Controls(canExport = false, canDelete = true, hasOptOut = true),
             collectedBy = listOf("ModelDownloadManager"),
-            retentionPolicy = "Kept until the user removes the model from Settings → AI Models.",
+            retentionPolicy = "一直保留，直到你在“设置 → AI 模型”中移除该模型。",
             collectedByDefault = false,
-            controlLocation = "Settings → AI Models → Remove model",
+            controlLocation = "设置 → AI 模型 → 移除模型",
         ),
         DashboardEntry(
             category = Category.APP_PREFERENCES,
             location = StorageLocation.DEVICE_INTERNAL,
             controls = Controls(canExport = true, canDelete = true, hasOptOut = false),
             collectedBy = listOf("SettingsRepository", "DataStore"),
-            retentionPolicy = "Kept until the app is uninstalled or storage is cleared.",
+            retentionPolicy = "一直保留，直到卸载应用或清除应用存储。",
             collectedByDefault = true,
-            controlLocation = "Settings → Storage → Reset preferences, or Android app-info → Clear storage",
+            controlLocation = "设置 → 存储 → 重置偏好设置，或 Android 应用信息 → 清除存储",
         ),
         DashboardEntry(
             category = Category.TEMPLATE_LIBRARY,
             location = StorageLocation.DEVICE_INTERNAL,
             controls = Controls(canExport = true, canDelete = true, hasOptOut = false),
             collectedBy = listOf("TemplateManager"),
-            retentionPolicy = "Kept until the template is removed from the Templates panel.",
+            retentionPolicy = "一直保留，直到从模板面板中删除。",
             collectedByDefault = true,
-            controlLocation = "Projects screen → Templates → long-press a template → Delete",
+            controlLocation = "项目页 → 模板 → 长按模板 → 删除",
         ),
         DashboardEntry(
             category = Category.SETTINGS_RESET_REPORTS,
             location = StorageLocation.DEVICE_INTERNAL,
             controls = Controls(canExport = true, canDelete = true, hasOptOut = false),
             collectedBy = listOf("SettingsRepository", "SettingsResetReportStore", "DiagnosticExportEngine"),
-            retentionPolicy = "Preferences corruption-recovery reports are stored locally under filesDir/diagnostics/settings-reset-report.jsonl, capped to the 16 most recent resets, and included only in user-triggered diagnostic ZIP exports.",
+            retentionPolicy = "偏好设置损坏恢复报告保存在本机 filesDir/diagnostics/settings-reset-report.jsonl，最多保留最近 16 次重置记录，仅在你主动导出诊断 ZIP 时加入。",
             collectedByDefault = true,
-            controlLocation = "Settings → Diagnostics → Export diagnostic bundle",
+            controlLocation = "设置 → 诊断 → 导出诊断包",
         ),
         DashboardEntry(
             category = Category.DIAGNOSTIC_LOGS,
             location = StorageLocation.DEVICE_INTERNAL,
             controls = Controls(canExport = true, canDelete = true, hasOptOut = false),
             collectedBy = listOf("DiagnosticExportEngine", "ExportIncidentStore"),
-            retentionPolicy = "Private export incidents are capped to 10 records under filesDir/diagnostics/export-incidents. User-triggered diagnostic ZIPs include bundle-pseudonymized structured summaries by default and are capped to the 3 most recent ZIPs; raw encoder text requires explicit Settings consent.",
+            retentionPolicy = "私有导出故障记录保存在 filesDir/diagnostics/export-incidents，最多 10 条。你主动生成的诊断 ZIP 默认只包含经伪匿名化的结构化摘要，并最多保留最近 3 个 ZIP；原始编码器错误文字需要在设置中明确授权。",
             collectedByDefault = false,
-            controlLocation = "Settings → Diagnostics → Export diagnostic bundle",
+            controlLocation = "设置 → 诊断 → 导出诊断包",
         ),
         DashboardEntry(
             category = Category.CRASH_RECORDS,
             location = StorageLocation.DEVICE_INTERNAL,
             controls = Controls(canExport = true, canDelete = true, hasOptOut = false),
             collectedBy = listOf("CrashRecordStore", "DiagnosticExportEngine"),
-            retentionPolicy = "Fatal-crash breadcrumbs are stored locally under filesDir/diagnostics/crashes, capped to the 8 most recent records, and included only in user-triggered diagnostic ZIP exports.",
+            retentionPolicy = "致命崩溃线索保存在本机 filesDir/diagnostics/crashes，最多保留最近 8 条，仅在你主动导出诊断 ZIP 时加入。",
             collectedByDefault = true,
-            controlLocation = "Settings → Diagnostics → Export diagnostic bundle",
+            controlLocation = "设置 → 诊断 → 导出诊断包",
         ),
         DashboardEntry(
             category = Category.PROCESS_EXIT_HISTORY,
             location = StorageLocation.DEVICE_INTERNAL,
             controls = Controls(canExport = true, canDelete = true, hasOptOut = false),
             collectedBy = listOf("ProcessExitRecorder", "DiagnosticExportEngine"),
-            retentionPolicy = "Android 11+ process-death summaries are stored locally under filesDir/diagnostics/process-exit-history.json, capped to the 16 most recent unique records, and included only in user-triggered diagnostic ZIP exports.",
+            retentionPolicy = "Android 11+ 进程退出摘要保存在本机 filesDir/diagnostics/process-exit-history.json，最多保留最近 16 条不同记录，仅在你主动导出诊断 ZIP 时加入。",
             collectedByDefault = true,
-            controlLocation = "Settings → Diagnostics → Export diagnostic bundle",
+            controlLocation = "设置 → 诊断 → 导出诊断包",
         ),
         DashboardEntry(
             category = Category.CLOUD_GENERATIVE,
             location = StorageLocation.CLOUD_ON_DEMAND,
             controls = Controls(canExport = false, canDelete = true, hasOptOut = true),
             collectedBy = listOf("GenerativeVideoPolicy"),
-            retentionPolicy = "Per the provider's policy; disclosed in the consent sheet before each call.",
+            retentionPolicy = "按服务提供方的政策保留；每次调用前都会在授权页面中说明。",
             collectedByDefault = false,
-            controlLocation = "Editor → AI Tools → the consent sheet shown before each call",
+            controlLocation = "编辑器 → AI 工具 → 每次调用前显示的授权页面",
         ),
         DashboardEntry(
             category = Category.MEDIAPIPE_METRICS,
             location = StorageLocation.CLOUD_ON_DEMAND,
             controls = Controls(canExport = false, canDelete = true, hasOptOut = true),
             collectedBy = listOf("SegmentationEngine", "SmartReframeEngine", "MediaPipeUsageGate"),
-            retentionPolicy = "Off by default and gated by explicit versioned consent. When enabled, Google's " +
-                "MediaPipe Tasks SDK uploads anonymous performance metrics (app id/version, task/mode, " +
-                "invocation/drop counts, latency, initialization errors) to Google via Play Services " +
-                "DataTransport. Input media (frames/pixels) never leaves the device. Revoking consent in " +
-                "Settings closes any running task and blocks it from starting again.",
+            retentionPolicy = "默认关闭，只有在你明确同意对应版本的授权后才会启用。启用后，Google 的 MediaPipe Tasks SDK 会通过 Play Services DataTransport 向 Google 上传匿名性能指标（应用 ID/版本、任务/模式、调用/丢弃次数、延迟、初始化错误）。输入媒体（画面帧/像素）不会离开设备。在设置中撤回授权后，会关闭正在运行的任务，并阻止再次启动。",
             collectedByDefault = false,
-            controlLocation = "Settings → Privacy → MediaPipe metrics consent",
+            controlLocation = "设置 → 隐私 → MediaPipe 指标授权",
         ),
         DashboardEntry(
             category = Category.AI_USAGE_LEDGER,
             location = StorageLocation.DEVICE_INTERNAL,
             controls = Controls(canExport = true, canDelete = true, hasOptOut = false),
             collectedBy = listOf("AiUsageLedger", "ProjectAutoSave", "ExportDelegate", "DirectPublishEngine", "C2paExportEngine"),
-            retentionPolicy = "Stored only inside the project autosave; users can clear it from the export " +
-                "disclosure review. Export can write local .ai-use.json and unsigned, unverifiable " +
-                ".c2pa-draft-manifest.json sidecars. This build has no C2PA signing or embed bridge, " +
-                "and no media or hashes leave the device for this feature.",
+            retentionPolicy = "仅保存在项目自动保存数据中；可在导出时的披露检查页面清除。导出可在本机写入 .ai-use.json 和未签名、不可验证的 .c2pa-draft-manifest.json 侧车文件。此版本没有 C2PA 签名或嵌入能力，此功能不会让任何媒体或哈希离开设备。",
             collectedByDefault = false,
-            controlLocation = "Editor → Export → AI disclosure review",
+            controlLocation = "编辑器 → 导出 → AI 使用披露检查",
         ),
         DashboardEntry(
             category = Category.OPT_IN_TELEMETRY,
             location = StorageLocation.CLOUD_ON_DEMAND,
             controls = Controls(canExport = false, canDelete = true, hasOptOut = true),
             collectedBy = listOf("(future) SentryAndroid", "(future) Mozilla Glean"),
-            retentionPolicy = "Provider retention; disabled by default; toggle in Settings → Privacy.",
+            retentionPolicy = "保留期限由服务提供方决定；默认关闭，可在“设置 → 隐私”中切换。",
             collectedByDefault = false,
-            controlLocation = "Settings → Privacy (no telemetry provider is integrated yet)",
+            controlLocation = "设置 → 隐私（目前尚未集成遥测服务提供方）",
         ),
         DashboardEntry(
             category = Category.UPDATE_CHECK,
             location = StorageLocation.CLOUD_ON_DEMAND,
             controls = Controls(canExport = false, canDelete = true, hasOptOut = true),
             collectedBy = listOf("UpdateChecker"),
-            retentionPolicy = "No data is stored. When enabled, ClearCut makes a single TLS request to the " +
-                "public GitHub releases API to compare the latest tag with the installed version; it never " +
-                "downloads or installs an APK. Off by default; turn it off in Settings → Updates to stop all checks.",
+            retentionPolicy = "不会保存任何数据。启用后，ClearCut 只会向公开的 GitHub Releases API 发起一次 TLS 请求，用最新标签与当前安装版本进行比较；不会自动下载或安装 APK。默认关闭，可在“设置 → 更新”中关闭以停止所有检查。",
             collectedByDefault = false,
-            controlLocation = "Settings → Updates → Check for updates toggle",
+            controlLocation = "设置 → 更新 → 检查更新开关",
         ),
     )
 
@@ -266,9 +252,9 @@ object PrivacyDashboard {
      * point) renders last.
      */
     enum class Section(val displayName: String) {
-        CLOUD_AND_TELEMETRY("Cloud & telemetry"),
-        ON_DEVICE_COLLECTED("Stored on this device"),
-        ON_DEVICE_OPT_IN("Opt-in features (off by default)"),
+        CLOUD_AND_TELEMETRY("云端与遥测"),
+        ON_DEVICE_COLLECTED("保存在本设备上"),
+        ON_DEVICE_OPT_IN("需主动开启的功能（默认关闭）"),
     }
 
     /**
@@ -321,9 +307,9 @@ object PrivacyDashboard {
      */
     fun controlSummary(entry: DashboardEntry): String {
         val parts = mutableListOf<String>()
-        if (entry.controls.canExport) parts += "Export"
-        if (entry.controls.canDelete) parts += "Delete"
-        if (entry.controls.hasOptOut) parts += "Opt out"
-        return if (parts.isEmpty()) "Read-only" else parts.joinToString(" · ")
+        if (entry.controls.canExport) parts += "导出"
+        if (entry.controls.canDelete) parts += "删除"
+        if (entry.controls.hasOptOut) parts += "关闭"
+        return if (parts.isEmpty()) "只读" else parts.joinToString(" · ")
     }
 }
