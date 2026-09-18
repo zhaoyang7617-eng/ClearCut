@@ -26,7 +26,7 @@ class RenderDegradationLedger {
 
     @Synchronized
     fun record(type: RenderDegradationType, effectName: String) {
-        val safeName = effectName.trim().ifEmpty { "unnamed effect" }.take(80)
+        val safeName = effectName.trim().ifEmpty { "未命名效果" }.take(80)
         val key = Key(type, safeName)
         counts[key] = (counts[key] ?: 0) + 1
     }
