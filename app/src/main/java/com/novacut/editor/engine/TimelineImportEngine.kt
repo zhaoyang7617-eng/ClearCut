@@ -33,7 +33,7 @@ class TimelineImportEngine @Inject constructor(
         FCPXML("fcpxml", "Final Cut Pro XML"),
         OTIO("otio", "OpenTimelineIO JSON"),
         EDL("edl", "CMX 3600 EDL"),
-        EDIT_DECISION_JSON(EditDecisionJsonEngine.FILE_EXTENSION, "ClearCut edit-decision JSON"),
+        EDIT_DECISION_JSON(EditDecisionJsonEngine.FILE_EXTENSION, "ClearCut 剪辑决策 JSON"),
     }
 
     data class ImportResult(
@@ -79,9 +79,9 @@ class TimelineImportEngine @Inject constructor(
     }
 
     enum class RoundTripFidelity(val displayName: String, val warningCopy: String) {
-        EXCELLENT("Excellent", "Most timeline data will be preserved."),
-        GOOD("Good", "Clip + timing data are preserved; provider-specific metadata may be dropped."),
-        LIMITED("Limited", "Cut decisions only. Effects, transitions, and overlays may not be imported."),
+        EXCELLENT("优秀", "大部分时间线数据都会保留。"),
+        GOOD("良好", "片段和时序数据会保留；特定软件的元数据可能被丢弃。"),
+        LIMITED("有限", "仅保留剪切决策。效果、转场和叠加层可能无法导入。"),
     }
 
     /** Read, parse, probe media, and produce a non-mutating import preview. */
@@ -91,11 +91,11 @@ class TimelineImportEngine @Inject constructor(
         mediaRelocation: Map<String, Uri> = emptyMap(),
     ): ImportResult = withContext(Dispatchers.IO) {
         val detected = format ?: detectFormat(uri) ?: return@withContext ImportResult(
-            warnings = listOf("Unknown file format"),
+            warnings = listOf("未知文件格式"),
         )
         val raw = readUtf8(uri, detected.maxBytes)
             ?: return@withContext ImportResult(
-                warnings = listOf("${detected.displayName} file could not be read within the import limit."),
+                warnings = listOf("无法在导入大小限制内读取 ${detected.displayName} 文件。"),
             )
         importText(
             raw = raw,
@@ -131,7 +131,7 @@ class TimelineImportEngine @Inject constructor(
         val unresolved = (relocated.unresolvedMediaUris + probedMissing).distinct()
         val warnings = (relocated.warnings + relinkReports
             .filter { it.state == MediaRelinkProbe.RelinkState.UNKNOWN }
-            .map { "${it.sourceUri}: ${it.reason ?: "media could not be verified"}" })
+            .map { "${it.sourceUri}：${it.reason ?: "无法验证媒体"}" })
             .distinct()
         val exchangeFormat = format.toExchangeFormat()
         val report = timelineExchangeValidator.validateImport(
