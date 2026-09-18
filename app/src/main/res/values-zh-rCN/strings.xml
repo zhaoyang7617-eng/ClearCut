@@ -2686,4 +2686,86 @@
 <string name="ai_requirement_unmet_generic">%1$s 尚未就绪，因此该工具无法运行。</string>
 <string name="ai_requirement_unknown_tool_title">此工具需要未列出的组件</string>
 <string name="ai_requirement_unknown_tool_body">ClearCut 没有为该工具配置需求条目，因此无法判断缺少什么。请打开 AI 工具查看已安装模型。</string>
+<plurals name="ai_stabilization_preview_body"><item quantity="other">已分析 %1$s，共 %2$d 帧。预计抖动：%3$.0f%%。渲染会反向补偿片段运动，并使用约 %4$.0f%% 的裁剪。应用前源素材不会改变。</item></plurals>
+<plurals name="export_columns_count"><item quantity="other">%1$d 列</item></plurals>
+<plurals name="sticker_ready_count"><item quantity="other">%1$d 个可用</item></plurals>
+<plurals name="batch_export_total"><item quantity="other">共 %1$d 项</item></plurals>
+<plurals name="batch_export_active"><item quantity="other">%1$d 项活动中</item></plurals>
+<plurals name="batch_export_needs_review"><item quantity="other">%1$d 项需要检查</item></plurals>
+<plurals name="batch_export_needs_attention"><item quantity="other">%1$d 项需要处理</item></plurals>
+<plurals name="batch_export_done"><item quantity="other">%1$d 项已完成</item></plurals>
+<plurals name="batch_export_queued"><item quantity="other">%1$d 项已排队</item></plurals>
+<plurals name="batch_export_exporting"><item quantity="other">%1$d 项正在导出</item></plurals>
+<plurals name="batch_export_failed"><item quantity="other">%1$d 项失败</item></plurals>
+<plurals name="batch_export_cancelled"><item quantity="other">%1$d 项已取消</item></plurals>
+<plurals name="batch_export_interrupted"><item quantity="other">%1$d 项已中断</item></plurals>
+<plurals name="batch_export_review"><item quantity="other">%1$d 项待检查</item></plurals>
+<plurals name="batch_export_queue_limit"><item quantity="other">批量导出队列最多 %1$d 项</item></plurals>
+<plurals name="projects_media_health_projects_value"><item quantity="other">%1$d 个本地项目</item></plurals>
+<plurals name="undo_history_action_count"><item quantity="other">%1$d 个操作</item></plurals>
+<plurals name="caption_import_applied"><item quantity="other">已导入 %1$d 条字幕。</item></plurals>
+<plurals name="caption_import_applied_partial"><item quantity="other">已导入 %1$d 条字幕；%2$d 条字幕被裁切或位于所选片段范围之外。</item></plurals>
+<plurals name="caption_total_count"><item quantity="other">共 %1$d 条</item></plurals>
+<plurals name="pip_layout_count"><item quantity="other">%1$d 种布局</item></plurals>
+<plurals name="cut_assistant_selected_count"><item quantity="other">已选择 %1$d 项</item></plurals>
+<plurals name="cut_assistant_candidate_count"><item quantity="other">%1$d 个候选项</item></plurals>
+<plurals name="media_health_blocking_count"><item quantity="other">%1$d 个阻断问题</item></plurals>
+<plurals name="media_health_warning_count"><item quantity="other">%1$d 个警告</item></plurals>
+<plurals name="media_manager_status_missing_count"><item quantity="other">%1$d 个问题</item></plurals>
+<plurals name="media_manager_status_empty_count"><item quantity="other">%1$d 个空项</item></plurals>
+<plurals name="media_manager_scan_provider_failure_count"><item quantity="other">读取时有 %1$d 个媒体提供器失败。</item></plurals>
+<plurals name="media_manager_scan_skipped_count"><item quantity="other">由于没有返回可读元数据，已跳过 %1$d 个素材。</item></plurals>
+<plurals name="media_manager_status_scan_partial"><item quantity="other">已就绪，但有 %1$d 个扫描问题</item></plurals>
+<plurals name="media_manager_scan_issue_more"><item quantity="other">…另外还有 %1$d 项</item></plurals>
+<plurals name="media_manager_missing_title"><item quantity="other">%1$d 个源文件需要处理</item></plurals>
+<plurals name="media_manager_bulk_relink"><item quantity="other">重新链接 %1$d 个缺失源文件</item></plurals>
+<plurals name="media_manager_empty_tracks_count"><item quantity="other">%1$d 条空轨道</item></plurals>
+<plurals name="media_manager_asset_count"><item quantity="other">%1$d 个素材</item></plurals>
+<plurals name="media_used_in_clip_count"><item quantity="other">在 %1$d 个片段中使用</item></plurals>
+<plurals name="mixer_tracks_live"><item quantity="other">%1$d 条轨道正在工作</item></plurals>
+<plurals name="mixer_fx_staged"><item quantity="other">已设置 %1$d 个特效</item></plurals>
+<plurals name="panel_multi_cam_angle_count"><item quantity="other">%1$d 个机位</item></plurals>
+<plurals name="panel_snapshot_saved_count"><item quantity="other">已保存 %1$d 个快照</item></plurals>
+<plurals name="blend_mode_modes_count"><item quantity="other">%1$d 种模式</item></plurals>
+<plurals name="panel_text_template_looks"><item quantity="other">%1$d 种样式</item></plurals>
+<plurals name="panel_text_template_results"><item quantity="other">%1$d 个选项</item></plurals>
+<plurals name="panel_keyframes_curves"><item quantity="other">%1$d 条曲线</item></plurals>
+<plurals name="panel_keyframes_keys"><item quantity="other">%1$d 个关键帧</item></plurals>
+<plurals name="panel_speed_presets_count"><item quantity="other">%1$d 个预设</item></plurals>
+<plurals name="recovery_media_ready_body"><item quantity="other">%1$d 个已恢复媒体引用可用于编辑和导出。</item></plurals>
+<plurals name="recovery_media_repair_body"><item quantity="other">%1$d 个已恢复媒体项目需要修复，之后预览和导出才能可靠工作。</item></plurals>
+<plurals name="recovery_media_proxy_body"><item quantity="other">%1$d 个预览代理缺失或为空。代理重建期间，ClearCut 会使用源媒体。</item></plurals>
+<plurals name="recovery_media_warning_body"><item quantity="other">媒体管理器中有 %1$d 条已恢复媒体警告。</item></plurals>
+<plurals name="timeline_marker_count"><item quantity="other">%1$d 个标记</item></plurals>
+<plurals name="timeline_clip_count"><item quantity="other">%1$d 个片段</item></plurals>
+<plurals name="v369_chapter_candidates_ready"><item quantity="other">%1$d 个候选章节已就绪。</item></plurals>
+<plurals name="v369_flash_risky_segments"><item quantity="other">%1$d 个高风险区间</item></plurals>
+<plurals name="trash_kept_summary"><item quantity="other">%1$d 个已删除项目将保留 30 天。</item></plurals>
+<plurals name="trash_auto_delete_in"><item quantity="other">将在 %1$d 天后自动删除</item></plurals>
+<plurals name="trash_empty_confirm_message"><item quantity="other">将永久删除 %1$d 个项目。此操作无法撤销。</item></plurals>
+<plurals name="trash_empty_success"><item quantity="other">已清空回收站（%1$d 个项目）</item></plurals>
+<plurals name="partial_restore_clips"><item quantity="other">%1$d 个片段</item></plurals>
+<plurals name="partial_restore_tracks"><item quantity="other">%1$d 条轨道</item></plurals>
+<plurals name="partial_restore_effects"><item quantity="other">%1$d 个效果</item></plurals>
+<plurals name="partial_restore_keyframes"><item quantity="other">%1$d 个关键帧</item></plurals>
+<plurals name="partial_restore_chapter_markers"><item quantity="other">%1$d 个章节标记</item></plurals>
+<plurals name="partial_restore_timeline_markers"><item quantity="other">%1$d 个时间线标记</item></plurals>
+<plurals name="partial_restore_beat_markers"><item quantity="other">%1$d 个节拍标记</item></plurals>
+<plurals name="partial_restore_image_overlays"><item quantity="other">%1$d 个图片叠加层</item></plurals>
+<plurals name="partial_restore_text_overlays"><item quantity="other">%1$d 个文字叠加层</item></plurals>
+<plurals name="partial_restore_watermarks"><item quantity="other">%1$d 个水印</item></plurals>
+<plurals name="partial_restore_transitions"><item quantity="other">%1$d 个转场</item></plurals>
+<plurals name="partial_restore_drawing_paths"><item quantity="other">%1$d 条绘图路径</item></plurals>
+<plurals name="partial_restore_points"><item quantity="other">%1$d 个点</item></plurals>
+<plurals name="partial_restore_transcripts"><item quantity="other">%1$d 份转写文本</item></plurals>
+<plurals name="partial_restore_tracked_objects"><item quantity="other">%1$d 个跟踪对象</item></plurals>
+<plurals name="partial_restore_storyboard_cards"><item quantity="other">%1$d 张故事板卡片</item></plurals>
+<plurals name="partial_restore_media_assets"><item quantity="other">%1$d 个媒体素材</item></plurals>
+<plurals name="partial_restore_captions"><item quantity="other">%1$d 条字幕</item></plurals>
+<plurals name="partial_restore_caption_words"><item quantity="other">%1$d 个字幕词</item></plurals>
+<plurals name="partial_restore_other_elements"><item quantity="other">%1$d 个元素</item></plurals>
+<plurals name="vm_media_missing_sources"><item quantity="other">%1$d 个缺失源文件</item></plurals>
+<plurals name="vm_media_unverified_sources"><item quantity="other">%1$d 个未验证源文件</item></plurals>
+<plurals name="vm_media_repair_items"><item quantity="other">%1$d 个待修复项</item></plurals>
+<plurals name="vm_media_warnings"><item quantity="other">%1$d 个警告</item></plurals>
 </resources>
