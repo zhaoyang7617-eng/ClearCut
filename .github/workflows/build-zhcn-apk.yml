@@ -7,6 +7,7 @@ on:
     paths:
       - 'app/src/main/res/values-zh-rCN/**'
       - 'app/src/main/res/xml/locales_config.xml'
+      - 'app/src/main/java/com/novacut/editor/**'
       - '.github/workflows/build-zhcn-apk.yml'
 
 jobs:
