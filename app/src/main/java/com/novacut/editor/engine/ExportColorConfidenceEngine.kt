@@ -75,19 +75,19 @@ object ExportColorConfidenceEngine {
 
         if (!config.hdr10PlusMetadata) {
             chips += Chip(
-                label = "SDR delivery",
-                detail = "HDR metadata is off for broad playback compatibility.",
+                label = "SDR 输出",
+                detail = "已关闭 HDR 元数据，以获得更广泛的播放兼容性。",
                 tone = Tone.GOOD
             )
             chips += Chip(
-                label = "Rec.709-safe",
-                detail = "Export settings favor the standard SDR social-video path.",
+                label = "Rec.709 兼容",
+                detail = "当前导出设置优先采用标准 SDR 社交视频流程。",
                 tone = Tone.INFO
             )
             if (sourceSummary.hasHdrSource) {
                 chips += Chip(
-                    label = "HDR source",
-                    detail = "Detected ${sourceSummary.formatList()} source media; enable Preserve HDR Metadata for HDR delivery.",
+                    label = "HDR 源素材",
+                    detail = "检测到 ${sourceSummary.formatList()} 源素材；如需 HDR 输出，请开启“保留 HDR 元数据”。",
                     tone = Tone.INFO
                 )
             }
@@ -97,11 +97,11 @@ object ExportColorConfidenceEngine {
 
         if (!config.codec.canCarryHdr()) {
             chips += Chip(
-                label = "HDR unavailable",
-                detail = "${config.codec.label} exports are treated as SDR.",
+                label = "HDR 不可用",
+                detail = "${config.codec.label} 导出将按 SDR 处理。",
                 tone = Tone.WARNING
             )
-            warnings += "${config.codec.label} cannot carry HDR in ClearCut exports. Switch to HEVC, AV1, or VP9 before preserving HDR metadata."
+            warnings += "${config.codec.label} 无法在 ClearCut 导出中承载 HDR。请先切换到 HEVC、AV1 或 VP9，再保留 HDR 元数据。"
             addProjectColorPolicyChips(projectColorPolicy, config, chips, warnings)
             return Report(chips = chips, warnings = warnings)
         }
@@ -114,9 +114,9 @@ object ExportColorConfidenceEngine {
         hdrOverlayDecision.disclosure?.let { disclosure ->
             chips += Chip(
                 label = if (hdrOverlayDecision.samplerBudgetExceeded) {
-                    "HDR overlay budget"
+                    "HDR 叠加层资源上限"
                 } else {
-                    "HDR overlays → SDR"
+                    "HDR 叠加层 → SDR"
                 },
                 detail = disclosure,
                 tone = Tone.WARNING,
@@ -126,18 +126,18 @@ object ExportColorConfidenceEngine {
 
         if (!hdrSupport.canPreserveHdr) {
             chips += Chip(
-                label = if (hdrSupport.featureSupport == null) "HDR not advertised" else "HDR unavailable",
+                label = if (hdrSupport.featureSupport == null) "未声明 HDR 支持" else "HDR 不可用",
                 detail = if (hdrSupport.featureSupport == null) {
-                    "No HDR encode profile was found for ${config.codec.label}."
+                    "未找到 ${config.codec.label} 的 HDR 编码配置。"
                 } else {
-                    "The selected encoder does not report FEATURE_HdrEditing or FEATURE_HlgEditing."
+                    "所选编码器未报告 FEATURE_HdrEditing 或 FEATURE_HlgEditing。"
                 },
                 tone = Tone.WARNING
             )
             warnings += if (hdrSupport.featureSupport == null) {
-                "This device does not advertise HDR encode support for ${config.codec.label}; Media3 may tone-map or fall back to SDR."
+                "此设备未声明 ${config.codec.label} 的 HDR 编码支持；Media3 可能进行色调映射或回退到 SDR。"
             } else {
-                "This device does not report FEATURE_HdrEditing or FEATURE_HlgEditing for ${config.codec.label}; choose SDR or another codec."
+                "此设备未为 ${config.codec.label} 报告 FEATURE_HdrEditing 或 FEATURE_HlgEditing；请选择 SDR 或其他编码格式。"
             }
         } else if (!hdrSupport.hasAnyHdr) {
             val featureNames = hdrSupport.featureSupport
@@ -146,19 +146,19 @@ object ExportColorConfidenceEngine {
                 ?.joinToString(", ")
                 .orEmpty()
             chips += Chip(
-                label = "HDR feature gate",
+                label = "HDR 功能支持",
                 detail = if (featureNames.isBlank()) {
-                    "${config.codec.label} reports HDR editing support."
+                    "${config.codec.label} 已报告 HDR 编辑支持。"
                 } else {
-                    "${config.codec.label} reports $featureNames; no named HDR profile was returned."
+                    "${config.codec.label} 已报告 $featureNames，但未返回明确命名的 HDR 配置。"
                 },
                 tone = Tone.INFO,
             )
         } else {
             val formats = hdrSupport.supportedFormats.sorted().joinToString(", ")
             chips += Chip(
-                label = "HDR keep requested",
-                detail = "${config.codec.label} advertises $formats encode support.",
+                label = "已请求保留 HDR",
+                detail = "${config.codec.label} 已声明支持 $formats 编码。",
                 tone = Tone.GOOD
             )
         }
@@ -170,23 +170,23 @@ object ExportColorConfidenceEngine {
 
         if (hasDolbyVisionProfile10) {
             chips += Chip(
-                label = "Dolby Vision path",
-                detail = "Profile 10 is advertised on this device.",
+                label = "杜比视界路径",
+                detail = "此设备已声明支持 Profile 10。",
                 tone = Tone.GOOD
             )
         }
 
         if (hdrSupport.hasAnyHdr && !hasHdr10Plus && !hasDolbyVisionProfile10) {
             chips += Chip(
-                label = "Static HDR only",
-                detail = "Dynamic HDR metadata is not advertised by this encoder.",
+                label = "仅支持静态 HDR",
+                detail = "此编码器未声明支持动态 HDR 元数据。",
                 tone = Tone.INFO
             )
-            warnings += "The selected encoder advertises HDR, but not HDR10+ or Dolby Vision dynamic metadata."
+            warnings += "所选编码器声明支持 HDR，但不支持 HDR10+ 或杜比视界动态元数据。"
         } else if (hasHdr10Plus) {
             chips += Chip(
-                label = "HDR10+ metadata",
-                detail = "Dynamic HDR metadata is supported by the selected encoder.",
+                label = "HDR10+ 元数据",
+                detail = "所选编码器支持动态 HDR 元数据。",
                 tone = Tone.GOOD
             )
         }
@@ -194,19 +194,19 @@ object ExportColorConfidenceEngine {
         if (hdrSupport.maxWidth > 0 && hdrSupport.maxHeight > 0 &&
             (width > hdrSupport.maxWidth || height > hdrSupport.maxHeight)
         ) {
-            warnings += "${config.codec.label} HDR encode is advertised up to ${hdrSupport.maxWidth}x${hdrSupport.maxHeight}; this export is ${width}x${height}."
+            warnings += "${config.codec.label} 声明的 HDR 编码上限为 ${hdrSupport.maxWidth}x${hdrSupport.maxHeight}；本次导出为 ${width}x${height}。"
         }
 
         if (hdrSupport.maxBitrate > 0 && config.videoBitrate > hdrSupport.maxBitrate) {
-            warnings += "${config.codec.label} HDR bitrate is advertised up to ${hdrSupport.maxBitrate / 1_000_000} Mbps; this export requests ${config.videoBitrate / 1_000_000} Mbps."
+            warnings += "${config.codec.label} 声明的 HDR 码率上限为 ${hdrSupport.maxBitrate / 1_000_000} Mbps；本次导出请求 ${config.videoBitrate / 1_000_000} Mbps。"
         }
 
         chips += Chip(
-            label = "Source checked at render",
+            label = "渲染时检查源素材",
             detail = if (sourceSummary.hasHdrSource) {
-                "Source metadata was detected during import and Media3 still verifies it at render."
+                "导入时已检测到源素材元数据，Media3 仍会在渲染时再次验证。"
             } else {
-                "HDR is preserved only when the input track actually carries HDR."
+                "只有输入轨道实际包含 HDR 时才会保留 HDR。"
             },
             tone = Tone.INFO
         )
@@ -245,33 +245,33 @@ object ExportColorConfidenceEngine {
     ) {
         if (sourceSummary.hasApvSource) {
             chips += Chip(
-                label = "Source is APV",
-                detail = "APV pro intra-frame media was detected; expect very large source files.",
+                label = "源素材为 APV",
+                detail = "检测到 APV 专业帧内编码素材；源文件体积可能非常大。",
                 tone = Tone.WARNING
             )
         }
         if (sourceSummary.hasUltraHdrGainMap) {
             chips += Chip(
-                label = "Ultra HDR source",
-                detail = "Detected ${sourceSummary.formatList()} during import.",
+                label = "Ultra HDR 源素材",
+                detail = "导入时检测到 ${sourceSummary.formatList()}。",
                 tone = Tone.GOOD
             )
         } else if (sourceSummary.hasHdrSource) {
             chips += Chip(
-                label = "HDR source",
-                detail = "Detected ${sourceSummary.formatList()} source media during import.",
+                label = "HDR 源素材",
+                detail = "导入时检测到 ${sourceSummary.formatList()} 源素材。",
                 tone = Tone.GOOD
             )
         } else if (sourceSummary.isFullyInspected) {
             chips += Chip(
-                label = "SDR source",
-                detail = "No HDR source metadata was found during import.",
+                label = "SDR 源素材",
+                detail = "导入时未发现 HDR 源素材元数据。",
                 tone = Tone.INFO
             )
         } else if (sourceSummary.totalSourceCount > 0) {
             chips += Chip(
-                label = "Source HDR unknown",
-                detail = "Some clips were created before source HDR inspection was added.",
+                label = "源素材 HDR 状态未知",
+                detail = "部分片段创建于加入 HDR 源素材检查功能之前。",
                 tone = Tone.INFO
             )
         }
@@ -289,37 +289,37 @@ object ExportColorConfidenceEngine {
         when (policy.coherence()) {
             ProjectColorPolicy.Coherence.COHERENT -> {
                 chips += Chip(
-                    label = "Project color",
+                    label = "项目色彩",
                     detail = "${policy.workingColorSpace.displayName}; ${policy.displayTransform.displayName}.",
                     tone = Tone.INFO
                 )
             }
             ProjectColorPolicy.Coherence.SDR_TONEMAP_NOOP -> {
                 chips += Chip(
-                    label = "Color policy warning",
-                    detail = "${policy.displayTransform.displayName} is selected for an SDR project.",
+                    label = "色彩策略警告",
+                    detail = "SDR 项目当前选择了 ${policy.displayTransform.displayName}。",
                     tone = Tone.WARNING
                 )
-                warnings += "Project color policy applies tone mapping even though the working space is SDR."
+                warnings += "项目工作色彩空间为 SDR，但色彩策略仍启用了色调映射。"
             }
             ProjectColorPolicy.Coherence.HDR_PASSTHROUGH -> {
                 chips += Chip(
-                    label = "Project HDR intent",
-                    detail = "${policy.workingColorSpace.displayName} is set to pass through.",
+                    label = "项目 HDR 意图",
+                    detail = "${policy.workingColorSpace.displayName} 已设置为直通。",
                     tone = if (config.hdr10PlusMetadata) Tone.GOOD else Tone.WARNING
                 )
                 if (!config.hdr10PlusMetadata) {
-                    warnings += "Project color policy is HDR pass-through, but Preserve HDR Metadata is off for this export."
+                    warnings += "项目色彩策略为 HDR 直通，但本次导出未开启“保留 HDR 元数据”。"
                 }
             }
             ProjectColorPolicy.Coherence.HDR_TO_SDR_TONEMAP -> {
                 chips += Chip(
-                    label = "Project tone-map",
-                    detail = "${policy.workingColorSpace.displayName} uses ${policy.displayTransform.displayName}.",
+                    label = "项目色调映射",
+                    detail = "${policy.workingColorSpace.displayName} 使用 ${policy.displayTransform.displayName}。",
                     tone = if (config.hdr10PlusMetadata) Tone.WARNING else Tone.INFO
                 )
                 if (config.hdr10PlusMetadata) {
-                    warnings += "Project color policy tone-maps HDR to SDR, but Preserve HDR Metadata is on for this export."
+                    warnings += "项目色彩策略会将 HDR 映射为 SDR，但本次导出却开启了“保留 HDR 元数据”。"
                 }
             }
         }
