@@ -154,9 +154,9 @@ class BatchExportPlanStore(
         val configChanged = configFingerprint.isNotBlank() &&
             configFingerprint != exportConfigFingerprint(config)
         val reason = when {
-            projectChanged && configChanged -> "The project and export settings changed after this job was queued."
-            projectChanged -> "The project changed after this job was queued."
-            configChanged -> "The export settings changed after this job was queued."
+            projectChanged && configChanged -> "任务排队后，项目内容和导出设置都发生了变化。"
+            projectChanged -> "任务排队后，项目内容发生了变化。"
+            configChanged -> "任务排队后，导出设置发生了变化。"
             else -> null
         }
         val recoverableOutputPath = resumePartialPath ?: outputPath?.takeIf { path ->
@@ -167,7 +167,7 @@ class BatchExportPlanStore(
             status == BatchExportStatus.IN_PROGRESS -> copy(
                 status = BatchExportStatus.INTERRUPTED,
                 progress = 0f,
-                errorMessage = reason ?: "This export was interrupted when ClearCut closed.",
+                errorMessage = reason ?: "ClearCut 关闭时，此导出任务被中断。",
                 resumePartialPath = recoverableOutputPath,
             )
             reason != null -> copy(
