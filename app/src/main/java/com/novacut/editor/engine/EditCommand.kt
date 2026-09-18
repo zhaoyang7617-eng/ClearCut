@@ -22,7 +22,7 @@ sealed class EditCommand {
     abstract fun undo(state: EditorState): EditorState
 
     data class AddClip(
-        override val description: String = "Add clip",
+        override val description: String = "添加片段",
         val trackId: String,
         val clip: Clip
     ) : EditCommand() {
@@ -39,7 +39,7 @@ sealed class EditCommand {
     }
 
     data class RemoveClip(
-        override val description: String = "Remove clip",
+        override val description: String = "移除片段",
         val trackId: String,
         val clip: Clip
     ) : EditCommand() {
@@ -56,7 +56,7 @@ sealed class EditCommand {
     }
 
     data class TrimClip(
-        override val description: String = "Trim clip",
+        override val description: String = "裁剪片段",
         val clipId: String,
         val oldTrimStartMs: Long,
         val oldTrimEndMs: Long,
@@ -72,7 +72,7 @@ sealed class EditCommand {
     }
 
     data class MoveClip(
-        override val description: String = "Move clip",
+        override val description: String = "移动片段",
         val clipId: String,
         val oldTimelineStartMs: Long,
         val newTimelineStartMs: Long
@@ -86,7 +86,7 @@ sealed class EditCommand {
     }
 
     data class SetClipSpeed(
-        override val description: String = "Change speed",
+        override val description: String = "更改速度",
         val clipId: String,
         val oldSpeed: Float,
         val newSpeed: Float
@@ -96,7 +96,7 @@ sealed class EditCommand {
     }
 
     data class ApplyEffect(
-        override val description: String = "Apply effect",
+        override val description: String = "应用效果",
         val clipId: String,
         val effect: Effect
     ) : EditCommand() {
