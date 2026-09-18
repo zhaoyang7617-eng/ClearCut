@@ -70,8 +70,8 @@ class MediaRelinkProbe @Inject constructor(
         val userMessage: String
             get() = when (state) {
                 RelinkState.OK -> "Source available"
-                RelinkState.MISSING -> reason?.let { "Source missing — $it" } ?: "Source missing"
-                RelinkState.UNKNOWN -> reason?.let { "Source unverified — $it" } ?: "Source unverified"
+                RelinkState.MISSING -> reason?.let { "源文件缺失 — $it" } ?: "源文件缺失"
+                RelinkState.UNKNOWN -> reason?.let { "源文件未验证 — $it" } ?: "源文件未验证"
             }
     }
 
@@ -111,7 +111,7 @@ class MediaRelinkProbe @Inject constructor(
      */
     fun check(clipId: String, uri: String?, opener: UriOpener): ClipRelinkReport {
         if (uri.isNullOrBlank()) {
-            return ClipRelinkReport(clipId, uri ?: "", RelinkState.UNKNOWN, "blank source URI")
+            return ClipRelinkReport(clipId, uri ?: "", RelinkState.UNKNOWN, "源 URI 为空")
         }
         val scheme = parseScheme(uri)
         if (scheme !in SUPPORTED_SCHEMES) {
