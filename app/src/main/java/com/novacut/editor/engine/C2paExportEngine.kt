@@ -380,7 +380,7 @@ class C2paExportEngine @Inject constructor() {
             return SigningAvailability(
                 status = AvailabilityStatus.LIBRARY_UNAVAILABLE,
                 canSignEmbeddedManifest = false,
-                message = "Content Credentials are unavailable because no C2PA signing library is bundled."
+                message = "无法使用 Content Credentials，因为此版本未内置 C2PA 签名库。"
             )
         }
         return when (signingMode) {
@@ -396,7 +396,7 @@ class C2paExportEngine @Inject constructor() {
                     SigningAvailability(
                         status = AvailabilityStatus.CERTIFICATE_ENROLLMENT_REQUIRED,
                         canSignEmbeddedManifest = false,
-                        message = "Content Credentials are unavailable until a device key and certificate chain are enrolled."
+                        message = "尚未注册设备密钥和证书链，因此无法使用 Content Credentials。"
                     )
                 }
             }
@@ -411,7 +411,7 @@ class C2paExportEngine @Inject constructor() {
                     SigningAvailability(
                         status = AvailabilityStatus.USER_PEM_REQUIRED,
                         canSignEmbeddedManifest = false,
-                        message = "Content Credentials need a user PEM private key and certificate chain."
+                        message = "Content Credentials 需要用户提供 PEM 私钥和证书链。"
                     )
                 }
             }
@@ -420,13 +420,13 @@ class C2paExportEngine @Inject constructor() {
                     SigningAvailability(
                         status = AvailabilityStatus.REMOTE_SIGNER_REQUIRED,
                         canSignEmbeddedManifest = false,
-                        message = "Content Credentials need a configured remote signing service."
+                        message = "Content Credentials 需要已配置的远程签名服务。"
                     )
                 } else if (!remoteConsentGranted) {
                     SigningAvailability(
                         status = AvailabilityStatus.REMOTE_CONSENT_REQUIRED,
                         canSignEmbeddedManifest = false,
-                        message = "Remote Content Credentials signing requires explicit per-export consent."
+                        message = "远程 Content Credentials 签名需要每次导出时明确授权。"
                     )
                 } else {
                     SigningAvailability(
