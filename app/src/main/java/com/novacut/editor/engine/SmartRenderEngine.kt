@@ -36,40 +36,40 @@ object SmartRenderEngine {
 
                 // Check if clip needs re-encoding
                 if (clip.effects.any { it.enabled }) {
-                    reasons.add("effects (${clip.effects.count { it.enabled }})")
+                    reasons.add("效果（${clip.effects.count { it.enabled }}）")
                 }
                 if (clip.colorGrade != null && clip.colorGrade.enabled) {
-                    reasons.add("color grade")
+                    reasons.add("调色")
                 }
                 if (clip.headTransition != null || clip.tailTransition != null) {
-                    reasons.add("transition")
+                    reasons.add("转场")
                 }
                 if (clip.speed != 1f || clip.speedCurve != null) {
-                    reasons.add("speed change")
+                    reasons.add("变速")
                 }
                 if (clip.isReversed) {
-                    reasons.add("reversed")
+                    reasons.add("倒放")
                 }
                 if (clip.flipHorizontal || clip.flipVertical ||
                     clip.rotation != 0f || clip.scaleX != 1f || clip.scaleY != 1f ||
                     clip.positionX != 0f || clip.positionY != 0f
                 ) {
-                    reasons.add("transform")
+                    reasons.add("变换")
                 }
                 if (clip.opacity != 1f) {
-                    reasons.add("opacity")
+                    reasons.add("不透明度")
                 }
                 if (clip.masks.isNotEmpty()) {
-                    reasons.add("masks")
+                    reasons.add("蒙版")
                 }
                 if (clip.blendMode != BlendMode.NORMAL) {
-                    reasons.add("blend mode")
+                    reasons.add("混合模式")
                 }
                 if (clip.keyframes.isNotEmpty()) {
-                    reasons.add("keyframes")
+                    reasons.add("关键帧")
                 }
                 if (clip.captions.isNotEmpty()) {
-                    reasons.add("captions")
+                    reasons.add("字幕")
                 }
 
                 // Check for text overlays on this clip's time range
@@ -77,7 +77,7 @@ object SmartRenderEngine {
                     overlay.startTimeMs < clip.timelineEndMs && overlay.endTimeMs > clip.timelineStartMs
                 }
                 if (hasOverlay) {
-                    reasons.add("text overlay")
+                    reasons.add("文字叠加层")
                 }
 
                 // Check if resolution/codec change is needed
@@ -89,7 +89,7 @@ object SmartRenderEngine {
                         startMs = clip.timelineStartMs,
                         endMs = clip.timelineEndMs,
                         needsReEncode = reasons.isNotEmpty(),
-                        reason = if (reasons.isEmpty()) "pass-through" else reasons.joinToString(", ")
+                        reason = if (reasons.isEmpty()) "直通" else reasons.joinToString("、")
                     )
                 )
             }
