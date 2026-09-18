@@ -40,7 +40,7 @@ class EditingSuggestionEngine @Inject constructor() {
         if (!hasEffects && videoClips.size == 1 && videoClips[0].durationMs > 10_000L) {
             return Suggestion(
                 id = "auto_color",
-                message = "Try Auto Color to enhance this clip",
+                message = "试试自动调色，让这个片段更出彩",
                 actionId = "auto_color",
                 priority = 10
             )
@@ -49,7 +49,7 @@ class EditingSuggestionEngine @Inject constructor() {
         if (!hasTransitions && videoClips.size >= 2) {
             return Suggestion(
                 id = "add_transitions",
-                message = "Add transitions between your ${videoClips.size} clips",
+                message = "为这 ${videoClips.size} 个片段添加转场",
                 actionId = "transitions",
                 priority = 20
             )
@@ -58,7 +58,7 @@ class EditingSuggestionEngine @Inject constructor() {
         if (audioClips.isNotEmpty() && !hasBeatMarkers) {
             return Suggestion(
                 id = "beat_sync",
-                message = "Sync cuts to the beat of your music",
+                message = "让剪切点跟随音乐节拍",
                 actionId = "beat_sync",
                 priority = 15
             )
@@ -67,7 +67,7 @@ class EditingSuggestionEngine @Inject constructor() {
         if (videoClips.size >= 3 && !hasTranscript) {
             return Suggestion(
                 id = "auto_captions",
-                message = "Add auto captions to make your video accessible",
+                message = "添加自动字幕，让视频更易观看",
                 actionId = "auto_captions",
                 priority = 12
             )
@@ -77,7 +77,7 @@ class EditingSuggestionEngine @Inject constructor() {
             val longClip = videoClips.first { it.durationMs > 30_000L }
             return Suggestion(
                 id = "scene_detect",
-                message = "Split long clip into scenes automatically",
+                message = "自动把长片段按场景拆分",
                 actionId = "scene_detect",
                 priority = 18
             )
@@ -86,7 +86,7 @@ class EditingSuggestionEngine @Inject constructor() {
         if (!hasColorGrade && hasEffects) {
             return Suggestion(
                 id = "color_grade",
-                message = "Try color grading for a cinematic look",
+                message = "试试调色，获得更有电影感的画面",
                 actionId = "color_grade",
                 priority = 5
             )
@@ -95,7 +95,7 @@ class EditingSuggestionEngine @Inject constructor() {
         if (totalDurationMs > 60_000L && videoClips.size >= 5) {
             return Suggestion(
                 id = "auto_edit",
-                message = "Generate a highlight reel from your clips",
+                message = "从这些片段自动生成精彩集锦",
                 actionId = "auto_edit",
                 priority = 8
             )
