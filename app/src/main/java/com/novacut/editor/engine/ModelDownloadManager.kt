@@ -99,7 +99,7 @@ class ModelDownloadManager @Inject constructor(
                 }
                 if (needsNetwork && wifiOnly && isMeteredNetwork()) {
                     throw MeteredNetworkException(
-                        "Wi-Fi-only is enabled and the active network is metered or unavailable"
+                        "已启用仅 Wi‑Fi 下载，但当前网络按流量计费或不可用"
                     )
                 }
 
@@ -258,7 +258,7 @@ class ModelDownloadManager @Inject constructor(
                 }.lowercase()
                 if (actualHash != expected) {
                     throw IOException(
-                        "Checksum mismatch for ${request.displayName}: expected $expected, got $actualHash"
+                        "${request.displayName} 校验和不匹配：预期 $expected，实际 $actualHash"
                     )
                 }
             }
@@ -332,7 +332,7 @@ class ModelDownloadManager @Inject constructor(
         internal fun validateDeclaredLength(serverLength: Long, maxBytes: Long, displayName: String) {
             if (serverLength > maxBytes) {
                 throw IOException(
-                    "Model download is larger than the ${maxBytes}-byte limit: $displayName"
+                    "模型下载超过 ${maxBytes} 字节上限：$displayName"
                 )
             }
         }
@@ -464,16 +464,16 @@ class ModelDownloadManager @Inject constructor(
             val targets = hashSetOf<String>()
             files.forEach { request ->
                 require(request.url.startsWith("https://")) {
-                    "Model downloads must use HTTPS: ${request.displayName}"
+                    "模型下载必须使用 HTTPS：${request.displayName}"
                 }
                 require(request.minimumBytes > 0L) {
-                    "Model minimum size must be positive: ${request.displayName}"
+                    "模型最小大小必须为正值：${request.displayName}"
                 }
                 require(request.maxBytes >= request.minimumBytes) {
-                    "Model maximum size must cover its minimum: ${request.displayName}"
+                    "模型最大大小必须不小于最小值：${request.displayName}"
                 }
                 require(request.estimatedBytes in request.minimumBytes..request.maxBytes) {
-                    "Model estimate must be between minimum and maximum: ${request.displayName}"
+                    "模型预计大小必须位于最小值和最大值之间：${request.displayName}"
                 }
                 request.sha256?.let { hash ->
                     require(hash.length == 64 && hash.all { it.isHexDigit() }) {
@@ -481,7 +481,7 @@ class ModelDownloadManager @Inject constructor(
                     }
                 }
                 require(!request.checksumRequired || request.sha256 != null) {
-                    "Checksum is required but missing for ${request.displayName}"
+                    "${request.displayName} 需要校验和，但当前缺失"
                 }
                 val canonicalTarget = request.targetFile.absoluteFile.canonicalPath
                 require(targets.add(canonicalTarget)) {
