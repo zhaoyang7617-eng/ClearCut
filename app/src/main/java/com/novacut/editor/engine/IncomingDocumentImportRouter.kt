@@ -84,15 +84,14 @@ class IncomingDocumentImportRouter @Inject constructor(
             IncomingDocumentKind.CAPTION_SRT,
             IncomingDocumentKind.CAPTION_WEBVTT -> invalid(
                 item = item,
-                body = "${item.kind.displayName} files cannot be installed from the Projects screen. " +
-                    "${item.kind.targetAction}.",
+                body = "${item.kind.displayName} 文件无法直接从项目页安装。${item.kind.targetAction}。",
             )
         }
     }
 
     suspend fun importTemplate(item: IncomingDocumentItem): IncomingDocumentImportPreview = withContext(Dispatchers.IO) {
         if (item.kind != IncomingDocumentKind.TEMPLATE) {
-            return@withContext invalid(item, "Only ClearCut template files can be imported from this preview.")
+            return@withContext invalid(item, "此预览仅支持导入 ClearCut 模板文件。")
         }
         val readability = validateReadable(item)
         if (readability != null) return@withContext readability
@@ -102,17 +101,17 @@ class IncomingDocumentImportRouter @Inject constructor(
             IncomingDocumentImportPreview(
                 item = item,
                 status = IncomingDocumentImportStatus.IMPORTED,
-                title = "Template imported",
-                body = "Saved \"${template.name}\" to Templates.",
+                title = "模板已导入",
+                body = "已将“${template.name}”保存到模板库。",
                 details = listOf(
-                    "File kind: ${item.kind.displayName}",
-                    "Target action: ${item.kind.targetAction}",
-                    "Tracks: ${template.trackTypes.joinToString { it.name.lowercase() }}",
-                    "Text overlays: ${template.textOverlayCount}",
+                    "文件类型：${item.kind.displayName}",
+                    "目标操作：${item.kind.targetAction}",
+                    "轨道：${template.trackTypes.joinToString { it.name.lowercase() }}",
+                    "文字叠加层：${template.textOverlayCount}",
                 ),
                 warnings = result.compatibilityReport?.issues.orEmpty().map { it.message } +
                     result.restoreReport.takeIf { it.isPartial }
-                        ?.let { listOf("Template document was partially restored: ${it.summary()}.") }
+                        ?.let { listOf("模板文档仅部分恢复：${it.summary()}。") }
                         .orEmpty(),
                 canImportNow = false,
             )
@@ -127,7 +126,7 @@ class IncomingDocumentImportRouter @Inject constructor(
 
     suspend fun importStylePack(item: IncomingDocumentItem): IncomingDocumentImportPreview = withContext(Dispatchers.IO) {
         if (item.kind != IncomingDocumentKind.STYLE_PACK) {
-            return@withContext invalid(item, "Only .ncstyle files can be imported as style packs.")
+            return@withContext invalid(item, "只有 .ncstyle 文件可作为样式包导入。")
         }
         val readability = validateReadable(item)
         if (readability != null) return@withContext readability
@@ -137,19 +136,19 @@ class IncomingDocumentImportRouter @Inject constructor(
             IncomingDocumentImportPreview(
                 item = item,
                 status = IncomingDocumentImportStatus.IMPORTED,
-                title = "Style pack installed",
-                body = "\"${pack.name}\" added ${pack.styles.size} styles to the caption gallery.",
+                title = "样式包已安装",
+                body = "“${pack.name}”已向字幕样式库添加 ${pack.styles.size} 个样式。",
                 details = listOf(
-                    "File kind: ${item.kind.displayName}",
-                    "Target action: ${item.kind.targetAction}",
-                    "Pack: ${pack.name} v${pack.version}",
-                    "Author: ${pack.author.ifBlank { "Unknown" }}",
-                    "Styles: ${pack.styles.size}",
-                    "Schema: v${pack.schemaVersion}",
-                    "Content hash: ${pack.contentHash.ifBlank { "not recorded" }}",
-                    "Source: ${pack.provenanceSource ?: "not specified"}",
-                    "Reason code: ${result.reasonCode}",
-                    "Rollback available: ${stylePackManager.canRollback(pack.id)}",
+                    "文件类型：${item.kind.displayName}",
+                    "目标操作：${item.kind.targetAction}",
+                    "样式包：${pack.name} v${pack.version}",
+                    "作者：${pack.author.ifBlank { "未知" }}",
+                    "样式数：${pack.styles.size}",
+                    "架构版本：v${pack.schemaVersion}",
+                    "内容哈希：${pack.contentHash.ifBlank { "未记录" }}",
+                    "来源：${pack.provenanceSource ?: "未指定"}",
+                    "原因代码：${result.reasonCode}",
+                    "可回滚：${stylePackManager.canRollback(pack.id)}",
                 ),
                 warnings = result.warnings,
                 canImportNow = false,
@@ -165,7 +164,7 @@ class IncomingDocumentImportRouter @Inject constructor(
     }
 
     private fun previewStylePack(item: IncomingDocumentItem): IncomingDocumentImportPreview {
-        val json = readText(item) ?: return invalid(item, "ClearCut could not read this style-pack file.")
+        val json = readText(item) ?: return invalid(item, "ClearCut 无法读取此样式包文件。")
         // Validation only: preview must not install. Installing happens in commit().
         val result = stylePackManager.validateFromJson(json)
         val pack = result.pack
@@ -175,20 +174,20 @@ class IncomingDocumentImportRouter @Inject constructor(
         return IncomingDocumentImportPreview(
             item = item,
             status = IncomingDocumentImportStatus.READY,
-            title = "Style pack ready to install",
-            body = "\"${pack.name}\" contains ${pack.styles.size} caption/text styles.",
+            title = "样式包已准备好安装",
+            body = "“${pack.name}”包含 ${pack.styles.size} 个字幕/文字样式。",
             details = baseDetails(item) + listOf(
-                "Pack: ${pack.name} v${pack.version}",
-                "Author: ${pack.author.ifBlank { "Unknown" }}",
-                "License: ${pack.license.ifBlank { "Not specified" }}",
-                "Styles: ${pack.styles.size}",
-                "Schema: v${pack.schemaVersion}",
-                "Content hash: ${pack.contentHash.ifBlank { "computed on install" }}",
-                "Source: ${pack.provenanceSource ?: "not specified; recorded as local import on install"}",
-                "Reason code: ${result.reasonCode}",
-                "Rollback available: ${stylePackManager.canRollback(pack.id)}",
+                "样式包：${pack.name} v${pack.version}",
+                "作者：${pack.author.ifBlank { "未知" }}",
+                "许可证：${pack.license.ifBlank { "未指定" }}",
+                "样式数：${pack.styles.size}",
+                "架构版本：v${pack.schemaVersion}",
+                "内容哈希：${pack.contentHash.ifBlank { "安装时计算" }}",
+                "来源：${pack.provenanceSource ?: "未指定；安装时记录为本地导入"}",
+                "原因代码：${result.reasonCode}",
+                "可回滚：${stylePackManager.canRollback(pack.id)}",
             ),
-            warnings = result.warnings + "Nothing was installed during preview; choose Import to install.",
+            warnings = result.warnings + "预览期间未安装任何内容；请选择“导入”完成安装。",
             canImportNow = true,
         )
     }
@@ -197,8 +196,8 @@ class IncomingDocumentImportRouter @Inject constructor(
         return IncomingDocumentImportPreview(
             item = item,
             status = IncomingDocumentImportStatus.READY,
-            title = "Template ready for review",
-            body = "ClearCut can run the existing template compatibility checks before saving this file to Templates.",
+            title = "模板已准备好检查",
+            body = "保存到模板库前，ClearCut 会先运行现有的模板兼容性检查。",
             details = baseDetails(item),
             warnings = emptyList(),
             canImportNow = true,
@@ -217,24 +216,24 @@ class IncomingDocumentImportRouter @Inject constructor(
         return IncomingDocumentImportPreview(
             item = item,
             status = IncomingDocumentImportStatus.READY,
-            title = "Effect pack validated",
-            body = "Open an editor project, select a clip, and use Effect Library import to apply this pack.",
+            title = "效果包已验证",
+            body = "请打开一个编辑项目，选择片段，然后从效果库导入并应用此效果包。",
             details = baseDetails(item) + listOf(
-                "Effect pack: ${imported.name}",
-                "Video effects: ${imported.effects.size}",
-                "Audio effects: ${imported.audioEffects.size}",
-                "Color grade: ${if (imported.colorGrade != null) "included" else "not included"}",
+                "效果包：${imported.name}",
+                "视频效果：${imported.effects.size}",
+                "音频效果：${imported.audioEffects.size}",
+                "调色：${if (imported.colorGrade != null) "已包含" else "未包含"}",
                 "LUT: ${when {
-                    imported.embeddedLut != null -> "embedded"
-                    imported.colorGrade?.lutPath != null -> "local reference"
-                    else -> "not included"
+                    imported.embeddedLut != null -> "已嵌入"
+                    imported.colorGrade?.lutPath != null -> "本地引用"
+                    else -> "未包含"
                 }}",
                 "Schema: v${validation.schemaVersion}",
-                "Content hash: ${validation.contentHash ?: "computed for legacy pack on export"}",
-                "Source: ${validation.provenanceSource ?: "not specified"}",
-                "Reason code: ${validation.reasonCode}",
+                "内容哈希：${validation.contentHash ?: "旧版效果包将在导出时计算"}",
+                "来源：${validation.provenanceSource ?: "未指定"}",
+                "原因代码：${validation.reasonCode}",
             ),
-            warnings = validation.warnings + "No clip was changed from the Projects screen.",
+            warnings = validation.warnings + "项目页未修改任何片段。",
             canImportNow = false,
         )
     }
@@ -251,20 +250,20 @@ class IncomingDocumentImportRouter @Inject constructor(
         return IncomingDocumentImportPreview(
             item = item,
             status = IncomingDocumentImportStatus.READY,
-            title = "Stabilization profile ready",
-            body = "${profile.name} contains reusable offline lens, motion, crop, and sync assumptions.",
+            title = "稳定配置已就绪",
+            body = "${profile.name} 包含可复用的离线镜头、运动、裁剪和同步参数。",
             details = baseDetails(item) + listOf(
-                "Profile: ${profile.name}",
-                "Lens: ${profile.lens.name}",
-                "Motion: ${profile.motion.algorithm}",
-                "Crop scale: ${"%.2f".format(profile.cropScale)}",
-                "Sync offset: ${profile.syncOffsetMs} ms",
+                "配置：${profile.name}",
+                "镜头：${profile.lens.name}",
+                "运动算法：${profile.motion.algorithm}",
+                "裁剪缩放：${"%.2f".format(profile.cropScale)}",
+                "同步偏移：${profile.syncOffsetMs} ms",
                 "Schema: v${result.schemaVersion}",
-                "Content hash: ${result.contentHash ?: "not recorded"}",
-                "Source: ${result.provenanceSource ?: "not specified"}",
-                "Reason code: ${result.reasonCode}",
+                "内容哈希：${result.contentHash ?: "未记录"}",
+                "来源：${result.provenanceSource ?: "未指定"}",
+                "原因代码：${result.reasonCode}",
             ),
-            warnings = result.warnings + "Nothing was activated during preview; choose Import to make this the active offline profile.",
+            warnings = result.warnings + "预览期间未启用任何配置；请选择“导入”将其设为当前离线配置。",
             canImportNow = true,
         )
     }
@@ -281,15 +280,15 @@ class IncomingDocumentImportRouter @Inject constructor(
         return IncomingDocumentImportPreview(
             item = item,
             status = IncomingDocumentImportStatus.IMPORTED,
-            title = "Stabilization profile activated",
-            body = "${profile.name} will be used by the next offline stabilization analysis.",
+            title = "稳定配置已启用",
+            body = "下次离线稳定分析将使用 ${profile.name}。",
             details = baseDetails(item) + listOf(
-                "Profile: ${profile.name}",
-                "Lens: ${profile.lens.name}",
-                "Motion: ${profile.motion.algorithm}",
-                "Crop scale: ${"%.2f".format(profile.cropScale)}",
-                "Sync offset: ${profile.syncOffsetMs} ms",
-                "Reason code: ${result.reasonCode}",
+                "配置：${profile.name}",
+                "镜头：${profile.lens.name}",
+                "运动算法：${profile.motion.algorithm}",
+                "裁剪缩放：${"%.2f".format(profile.cropScale)}",
+                "同步偏移：${profile.syncOffsetMs} ms",
+                "原因代码：${result.reasonCode}",
             ),
             warnings = result.warnings,
             canImportNow = false,
@@ -300,20 +299,20 @@ class IncomingDocumentImportRouter @Inject constructor(
         item: IncomingDocumentItem,
         parse: (File) -> LutEngine.Lut3D?,
     ): IncomingDocumentImportPreview {
-        val tempFile = copyToPreviewFile(item) ?: return invalid(item, "ClearCut could not copy this LUT for validation.")
+        val tempFile = copyToPreviewFile(item) ?: return invalid(item, "ClearCut 无法复制此 LUT 进行验证。")
         return try {
             val lut = parse(tempFile)
-                ?: return invalid(item, "This LUT is malformed or uses an unsupported table shape.")
+                ?: return invalid(item, "此 LUT 格式无效，或使用了不支持的表结构。")
             IncomingDocumentImportPreview(
                 item = item,
                 status = IncomingDocumentImportStatus.READY,
-                title = "LUT validated",
-                body = "Open Color Grading in an editor project to apply this LUT to a selected clip.",
+                title = "LUT 已验证",
+                body = "请在编辑项目中打开“调色”，将此 LUT 应用到所选片段。",
                 details = baseDetails(item) + listOf(
-                    "LUT size: ${lut.size}x${lut.size}x${lut.size}",
-                    "Entries: ${lut.data.size / 3}",
+                    "LUT 尺寸：${lut.size}x${lut.size}x${lut.size}",
+                    "条目数：${lut.data.size / 3}",
                 ),
-                warnings = listOf("No project color grade was changed from the Projects screen."),
+                warnings = listOf("项目页未修改任何项目调色。"),
                 canImportNow = false,
             )
         } finally {
@@ -322,20 +321,20 @@ class IncomingDocumentImportRouter @Inject constructor(
     }
 
     private fun previewOpenFxDescriptor(item: IncomingDocumentItem): IncomingDocumentImportPreview {
-        val json = readText(item) ?: return invalid(item, "ClearCut could not read this descriptor.")
+        val json = readText(item) ?: return invalid(item, "ClearCut 无法读取此描述文件。")
         val descriptor = OpenFxDescriptor.fromJson(json)
-            ?: return invalid(item, "This .ncfxd file did not match ClearCut's OpenFX descriptor schema.")
+            ?: return invalid(item, "此 .ncfxd 文件不符合 ClearCut 的 OpenFX 描述文件架构。")
         return IncomingDocumentImportPreview(
             item = item,
             status = IncomingDocumentImportStatus.READY,
-            title = "OpenFX descriptor validated",
-            body = "ClearCut can carry this metadata alongside effect packs for future timeline interchange.",
+            title = "OpenFX 描述文件已验证",
+            body = "ClearCut 可将此元数据与效果包一起保留，用于后续时间线交换。",
             details = baseDetails(item) + listOf(
-                "ClearCut effect: ${descriptor.novaCutEffectId}",
-                "OpenFX effect: ${descriptor.openfxId}",
-                "Parameters: ${descriptor.parameters.size}",
+                "ClearCut 效果：${descriptor.novaCutEffectId}",
+                "OpenFX 效果：${descriptor.openfxId}",
+                "参数数：${descriptor.parameters.size}",
             ),
-            warnings = listOf("Descriptors are metadata only; no runtime effect was installed."),
+            warnings = listOf("描述文件仅包含元数据；未安装任何运行时效果。"),
             canImportNow = false,
         )
     }
@@ -346,22 +345,22 @@ class IncomingDocumentImportRouter @Inject constructor(
         if (!preview.valid) {
             return invalid(
                 item = item,
-                body = preview.errorMessage ?: "This archive could not be validated.",
+                body = preview.errorMessage ?: "无法验证此归档。",
                 warnings = report.warnings,
             )
         }
         return IncomingDocumentImportPreview(
             item = item,
             status = IncomingDocumentImportStatus.READY,
-            title = "Project archive validated",
-            body = "Open an editor project and use Archive Transfer import to restore this archive intentionally.",
+            title = "项目归档已验证",
+            body = "请打开编辑项目，并使用“归档传输”导入来明确恢复此归档。",
             details = baseDetails(item) + listOf(
-                "Archive report: ${report.summary}",
-                "Packaged media declared: ${preview.packagedMedia}/${report.mediaTotal}",
-                "Schema version: ${report.schemaVersion}",
+                "归档报告：${report.summary}",
+                "声明的已打包媒体：${preview.packagedMedia}/${report.mediaTotal}",
+                "架构版本：${report.schemaVersion}",
             ),
             warnings = report.warnings + listOf(
-                "Preview read bounded project metadata only; no archive media was extracted."
+                "预览仅读取受限的项目元数据；未提取归档中的媒体。"
             ),
             canImportNow = false,
         )
@@ -374,7 +373,7 @@ class IncomingDocumentImportRouter @Inject constructor(
             IncomingDocumentKind.TIMELINE_EDL -> TimelineImportEngine.Format.EDL
             IncomingDocumentKind.EDIT_DECISION_JSON -> TimelineImportEngine.Format.EDIT_DECISION_JSON
             else -> null
-        } ?: return invalid(item, "Unknown timeline interchange format.")
+        } ?: return invalid(item, "未知的时间线交换格式。")
         val fidelity = timelineImportEngine.roundTripFidelity(format)
         val result = timelineImportEngine.import(item.uri, format = format)
         val report = result.fidelityReport
@@ -393,33 +392,32 @@ class IncomingDocumentImportRouter @Inject constructor(
             item = item,
             status = status,
             title = if (schemaTooNew) {
-                "${format.displayName} requires a newer ClearCut version"
+                "${format.displayName} 需要更新版本的 ClearCut"
             } else if (report?.canProceed == true) {
-                "${format.displayName} import preview ready"
+                "${format.displayName} 导入预览已就绪"
             } else {
-                "${format.displayName} import needs review"
+                "${format.displayName} 导入需要检查"
             },
             body = if (schemaTooNew) {
-                "This edit-decision file was rejected before any timeline state was created. Export it with a compatible ClearCut schema version."
+                "该剪辑决策文件在创建任何时间线状态前已被拒绝。请使用兼容的 ClearCut 架构版本重新导出。"
             } else {
-                "ClearCut parsed the timeline and prepared an atomic editor commit without mutating project state. " +
-                    "Open an editor project to apply it after the report and any relinks are accepted."
+                "ClearCut 已解析时间线并准备好原子化提交，尚未修改项目状态。请打开编辑项目，在接受报告和必要的重新链接后再应用。"
             },
             details = baseDetails(item) + listOf(
-                "Expected fidelity: ${fidelity.displayName}",
+                "预计保真度：${fidelity.displayName}",
                 fidelity.warningCopy,
-                "Parsed tracks: ${result.exchangeResult?.tracks?.size ?: 0}",
-                "Parsed clips: ${result.exchangeResult?.tracks.orEmpty().sumOf { it.clips.size }}",
-                "Timeline markers: ${result.exchangeResult?.timelineMarkers?.size ?: 0}",
-                "Captions: $captionCount",
-                "Text overlays: ${result.exchangeResult?.textOverlays?.size ?: 0}",
-                result.exchangeResult?.schemaVersion?.let { "Schema version: v$it" }
-                    ?: "Schema version: unavailable",
-                "Fidelity report: ${report?.summary ?: "unavailable"}",
+                "已解析轨道：${result.exchangeResult?.tracks?.size ?: 0}",
+                "已解析片段：${result.exchangeResult?.tracks.orEmpty().sumOf { it.clips.size }}",
+                "时间线标记：${result.exchangeResult?.timelineMarkers?.size ?: 0}",
+                "字幕：$captionCount",
+                "文字叠加层：${result.exchangeResult?.textOverlays?.size ?: 0}",
+                result.exchangeResult?.schemaVersion?.let { "架构版本：v$it" }
+                    ?: "架构版本：不可用",
+                "保真度报告：${report?.summary ?: "不可用"}",
                 if (result.unresolvedMediaUris.isEmpty()) {
-                    "Unresolved media: none"
+                    "未解析媒体：无"
                 } else {
-                    "Unresolved media: ${result.unresolvedMediaUris.size} — use Relink media before commit"
+                    "未解析媒体：${result.unresolvedMediaUris.size} 个 — 提交前请先使用“重新链接媒体”"
                 },
             ),
             warnings = (result.warnings + reportIssues).distinct(),
@@ -429,11 +427,11 @@ class IncomingDocumentImportRouter @Inject constructor(
 
     private fun previewCaptionImport(item: IncomingDocumentItem): IncomingDocumentImportPreview {
         val format = CaptionImportEngine.formatFor(item.kind)
-            ?: return invalid(item, "Unsupported caption format.")
+            ?: return invalid(item, "不支持的字幕格式。")
         val bytes = readBytes(item)
             ?: return invalid(
                 item,
-                "ClearCut could not read this caption file within its bounded import limit.",
+                "ClearCut 无法在导入大小限制内读取此字幕文件。",
             )
         val analysis = CaptionImportEngine.analyze(bytes, format)
         val details = baseDetails(item) + captionDetails(analysis)
@@ -442,10 +440,10 @@ class IncomingDocumentImportRouter @Inject constructor(
             return IncomingDocumentImportPreview(
                 item = item,
                 status = IncomingDocumentImportStatus.INVALID,
-                title = "Caption import blocked",
+                title = "字幕导入已阻止",
                 body = captionFailureMessage(failure),
                 details = details,
-                warnings = analysis.warnings + "No project data was changed.",
+                warnings = analysis.warnings + "未修改任何项目数据。",
                 canImportNow = false,
                 captionImport = analysis,
             )
@@ -453,10 +451,10 @@ class IncomingDocumentImportRouter @Inject constructor(
         return IncomingDocumentImportPreview(
             item = item,
             status = IncomingDocumentImportStatus.READY,
-            title = "Caption preview ready",
-            body = "Preview is non-mutating. Open Caption Editor on a selected clip to apply this import as one undoable edit.",
-            details = details + "Time mapping: source timestamps are offset by the selected clip's timeline start and clipped to that clip.",
-            warnings = analysis.warnings + "No project data was changed during preview.",
+            title = "字幕预览已就绪",
+            body = "预览不会修改项目。请在所选片段上打开字幕编辑器，将此次导入作为一个可撤销操作应用。",
+            details = details + "时间映射：源时间戳会减去所选片段在时间线中的起点，并裁切到该片段范围内。",
+            warnings = analysis.warnings + "预览期间未修改任何项目数据。",
             canImportNow = false,
             captionImport = analysis,
         )
@@ -464,18 +462,18 @@ class IncomingDocumentImportRouter @Inject constructor(
 
     private fun validateReadable(item: IncomingDocumentItem): IncomingDocumentImportPreview? {
         if (item.uri.scheme != "content") {
-            return invalid(item, "Only content:// document grants are accepted.")
+            return invalid(item, "仅接受 content:// 文档授权。")
         }
         val knownSize = item.sizeBytes
         if (knownSize != null && knownSize > item.kind.maxBytes) {
-            return invalid(item, "This file is larger than ClearCut's ${item.kind.displayName} import limit.")
+            return invalid(item, "此文件超过 ClearCut 对 ${item.kind.displayName} 的导入大小限制。")
         }
         val readable = runCatching {
             context.contentResolver.openAssetFileDescriptor(item.uri, "r")?.use { descriptor ->
                 descriptor.length != 0L
             } ?: false
         }.getOrDefault(false)
-        return if (readable) null else invalid(item, "ClearCut could not read this document grant.")
+        return if (readable) null else invalid(item, "ClearCut 无法读取此文档授权。")
     }
 
     private fun copyToPreviewFile(item: IncomingDocumentItem): File? {
@@ -525,39 +523,39 @@ class IncomingDocumentImportRouter @Inject constructor(
     }
 
     private fun captionDetails(analysis: CaptionImportEngine.Preview): List<String> {
-        val encoding = analysis.encoding?.displayName ?: "unknown"
+        val encoding = analysis.encoding?.displayName ?: "未知"
         val confidence = "%.0f%%".format(java.util.Locale.US, analysis.languageConfidence * 100f)
         return listOf(
-            "Format: ${analysis.format.displayName}",
-            "Encoding: $encoding",
-            "Cues: ${analysis.cues.size}",
-            "Duration: ${formatDuration(analysis.durationMs)}",
-            "Language guess: ${analysis.language} ($confidence confidence)",
-            "Overlaps: ${analysis.overlapCount}",
-            "Invalid cues: ${analysis.invalidCueCount}",
+            "格式：${analysis.format.displayName}",
+            "编码：$encoding",
+            "字幕条数：${analysis.cues.size}",
+            "时长：${formatDuration(analysis.durationMs)}",
+            "语言判断：${analysis.language}（置信度 $confidence）",
+            "重叠：${analysis.overlapCount}",
+            "无效字幕：${analysis.invalidCueCount}",
         )
     }
 
     private fun captionFailureMessage(failure: CaptionImportEngine.Failure): String {
         return when (failure) {
-            CaptionImportEngine.Failure.OVERSIZED -> "Caption file is larger than ClearCut's bounded import limit."
-            CaptionImportEngine.Failure.EMPTY -> "Caption file is empty."
-            CaptionImportEngine.Failure.BINARY -> "This file contains binary content and is not a text caption file."
-            CaptionImportEngine.Failure.UNSUPPORTED_ENCODING -> "Caption encoding is unsupported or malformed. Use UTF-8 or UTF-16 text."
-            CaptionImportEngine.Failure.INVALID_HEADER -> "WebVTT files must begin with a valid WEBVTT header."
-            CaptionImportEngine.Failure.INVALID_CUES -> "One or more caption cues are invalid; the file was not imported."
-            CaptionImportEngine.Failure.EXCESSIVE_CUES -> "Caption file contains more cues than ClearCut allows in one import."
-            CaptionImportEngine.Failure.NO_CUES -> "No valid caption cues were found."
+            CaptionImportEngine.Failure.OVERSIZED -> "字幕文件超过 ClearCut 的导入大小限制。"
+            CaptionImportEngine.Failure.EMPTY -> "字幕文件为空。"
+            CaptionImportEngine.Failure.BINARY -> "此文件包含二进制内容，并非文本字幕文件。"
+            CaptionImportEngine.Failure.UNSUPPORTED_ENCODING -> "字幕编码不受支持或格式损坏。请使用 UTF-8 或 UTF-16 文本。"
+            CaptionImportEngine.Failure.INVALID_HEADER -> "WebVTT 文件必须以有效的 WEBVTT 头开始。"
+            CaptionImportEngine.Failure.INVALID_CUES -> "一个或多个字幕条目无效，因此未导入该文件。"
+            CaptionImportEngine.Failure.EXCESSIVE_CUES -> "字幕条目数量超过 ClearCut 单次导入上限。"
+            CaptionImportEngine.Failure.NO_CUES -> "未找到有效字幕条目。"
         }
     }
 
     private fun baseDetails(item: IncomingDocumentItem): List<String> {
         return listOfNotNull(
-            "File: ${item.displayName}",
-            "File kind: ${item.kind.displayName}",
-            "Target action: ${item.kind.targetAction}",
-            item.mimeType?.let { "MIME type: $it" },
-            item.sizeBytes?.let { "Size: ${formatBytes(it)}" },
+            "文件：${item.displayName}",
+            "文件类型：${item.kind.displayName}",
+            "目标操作：${item.kind.targetAction}",
+            item.mimeType?.let { "MIME 类型：$it" },
+            item.sizeBytes?.let { "大小：${formatBytes(it)}" },
         )
     }
 
@@ -570,10 +568,10 @@ class IncomingDocumentImportRouter @Inject constructor(
         return IncomingDocumentImportPreview(
             item = item,
             status = IncomingDocumentImportStatus.INVALID,
-            title = "Document import blocked",
+            title = "文档导入已阻止",
             body = body,
-            details = baseDetails(item) + reasonCode?.let { listOf("Reason code: $it") }.orEmpty(),
-            warnings = warnings.ifEmpty { listOf("No project data was changed.") },
+            details = baseDetails(item) + reasonCode?.let { listOf("原因代码：$it") }.orEmpty(),
+            warnings = warnings.ifEmpty { listOf("未修改任何项目数据。") },
             canImportNow = false,
         )
     }
@@ -586,7 +584,7 @@ class IncomingDocumentImportRouter @Inject constructor(
         return IncomingDocumentImportPreview(
             item = item,
             status = IncomingDocumentImportStatus.BLOCKED,
-            title = "${item.kind.displayName} support is pending",
+            title = "${item.kind.displayName} 支持尚未完成",
             body = body,
             details = baseDetails(item),
             warnings = warnings,
@@ -596,72 +594,72 @@ class IncomingDocumentImportRouter @Inject constructor(
 
     private fun stylePackFailureMessage(failure: StylePackFailure): String {
         return when (failure) {
-            StylePackFailure.NONE -> "Style pack import failed."
-            StylePackFailure.UNREADABLE -> "ClearCut could not read this file."
-            StylePackFailure.INVALID_JSON -> "File is not valid JSON."
-            StylePackFailure.MISSING_REQUIRED_FIELDS -> "Pack is missing required fields (id, name, or styles)."
-            StylePackFailure.INVALID_SCHEMA -> "Pack schemaVersion must be a positive integer."
-            StylePackFailure.WRONG_KIND -> "This file declares a different declarative pack type."
-            StylePackFailure.INCOMPATIBLE_VERSION -> "Pack requires a newer version of ClearCut."
-            StylePackFailure.MISSING_MANIFEST_FIELDS -> "Current-schema packs must declare compatibility and provenance metadata."
-            StylePackFailure.UNKNOWN_REQUIRED_CAPABILITY -> "Pack requires a capability this ClearCut build does not support."
-            StylePackFailure.INCOMPATIBLE_APP_VERSION -> "Pack requires a newer version of ClearCut."
-            StylePackFailure.UNSAFE_CONTENT -> "Pack contains executable or plugin content, which ClearCut rejects."
-            StylePackFailure.INVALID_STYLE_ENTRY -> "Pack contains an invalid style entry."
-            StylePackFailure.MISSING_CONTENT_HASH -> "Current-schema packs must include a content hash."
-            StylePackFailure.HASH_MISMATCH -> "Pack content failed its integrity check."
-            StylePackFailure.EMPTY_STYLES -> "Pack contains no styles."
-            StylePackFailure.DUPLICATE_ID -> "Pack contains duplicate style IDs."
-            StylePackFailure.OVERSIZED -> "Pack file is too large."
-            StylePackFailure.WRITE_FAILED -> "Could not save pack to device storage."
+            StylePackFailure.NONE -> "样式包导入失败。"
+            StylePackFailure.UNREADABLE -> "ClearCut 无法读取此文件。"
+            StylePackFailure.INVALID_JSON -> "文件不是有效的 JSON。"
+            StylePackFailure.MISSING_REQUIRED_FIELDS -> "样式包缺少必填字段（id、name 或 styles）。"
+            StylePackFailure.INVALID_SCHEMA -> "样式包 schemaVersion 必须为正整数。"
+            StylePackFailure.WRONG_KIND -> "此文件声明了其他声明式包类型。"
+            StylePackFailure.INCOMPATIBLE_VERSION -> "样式包需要更新版本的 ClearCut。"
+            StylePackFailure.MISSING_MANIFEST_FIELDS -> "当前架构的样式包必须声明兼容性和来源元数据。"
+            StylePackFailure.UNKNOWN_REQUIRED_CAPABILITY -> "样式包需要当前 ClearCut 版本不支持的能力。"
+            StylePackFailure.INCOMPATIBLE_APP_VERSION -> "样式包需要更新版本的 ClearCut。"
+            StylePackFailure.UNSAFE_CONTENT -> "样式包包含可执行或插件内容，ClearCut 已拒绝。"
+            StylePackFailure.INVALID_STYLE_ENTRY -> "样式包包含无效的样式条目。"
+            StylePackFailure.MISSING_CONTENT_HASH -> "当前架构的样式包必须包含内容哈希。"
+            StylePackFailure.HASH_MISMATCH -> "样式包内容未通过完整性检查。"
+            StylePackFailure.EMPTY_STYLES -> "样式包中没有样式。"
+            StylePackFailure.DUPLICATE_ID -> "样式包包含重复的样式 ID。"
+            StylePackFailure.OVERSIZED -> "样式包文件过大。"
+            StylePackFailure.WRITE_FAILED -> "无法将样式包保存到设备存储。"
         }
     }
 
     private fun effectPackFailureMessage(failure: EffectShareEngine.EffectPackFailure): String {
         return when (failure) {
-            EffectShareEngine.EffectPackFailure.NONE -> "Effect pack validation failed."
-            EffectShareEngine.EffectPackFailure.UNREADABLE -> "ClearCut could not read this effect pack."
-            EffectShareEngine.EffectPackFailure.INVALID_JSON -> "Effect pack is not valid JSON."
-            EffectShareEngine.EffectPackFailure.INVALID_SCHEMA -> "Effect pack schemaVersion must be a positive integer."
-            EffectShareEngine.EffectPackFailure.WRONG_KIND -> "This file declares a different declarative pack type."
-            EffectShareEngine.EffectPackFailure.INCOMPATIBLE_VERSION -> "Effect pack requires a newer version of ClearCut."
-            EffectShareEngine.EffectPackFailure.MISSING_MANIFEST_FIELDS -> "Current-schema effect packs must declare compatibility and provenance metadata."
-            EffectShareEngine.EffectPackFailure.UNKNOWN_REQUIRED_CAPABILITY -> "Effect pack requires a capability this ClearCut build does not support."
-            EffectShareEngine.EffectPackFailure.INCOMPATIBLE_APP_VERSION -> "Effect pack requires a newer version of ClearCut."
-            EffectShareEngine.EffectPackFailure.UNSAFE_CONTENT -> "Effect pack contains executable or plugin content, which ClearCut rejects."
-            EffectShareEngine.EffectPackFailure.MISSING_CONTENT_HASH -> "Current-schema effect packs must include a content hash."
-            EffectShareEngine.EffectPackFailure.HASH_MISMATCH -> "Effect pack content failed its integrity check."
-            EffectShareEngine.EffectPackFailure.INVALID_ENTRY -> "Effect pack contains an unsupported or invalid effect entry."
-            EffectShareEngine.EffectPackFailure.INVALID_LUT -> "Effect pack contains a malformed or unsupported embedded LUT."
+            EffectShareEngine.EffectPackFailure.NONE -> "效果包验证失败。"
+            EffectShareEngine.EffectPackFailure.UNREADABLE -> "ClearCut 无法读取此效果包。"
+            EffectShareEngine.EffectPackFailure.INVALID_JSON -> "效果包不是有效的 JSON。"
+            EffectShareEngine.EffectPackFailure.INVALID_SCHEMA -> "效果包 schemaVersion 必须为正整数。"
+            EffectShareEngine.EffectPackFailure.WRONG_KIND -> "此文件声明了其他声明式包类型。"
+            EffectShareEngine.EffectPackFailure.INCOMPATIBLE_VERSION -> "效果包需要更新版本的 ClearCut。"
+            EffectShareEngine.EffectPackFailure.MISSING_MANIFEST_FIELDS -> "当前架构的效果包必须声明兼容性和来源元数据。"
+            EffectShareEngine.EffectPackFailure.UNKNOWN_REQUIRED_CAPABILITY -> "效果包需要当前 ClearCut 版本不支持的能力。"
+            EffectShareEngine.EffectPackFailure.INCOMPATIBLE_APP_VERSION -> "效果包需要更新版本的 ClearCut。"
+            EffectShareEngine.EffectPackFailure.UNSAFE_CONTENT -> "效果包包含可执行或插件内容，ClearCut 已拒绝。"
+            EffectShareEngine.EffectPackFailure.MISSING_CONTENT_HASH -> "当前架构的效果包必须包含内容哈希。"
+            EffectShareEngine.EffectPackFailure.HASH_MISMATCH -> "效果包内容未通过完整性检查。"
+            EffectShareEngine.EffectPackFailure.INVALID_ENTRY -> "效果包包含不支持或无效的效果条目。"
+            EffectShareEngine.EffectPackFailure.INVALID_LUT -> "效果包包含格式错误或不支持的嵌入式 LUT。"
         }
     }
 
     private fun stabilizationProfileFailureMessage(failure: StabilizationProfileFailure): String {
         return when (failure) {
-            StabilizationProfileFailure.NONE -> "Stabilization profile validation failed."
-            StabilizationProfileFailure.UNREADABLE -> "ClearCut could not read this stabilization profile."
-            StabilizationProfileFailure.INVALID_JSON -> "Stabilization profile is not valid JSON."
-            StabilizationProfileFailure.INVALID_SCHEMA -> "Stabilization profile schemaVersion is invalid."
-            StabilizationProfileFailure.WRONG_KIND -> "This file declares a different declarative pack type."
+            StabilizationProfileFailure.NONE -> "稳定配置验证失败。"
+            StabilizationProfileFailure.UNREADABLE -> "ClearCut 无法读取此稳定配置。"
+            StabilizationProfileFailure.INVALID_JSON -> "稳定配置不是有效的 JSON。"
+            StabilizationProfileFailure.INVALID_SCHEMA -> "稳定配置 schemaVersion 无效。"
+            StabilizationProfileFailure.WRONG_KIND -> "此文件声明了其他声明式包类型。"
             StabilizationProfileFailure.INCOMPATIBLE_VERSION,
-            StabilizationProfileFailure.INCOMPATIBLE_APP_VERSION -> "Stabilization profile requires a newer ClearCut version."
-            StabilizationProfileFailure.MISSING_REQUIRED_METADATA -> "Profile is missing required lens, motion, crop, or provenance metadata."
-            StabilizationProfileFailure.UNSAFE_CONTENT -> "Profile contains executable or plugin content, which ClearCut rejects."
-            StabilizationProfileFailure.MISSING_CONTENT_HASH -> "Current-schema profiles must include a content hash."
-            StabilizationProfileFailure.HASH_MISMATCH -> "Profile content failed its integrity check."
-            StabilizationProfileFailure.UNKNOWN_REQUIRED_CAPABILITY -> "Profile requires a capability this ClearCut build does not support."
+            StabilizationProfileFailure.INCOMPATIBLE_APP_VERSION -> "稳定配置需要更新版本的 ClearCut。"
+            StabilizationProfileFailure.MISSING_REQUIRED_METADATA -> "配置缺少必需的镜头、运动、裁剪或来源元数据。"
+            StabilizationProfileFailure.UNSAFE_CONTENT -> "配置包含可执行或插件内容，ClearCut 已拒绝。"
+            StabilizationProfileFailure.MISSING_CONTENT_HASH -> "当前架构的配置必须包含内容哈希。"
+            StabilizationProfileFailure.HASH_MISMATCH -> "配置内容未通过完整性检查。"
+            StabilizationProfileFailure.UNKNOWN_REQUIRED_CAPABILITY -> "配置需要当前 ClearCut 版本不支持的能力。"
         }
     }
 
     private fun templateImportFailureMessage(failure: TemplateImportFailure): String {
         return when (failure) {
-            TemplateImportFailure.INCOMPATIBLE -> "Template needs a newer ClearCut version or unsupported tools."
-            TemplateImportFailure.OVERSIZED_FILE -> "Template file is too large."
+            TemplateImportFailure.INCOMPATIBLE -> "模板需要更新版本的 ClearCut，或使用了当前不支持的工具。"
+            TemplateImportFailure.OVERSIZED_FILE -> "模板文件过大。"
             TemplateImportFailure.INVALID_JSON,
-            TemplateImportFailure.INVALID_STATE -> "Template file is not readable."
+            TemplateImportFailure.INVALID_STATE -> "模板文件无法读取。"
             TemplateImportFailure.UNREADABLE_FILE,
             TemplateImportFailure.WRITE_FAILED,
-            TemplateImportFailure.NONE -> "Template import failed."
+            TemplateImportFailure.NONE -> "模板导入失败。"
         }
     }
 
