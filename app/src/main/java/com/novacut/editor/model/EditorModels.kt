@@ -15,12 +15,12 @@ data class ProjectTemplate(
 
 enum class TemplateCategory(val displayName: String) {
     VLOG("Vlog"),
-    TUTORIAL("Tutorial"),
-    SHORT_FORM("Short Form"),
-    CINEMATIC("Cinematic"),
-    SLIDESHOW("Slideshow"),
-    PROMO("Promo"),
-    BLANK("Blank")
+    TUTORIAL("教程"),
+    SHORT_FORM("短视频"),
+    CINEMATIC("电影感"),
+    SLIDESHOW("幻灯片"),
+    PROMO("宣传"),
+    BLANK("空白")
 }
 
 @Immutable
@@ -45,11 +45,11 @@ enum class ProxyResolution(val scale: Float, val label: String) {
 }
 
 enum class SortMode(val label: String) {
-    DATE_DESC("Recent"),
-    DATE_ASC("Oldest"),
+    DATE_DESC("最近"),
+    DATE_ASC("最早"),
     NAME_ASC("A-Z"),
     NAME_DESC("Z-A"),
-    DURATION_DESC("Longest")
+    DURATION_DESC("最长")
 }
 
 /**
@@ -59,11 +59,11 @@ enum class SortMode(val label: String) {
  * left to the combining flow in the view model.
  */
 enum class ProjectFilterMode(val label: String) {
-    ALL("All"),
-    RECENT_7D("This week"),
-    LONG("Longer than 1 min"),
-    SHORT("Under 10 s"),
-    EMPTY("No clips")
+    ALL("全部"),
+    RECENT_7D("本周"),
+    LONG("超过 1 分钟"),
+    SHORT("少于 10 秒"),
+    EMPTY("无片段")
 }
 
 enum class SpeedPresetType {
@@ -112,9 +112,9 @@ data class DrawingPath(
 )
 
 enum class StoryboardCardStatus(val displayName: String) {
-    PLANNED("Planned"),
-    FILMED("Filmed"),
-    EDITED("Edited"),
+    PLANNED("计划中"),
+    FILMED("已拍摄"),
+    EDITED("已剪辑"),
 }
 
 @Immutable
