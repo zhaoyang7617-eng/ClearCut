@@ -257,7 +257,7 @@ fun CommandPaletteSheet(
                         }
                         if (cmd.requiresClip && !hasSelectedClip) {
                             Text(
-                                text = "Select clip",
+                                text = "选择片段",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                             )
