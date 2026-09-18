@@ -127,7 +127,7 @@ class StabilizationEngine @Inject constructor(
         if (thermalStatus.osValue >= THERMAL_BLOCKING_STATUS) {
             return AnalysisCapability(
                 supported = false,
-                reason = "Device thermal status is ${thermalStatus.name.lowercase()}; let it cool before analysis.",
+                reason = "设备温度状态为 ${thermalStatus.name.lowercase()}；请先让设备降温再分析。",
                 maxDurationMs = maxDuration,
                 isLowRamDevice = isLowRam,
                 thermalStatus = thermalStatus,
@@ -147,7 +147,7 @@ class StabilizationEngine @Inject constructor(
         val metadata = readVideoMetadata(uri)
             ?: return AnalysisCapability(
                 supported = false,
-                reason = "The clip has no readable video metadata.",
+                reason = "该片段没有可读取的视频元数据。",
                 maxDurationMs = maxDuration,
                 isLowRamDevice = isLowRam,
                 thermalStatus = thermalStatus,
@@ -155,7 +155,7 @@ class StabilizationEngine @Inject constructor(
         if (metadata.durationMs <= 0L || metadata.width <= 0 || metadata.height <= 0) {
             return AnalysisCapability(
                 supported = false,
-                reason = "The clip has no usable duration or video dimensions.",
+                reason = "该片段没有可用的时长或视频尺寸信息。",
                 durationMs = metadata.durationMs,
                 width = metadata.width,
                 height = metadata.height,
@@ -168,7 +168,7 @@ class StabilizationEngine @Inject constructor(
             val limitSeconds = maxDuration / 1_000L
             return AnalysisCapability(
                 supported = false,
-                reason = "This device limits offline stabilization analysis to ${limitSeconds}s per clip.",
+                reason = "此设备将离线稳定分析限制为每个片段最多 ${limitSeconds} 秒。",
                 durationMs = metadata.durationMs,
                 width = metadata.width,
                 height = metadata.height,
@@ -228,7 +228,7 @@ class StabilizationEngine @Inject constructor(
                 val liveThermal = currentThermalStatus()
                 if (liveThermal.osValue >= THERMAL_BLOCKING_STATUS) {
                     throw StabilizationUnavailableException(
-                        "Device thermal status is ${liveThermal.name.lowercase()}; analysis stopped safely.",
+                        "设备温度状态为 ${liveThermal.name.lowercase()}；分析已安全停止。",
                     )
                 }
                 val timestampMs = (index * intervalMs).coerceAtMost((durationMs - 1L).coerceAtLeast(0L))
