@@ -288,7 +288,7 @@ object AiUsageLedger {
             } else {
                 "%.1fs".format(secs)
             }
-            val clipsLabel = if (clipCount == 1) "1 clip" else "$clipCount clips"
+            val clipsLabel = if (clipCount == 1) "1 个片段" else "$clipCount 个片段"
             return "$clipsLabel · $secsLabel"
         }
     }
