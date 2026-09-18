@@ -26,56 +26,56 @@ data class EffectKeyframe(
 
 enum class EffectType(val displayName: String, val category: EffectCategory) {
     // Color
-    BRIGHTNESS("Brightness", EffectCategory.COLOR),
-    CONTRAST("Contrast", EffectCategory.COLOR),
-    SATURATION("Saturation", EffectCategory.COLOR),
-    TEMPERATURE("Temperature", EffectCategory.COLOR),
-    TINT("Tint", EffectCategory.COLOR),
-    EXPOSURE("Exposure", EffectCategory.COLOR),
-    GAMMA("Gamma", EffectCategory.COLOR),
-    HIGHLIGHTS("Highlights", EffectCategory.COLOR),
-    SHADOWS("Shadows", EffectCategory.COLOR),
-    VIBRANCE("Vibrance", EffectCategory.COLOR),
+    BRIGHTNESS("亮度", EffectCategory.COLOR),
+    CONTRAST("对比度", EffectCategory.COLOR),
+    SATURATION("饱和度", EffectCategory.COLOR),
+    TEMPERATURE("色温", EffectCategory.COLOR),
+    TINT("色调", EffectCategory.COLOR),
+    EXPOSURE("曝光", EffectCategory.COLOR),
+    GAMMA("伽马", EffectCategory.COLOR),
+    HIGHLIGHTS("高光", EffectCategory.COLOR),
+    SHADOWS("阴影", EffectCategory.COLOR),
+    VIBRANCE("自然饱和度", EffectCategory.COLOR),
 
     // Filters
-    GRAYSCALE("Grayscale", EffectCategory.FILTER),
-    SEPIA("Sepia", EffectCategory.FILTER),
-    INVERT("Invert", EffectCategory.FILTER),
-    POSTERIZE("Posterize", EffectCategory.FILTER),
-    VIGNETTE("Vignette", EffectCategory.FILTER),
-    SHARPEN("Sharpen", EffectCategory.FILTER),
-    FILM_GRAIN("Film Grain", EffectCategory.FILTER),
-    VINTAGE("Vintage", EffectCategory.FILTER),
-    COOL_TONE("Cool Tone", EffectCategory.FILTER),
-    WARM_TONE("Warm Tone", EffectCategory.FILTER),
-    CYBERPUNK("Cyberpunk", EffectCategory.FILTER),
-    NOIR("Noir", EffectCategory.FILTER),
-    VHS_RETRO("VHS/Retro", EffectCategory.FILTER),
-    LIGHT_LEAK("Light Leak", EffectCategory.FILTER),
+    GRAYSCALE("灰度", EffectCategory.FILTER),
+    SEPIA("棕褐色", EffectCategory.FILTER),
+    INVERT("反相", EffectCategory.FILTER),
+    POSTERIZE("色阶分离", EffectCategory.FILTER),
+    VIGNETTE("暗角", EffectCategory.FILTER),
+    SHARPEN("锐化", EffectCategory.FILTER),
+    FILM_GRAIN("胶片颗粒", EffectCategory.FILTER),
+    VINTAGE("复古", EffectCategory.FILTER),
+    COOL_TONE("冷色调", EffectCategory.FILTER),
+    WARM_TONE("暖色调", EffectCategory.FILTER),
+    CYBERPUNK("赛博朋克", EffectCategory.FILTER),
+    NOIR("黑色电影", EffectCategory.FILTER),
+    VHS_RETRO("VHS/复古", EffectCategory.FILTER),
+    LIGHT_LEAK("漏光", EffectCategory.FILTER),
 
     // Blur
-    GAUSSIAN_BLUR("Gaussian Blur", EffectCategory.BLUR),
-    RADIAL_BLUR("Radial Blur", EffectCategory.BLUR),
-    MOTION_BLUR("Motion Blur", EffectCategory.BLUR),
-    TILT_SHIFT("Tilt Shift", EffectCategory.BLUR),
-    MOSAIC("Mosaic", EffectCategory.BLUR),
-    TRACKED_MOSAIC("Tracked Mosaic", EffectCategory.BLUR),
+    GAUSSIAN_BLUR("高斯模糊", EffectCategory.BLUR),
+    RADIAL_BLUR("径向模糊", EffectCategory.BLUR),
+    MOTION_BLUR("运动模糊", EffectCategory.BLUR),
+    TILT_SHIFT("移轴", EffectCategory.BLUR),
+    MOSAIC("马赛克", EffectCategory.BLUR),
+    TRACKED_MOSAIC("跟踪马赛克", EffectCategory.BLUR),
 
     // Distortion
-    FISHEYE("Fisheye", EffectCategory.DISTORTION),
-    MIRROR("Mirror", EffectCategory.DISTORTION),
-    GLITCH("Glitch", EffectCategory.DISTORTION),
-    PIXELATE("Pixelate", EffectCategory.DISTORTION),
-    WAVE("Wave", EffectCategory.DISTORTION),
-    CHROMATIC_ABERRATION("Chromatic Aberration", EffectCategory.DISTORTION),
+    FISHEYE("鱼眼", EffectCategory.DISTORTION),
+    MIRROR("镜像", EffectCategory.DISTORTION),
+    GLITCH("故障", EffectCategory.DISTORTION),
+    PIXELATE("像素化", EffectCategory.DISTORTION),
+    WAVE("波浪", EffectCategory.DISTORTION),
+    CHROMATIC_ABERRATION("色差", EffectCategory.DISTORTION),
 
     // Keying
-    CHROMA_KEY("Chroma Key", EffectCategory.KEYING),
-    BG_REMOVAL("BG Removal", EffectCategory.KEYING),
+    CHROMA_KEY("色度键", EffectCategory.KEYING),
+    BG_REMOVAL("背景移除", EffectCategory.KEYING),
 
     // Speed
-    SPEED("Speed", EffectCategory.SPEED),
-    REVERSE("Reverse", EffectCategory.SPEED);
+    SPEED("速度", EffectCategory.SPEED),
+    REVERSE("倒放", EffectCategory.SPEED);
 
     companion object {
         fun defaultParams(type: EffectType): Map<String, Float> = when (type) {
@@ -115,52 +115,52 @@ enum class EffectType(val displayName: String, val category: EffectCategory) {
         data class ParamRange(val label: String, val min: Float, val max: Float, val step: Float = 0f)
 
         val parameterRanges: Map<String, ParamRange> = mapOf(
-            "value" to ParamRange("Value", -5f, 5f),
-            "intensity" to ParamRange("Intensity", 0f, 2f),
-            "radius" to ParamRange("Radius", 0f, 25f),
-            "strength" to ParamRange("Strength", 0f, 2f),
-            "size" to ParamRange("Size", 2f, 50f),
-            "similarity" to ParamRange("Similarity", 0f, 1f),
-            "smoothness" to ParamRange("Smoothness", 0f, 0.5f),
-            "spill" to ParamRange("Spill", 0f, 1f),
-            "threshold" to ParamRange("Threshold", 0.1f, 0.9f),
-            "feather" to ParamRange("Feather", 0f, 0.15f),
-            "padding" to ParamRange("Padding", 0f, 0.2f),
-            "blur" to ParamRange("Blur", 0f, 0.05f),
-            "focusY" to ParamRange("Focus Y", 0f, 1f),
-            "width" to ParamRange("Width", 0.01f, 0.5f),
-            "amplitude" to ParamRange("Amplitude", 0f, 0.1f),
-            "frequency" to ParamRange("Frequency", 1f, 30f),
-            "levels" to ParamRange("Levels", 2f, 16f)
+            "value" to ParamRange("数值", -5f, 5f),
+            "intensity" to ParamRange("强度", 0f, 2f),
+            "radius" to ParamRange("半径", 0f, 25f),
+            "strength" to ParamRange("强度", 0f, 2f),
+            "size" to ParamRange("大小", 2f, 50f),
+            "similarity" to ParamRange("相似度", 0f, 1f),
+            "smoothness" to ParamRange("平滑度", 0f, 0.5f),
+            "spill" to ParamRange("溢色", 0f, 1f),
+            "threshold" to ParamRange("阈值", 0.1f, 0.9f),
+            "feather" to ParamRange("羽化", 0f, 0.15f),
+            "padding" to ParamRange("边距", 0f, 0.2f),
+            "blur" to ParamRange("模糊", 0f, 0.05f),
+            "focusY" to ParamRange("焦点 Y", 0f, 1f),
+            "width" to ParamRange("宽度", 0.01f, 0.5f),
+            "amplitude" to ParamRange("振幅", 0f, 0.1f),
+            "frequency" to ParamRange("频率", 1f, 30f),
+            "levels" to ParamRange("色阶", 2f, 16f)
         )
 
         fun paramRangesForType(type: EffectType): Map<String, ParamRange> {
             val defaults = defaultParams(type)
             if (defaults.isEmpty()) return emptyMap()
             val overrides: Map<String, ParamRange> = when (type) {
-                BRIGHTNESS -> mapOf("value" to ParamRange("Brightness", -1f, 1f))
-                CONTRAST -> mapOf("value" to ParamRange("Contrast", 0f, 2f))
-                SATURATION -> mapOf("value" to ParamRange("Saturation", 0f, 3f))
-                TEMPERATURE -> mapOf("value" to ParamRange("Temperature", -5f, 5f))
-                TINT -> mapOf("value" to ParamRange("Tint", -1f, 1f))
-                EXPOSURE -> mapOf("value" to ParamRange("Exposure", -2f, 2f))
-                GAMMA -> mapOf("value" to ParamRange("Gamma", 0.2f, 3f))
-                HIGHLIGHTS -> mapOf("value" to ParamRange("Highlights", -1f, 1f))
-                SHADOWS -> mapOf("value" to ParamRange("Shadows", -1f, 1f))
-                VIBRANCE -> mapOf("value" to ParamRange("Vibrance", -1f, 1f))
+                BRIGHTNESS -> mapOf("value" to ParamRange("亮度", -1f, 1f))
+                CONTRAST -> mapOf("value" to ParamRange("对比度", 0f, 2f))
+                SATURATION -> mapOf("value" to ParamRange("饱和度", 0f, 3f))
+                TEMPERATURE -> mapOf("value" to ParamRange("色温", -5f, 5f))
+                TINT -> mapOf("value" to ParamRange("色调", -1f, 1f))
+                EXPOSURE -> mapOf("value" to ParamRange("曝光", -2f, 2f))
+                GAMMA -> mapOf("value" to ParamRange("伽马", 0.2f, 3f))
+                HIGHLIGHTS -> mapOf("value" to ParamRange("高光", -1f, 1f))
+                SHADOWS -> mapOf("value" to ParamRange("阴影", -1f, 1f))
+                VIBRANCE -> mapOf("value" to ParamRange("自然饱和度", -1f, 1f))
                 VIGNETTE -> mapOf(
-                    "intensity" to ParamRange("Intensity", 0f, 1f),
-                    "radius" to ParamRange("Radius", 0.1f, 1f)
+                    "intensity" to ParamRange("强度", 0f, 1f),
+                    "radius" to ParamRange("半径", 0.1f, 1f)
                 )
-                GAUSSIAN_BLUR -> mapOf("radius" to ParamRange("Radius", 1f, 25f))
-                FILM_GRAIN -> mapOf("intensity" to ParamRange("Intensity", 0f, 0.5f))
-                GLITCH -> mapOf("intensity" to ParamRange("Intensity", 0f, 1f))
-                CHROMATIC_ABERRATION -> mapOf("intensity" to ParamRange("Intensity", 0f, 2f))
+                GAUSSIAN_BLUR -> mapOf("radius" to ParamRange("半径", 1f, 25f))
+                FILM_GRAIN -> mapOf("intensity" to ParamRange("强度", 0f, 0.5f))
+                GLITCH -> mapOf("intensity" to ParamRange("强度", 0f, 1f))
+                CHROMATIC_ABERRATION -> mapOf("intensity" to ParamRange("强度", 0f, 2f))
                 CYBERPUNK, NOIR, VINTAGE, COOL_TONE, WARM_TONE, VHS_RETRO, LIGHT_LEAK ->
-                    mapOf("intensity" to ParamRange("Intensity", 0f, 1f))
+                    mapOf("intensity" to ParamRange("强度", 0f, 1f))
                 RADIAL_BLUR, MOTION_BLUR, FISHEYE ->
-                    mapOf("intensity" to ParamRange("Intensity", 0f, 1f))
-                SPEED -> mapOf("value" to ParamRange("Speed", 0.1f, 100f))
+                    mapOf("intensity" to ParamRange("强度", 0f, 1f))
+                SPEED -> mapOf("value" to ParamRange("速度", 0.1f, 100f))
                 else -> emptyMap()
             }
             return defaults.keys.associateWith { key ->
@@ -173,12 +173,12 @@ enum class EffectType(val displayName: String, val category: EffectCategory) {
 }
 
 enum class EffectCategory(val displayName: String) {
-    COLOR("Color"),
-    FILTER("Filters"),
-    BLUR("Blur"),
-    DISTORTION("Distortion"),
-    KEYING("Keying"),
-    SPEED("Speed")
+    COLOR("颜色"),
+    FILTER("滤镜"),
+    BLUR("模糊"),
+    DISTORTION("扭曲"),
+    KEYING("抠像"),
+    SPEED("速度")
 }
 
 data class AudioEffect(
@@ -189,21 +189,21 @@ data class AudioEffect(
 )
 
 enum class AudioEffectType(val displayName: String) {
-    PARAMETRIC_EQ("Parametric EQ"),
-    COMPRESSOR("Compressor"),
-    LIMITER("Limiter"),
-    NOISE_GATE("Noise Gate"),
-    REVERB("Reverb"),
-    DELAY("Delay"),
-    DE_ESSER("De-esser"),
-    CHORUS("Chorus"),
-    FLANGER("Flanger"),
-    PITCH_SHIFT("Pitch Shift"),
-    NORMALIZER("Normalizer"),
-    HIGH_PASS("High Pass"),
-    LOW_PASS("Low Pass"),
-    BAND_PASS("Band Pass"),
-    NOTCH("Notch");
+    PARAMETRIC_EQ("参数均衡器"),
+    COMPRESSOR("压缩器"),
+    LIMITER("限制器"),
+    NOISE_GATE("噪声门"),
+    REVERB("混响"),
+    DELAY("延迟"),
+    DE_ESSER("齿音消除器"),
+    CHORUS("合唱"),
+    FLANGER("镶边"),
+    PITCH_SHIFT("移调"),
+    NORMALIZER("标准化器"),
+    HIGH_PASS("高通"),
+    LOW_PASS("低通"),
+    BAND_PASS("带通"),
+    NOTCH("陷波");
 
     companion object {
         fun defaultParams(type: AudioEffectType): Map<String, Float> = when (type) {
