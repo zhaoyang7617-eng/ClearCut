@@ -82,7 +82,7 @@ class UpdateChecker @Inject constructor(
                         return@use Result.Failed("HTTP ${response.code}")
                     }
                     val body = response.body?.string().orEmpty()
-                    if (body.isBlank()) return@use Result.Failed("empty response")
+                    if (body.isBlank()) return@use Result.Failed("返回内容为空")
                     val json = JSONObject(body)
                     val tag = json.optString("tag_name").ifBlank { json.optString("name") }
                     val htmlUrl = json.optString("html_url").ifBlank { RELEASES_PAGE }
@@ -96,7 +96,7 @@ class UpdateChecker @Inject constructor(
                 if (!connectivityObserver.isOnline.value) {
                     Result.Offline
                 } else {
-                    Result.Failed(e.message ?: "network error")
+                    Result.Failed(e.message ?: "网络错误")
                 }
             }
         }
