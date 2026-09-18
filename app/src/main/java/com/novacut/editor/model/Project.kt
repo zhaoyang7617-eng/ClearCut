@@ -9,7 +9,7 @@ import java.util.UUID
 @Entity(tableName = "projects", indices = [Index("updatedAt")])
 data class Project(
     @PrimaryKey val id: String = UUID.randomUUID().toString(),
-    val name: String = "Untitled",
+    val name: String = "未命名",
     val aspectRatio: AspectRatio = AspectRatio.RATIO_16_9,
     val frameRate: Int = 30,
     val frameRateNumerator: Int = frameRate,
@@ -143,13 +143,13 @@ fun Track.effectiveTimelineStartMs(clip: Clip): Long = clip.timelineStartMs + ef
 fun Track.effectiveTimelineEndMs(clip: Clip): Long = clip.timelineEndMs + effectiveTimelineOffsetMs(clip)
 
 enum class ClipLabel(val argb: Long, val displayName: String) {
-    NONE(0x00000000, "None"),
-    RED(0xFFF38BA8, "Red"),
-    PEACH(0xFFFAB387, "Peach"),
-    GREEN(0xFFA6E3A1, "Green"),
-    BLUE(0xFF89B4FA, "Blue"),
-    MAUVE(0xFFCBA6F7, "Mauve"),
-    YELLOW(0xFFF9E2AF, "Yellow")
+    NONE(0x00000000, "无"),
+    RED(0xFFF38BA8, "红色"),
+    PEACH(0xFFFAB387, "桃色"),
+    GREEN(0xFFA6E3A1, "绿色"),
+    BLUE(0xFF89B4FA, "蓝色"),
+    MAUVE(0xFFCBA6F7, "藕紫色"),
+    YELLOW(0xFFF9E2AF, "黄色")
 }
 
 enum class SourceHdrFormat(val displayName: String) {
@@ -412,24 +412,24 @@ data class Clip(
 // --- Blend Modes ---
 
 enum class BlendMode(val displayName: String) {
-    NORMAL("Normal"),
-    MULTIPLY("Multiply"),
-    SCREEN("Screen"),
-    OVERLAY("Overlay"),
-    DARKEN("Darken"),
-    LIGHTEN("Lighten"),
-    COLOR_DODGE("Color Dodge"),
-    COLOR_BURN("Color Burn"),
-    HARD_LIGHT("Hard Light"),
-    SOFT_LIGHT("Soft Light"),
-    DIFFERENCE("Difference"),
-    EXCLUSION("Exclusion"),
-    HUE("Hue"),
-    SATURATION_BLEND("Saturation"),
-    COLOR("Color"),
-    LUMINOSITY("Luminosity"),
-    ADD("Add"),
-    SUBTRACT("Subtract")
+    NORMAL("正常"),
+    MULTIPLY("正片叠底"),
+    SCREEN("滤色"),
+    OVERLAY("叠加"),
+    DARKEN("变暗"),
+    LIGHTEN("变亮"),
+    COLOR_DODGE("颜色减淡"),
+    COLOR_BURN("颜色加深"),
+    HARD_LIGHT("强光"),
+    SOFT_LIGHT("柔光"),
+    DIFFERENCE("差值"),
+    EXCLUSION("排除"),
+    HUE("色相"),
+    SATURATION_BLEND("饱和度"),
+    COLOR("颜色"),
+    LUMINOSITY("明度"),
+    ADD("相加"),
+    SUBTRACT("相减")
 }
 
 // --- Speed Curve (Bezier speed ramping) ---
