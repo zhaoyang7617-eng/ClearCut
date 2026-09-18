@@ -49,31 +49,31 @@ enum class CaptionStyleType {
 }
 
 enum class CaptionTemplateType(val displayName: String) {
-    HIGH_CONTRAST("High Contrast"),
-    LARGE_TEXT("Large Text"),
-    REDUCED_MOTION("Reduced Motion"),
-    CLASSIC("Classic"),
-    KARAOKE("Karaoke"),
-    WORD_BY_WORD("Word by Word"),
-    BOUNCE("Bounce"),
-    GLOW("Glow"),
-    OUTLINE("Outline"),
-    SHADOW_POP("Shadow Pop"),
-    GRADIENT("Gradient"),
-    TYPEWRITER("Typewriter"),
-    NEON("Neon"),
-    COMIC("Comic"),
-    MINIMAL("Minimal"),
-    BOLD_CENTER("Bold Center"),
-    LOWER_THIRD("Lower Third"),
-    SUBTITLE("Subtitle")
+    HIGH_CONTRAST("高对比度"),
+    LARGE_TEXT("大字号"),
+    REDUCED_MOTION("减少动效"),
+    CLASSIC("经典"),
+    KARAOKE("卡拉 OK"),
+    WORD_BY_WORD("逐词"),
+    BOUNCE("弹跳"),
+    GLOW("发光"),
+    OUTLINE("描边"),
+    SHADOW_POP("阴影弹出"),
+    GRADIENT("渐变"),
+    TYPEWRITER("打字机"),
+    NEON("霓虹"),
+    COMIC("漫画"),
+    MINIMAL("极简"),
+    BOLD_CENTER("粗体居中"),
+    LOWER_THIRD("下三分之一"),
+    SUBTITLE("字幕")
 }
 
 enum class CaptionAccessibilityPreset(val displayName: String) {
-    STANDARD("Standard"),
-    WCAG_AA_CONTRAST("WCAG AA Contrast"),
-    LARGE_TEXT("Large Text"),
-    REDUCED_MOTION("Reduced Motion")
+    STANDARD("标准"),
+    WCAG_AA_CONTRAST("WCAG AA 对比度"),
+    LARGE_TEXT("大字号"),
+    REDUCED_MOTION("减少动效")
 }
 
 data class CaptionStyleTemplate(
