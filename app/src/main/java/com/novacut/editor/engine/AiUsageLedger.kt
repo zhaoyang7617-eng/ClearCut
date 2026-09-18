@@ -181,7 +181,7 @@ object AiUsageLedger {
      */
     fun summaryLine(entries: List<Entry>): String {
         val merged = mergeOverlaps(entries)
-        if (merged.isEmpty()) return "No AI assistance recorded for this project."
+        if (merged.isEmpty()) return "此项目没有记录 AI 辅助操作。"
         val byKind = merged.groupBy { it.effectKind }
             .toSortedMap(compareBy { it.name })
         val parts = byKind.map { (kind, list) ->
@@ -189,7 +189,7 @@ object AiUsageLedger {
             val kindLabel = kind.name.lowercase().replace('_', ' ')
             "${list.size} × $kindLabel (${modelSet.joinToString(", ")})"
         }
-        return "AI assistance recorded: ${parts.joinToString("; ")}."
+        return "已记录 AI 辅助操作：${parts.joinToString("；")}。"
     }
 
     /**
