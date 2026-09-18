@@ -1,5 +1,9 @@
 name: Build Chinese APK
 
+concurrency:
+  group: build-zhcn-apk
+  cancel-in-progress: true
+
 on:
   workflow_dispatch:
   push:
@@ -29,7 +33,12 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x gradlew
       - name: Build debug APK
-        run: ./gradlew assembleDebug --stacktrace --dependency-verification=off
+        run: |
+          for attempt in 1 2 3; do
+            ./gradlew assembleDebug --stacktrace --dependency-verification=off --max-workers=2 && exit 0
+            if [ "$attempt" -eq 3 ]; then exit 1; fi
+            sleep $((attempt * 30))
+          done
       - name: Collect arm64-v8a APK only
         if: success()
         run: |
