@@ -119,13 +119,13 @@ class OverlayAssetStore @Inject constructor(
         } catch (tooLarge: OverlayAssetTooLargeException) {
             OverlayAssetImportResult.Rejected(
                 reason = OverlayAssetRejectionReason.TOO_LARGE,
-                userMessage = "Sticker image is too large. Import an image under ${MAX_OVERLAY_BYTES / (1024 * 1024)} MB.",
+                userMessage = "贴纸图片过大。请导入小于 ${MAX_OVERLAY_BYTES / (1024 * 1024)} MB 的图片。",
             )
         } catch (e: Exception) {
             AppLog.w(TAG, "Failed to import overlay asset ${sourceUri.redacted()}", e)
             OverlayAssetImportResult.Rejected(
                 reason = OverlayAssetRejectionReason.UNREADABLE_SOURCE,
-                userMessage = "Could not import that sticker image.",
+                userMessage = "无法导入该贴纸图片。",
             )
         }
     }
