@@ -231,9 +231,9 @@ enum class AudioCodec(val mimeType: String, val label: String) {
 }
 
 enum class ExportQuality(val label: String) {
-    LOW("Small File"),
-    MEDIUM("Balanced"),
-    HIGH("Best Quality")
+    LOW("较小文件"),
+    MEDIUM("均衡"),
+    HIGH("最佳质量")
 }
 
 enum class PlatformPreset(
@@ -255,16 +255,16 @@ enum class PlatformPreset(
         "TikTok", Resolution.FHD_1080P, AspectRatio.RATIO_9_16, 30, VideoCodec.H264
     ),
     INSTAGRAM_FEED(
-        "Instagram Feed", Resolution.FHD_1080P, AspectRatio.RATIO_1_1, 30, VideoCodec.H264
+        "Instagram 信息流", Resolution.FHD_1080P, AspectRatio.RATIO_1_1, 30, VideoCodec.H264
     ),
     INSTAGRAM_REEL(
         "Instagram Reels", Resolution.FHD_1080P, AspectRatio.RATIO_9_16, 30, VideoCodec.H264
     ),
     INSTAGRAM_STORY(
-        "Instagram Story", Resolution.FHD_1080P, AspectRatio.RATIO_9_16, 30, VideoCodec.H264
+        "Instagram 快拍", Resolution.FHD_1080P, AspectRatio.RATIO_9_16, 30, VideoCodec.H264
     ),
     TWITTER(
-        "Twitter/X", Resolution.FHD_1080P, AspectRatio.RATIO_16_9, 30, VideoCodec.H264
+        "X（原 Twitter）", Resolution.FHD_1080P, AspectRatio.RATIO_16_9, 30, VideoCodec.H264
     ),
     LINKEDIN(
         "LinkedIn", Resolution.FHD_1080P, AspectRatio.RATIO_16_9, 30, VideoCodec.H264
@@ -286,9 +286,9 @@ data class ChapterMarker(
 )
 
 enum class SubtitleFormat(val extension: String, val displayName: String) {
-    SRT("srt", "SubRip (.srt)"),
-    VTT("vtt", "WebVTT (.vtt)"),
-    ASS("ass", "Advanced SubStation (.ass)")
+    SRT("srt", "SubRip（.srt）"),
+    VTT("vtt", "WebVTT（.vtt）"),
+    ASS("ass", "Advanced SubStation（.ass）")
 }
 
 enum class TargetSizePreset(
@@ -298,7 +298,7 @@ enum class TargetSizePreset(
     DISCORD_8("Discord (8 MB)", 8L * 1024 * 1024),
     DISCORD_25("Discord Nitro (25 MB)", 25L * 1024 * 1024),
     DISCORD_100("Discord Boosted (100 MB)", 100L * 1024 * 1024),
-    GMAIL_25("Gmail Attachment (25 MB)", 25L * 1024 * 1024),
+    GMAIL_25("Gmail 附件（25 MB）", 25L * 1024 * 1024),
     TELEGRAM_50("Telegram (50 MB)", 50L * 1024 * 1024),
     WHATSAPP_16("WhatsApp (16 MB)", 16L * 1024 * 1024),
     TWITTER_512("Twitter/X (512 MB)", 512L * 1024 * 1024);
@@ -306,7 +306,7 @@ enum class TargetSizePreset(
 
 enum class FrameCaptureFormat(val extension: String, val displayName: String) {
     PNG("png", "PNG"),
-    JPEG("jpg", "JPEG (smaller)")
+    JPEG("jpg", "JPEG（较小）")
 }
 
 /**
@@ -351,7 +351,7 @@ data class BatchExportSourceRange(
             if (clip.id.isBlank() || clip.sourceDurationMs <= 0L || endMs <= startMs) return null
             val displayName = clip.name?.takeIf { it.isNotBlank() }
                 ?: clip.sourceUri.lastPathSegment?.substringAfterLast('/')?.takeIf { it.isNotBlank() }
-                ?: "Clip"
+                ?: "片段"
             return BatchExportSourceRange(
                 clipId = clip.id,
                 sourceUri = clip.sourceUri,
@@ -422,9 +422,9 @@ data class Watermark(
 }
 
 enum class WatermarkPosition(val displayName: String) {
-    TOP_LEFT("Top Left"),
-    TOP_RIGHT("Top Right"),
-    BOTTOM_LEFT("Bottom Left"),
-    BOTTOM_RIGHT("Bottom Right"),
-    CENTER("Center")
+    TOP_LEFT("左上"),
+    TOP_RIGHT("右上"),
+    BOTTOM_LEFT("左下"),
+    BOTTOM_RIGHT("右下"),
+    CENTER("居中")
 }
