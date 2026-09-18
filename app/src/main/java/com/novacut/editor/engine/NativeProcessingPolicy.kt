@@ -57,7 +57,7 @@ object NativeProcessingPolicy {
     )
 
     private val DISABLED_FORMAT_LABELS = mapOf(
-        "vobsub" to "VobSub subtitles",
+        "vobsub" to "VobSub 字幕",
         "tdsc" to "TDSC/AVI video",
         "mace6" to "MACE6/CAF audio",
         "adpcm_adx" to "ADX audio",
@@ -90,7 +90,7 @@ object NativeProcessingPolicy {
 
         fun userMessage(): String = when (this) {
             is Oversized -> "File is too large for $operation"
-            is UnsupportedFormat -> formatLabel?.let { "Unsupported format ($it) for $operation" }
+            is UnsupportedFormat -> formatLabel?.let { "$operation 不支持此格式（$it）" }
                 ?: "Unsupported file format for $operation"
         }
 
