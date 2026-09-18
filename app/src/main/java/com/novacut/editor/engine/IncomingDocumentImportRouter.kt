@@ -378,7 +378,7 @@ class IncomingDocumentImportRouter @Inject constructor(
         val result = timelineImportEngine.import(item.uri, format = format)
         val report = result.fidelityReport
         val reportIssues = report?.issues.orEmpty().map { issue ->
-            "${issue.severity.name.lowercase().replaceFirstChar { it.uppercase() }}: ${issue.message}"
+            "${when (issue.severity.name) { "BLOCKING" -> "阻断"; "WARNING" -> "警告"; else -> "信息" }}：${issue.message}"
         }
         val schemaTooNew = result.exchangeResult?.schemaTooNew == true
         val status = if (!schemaTooNew && report?.canProceed == true) {
