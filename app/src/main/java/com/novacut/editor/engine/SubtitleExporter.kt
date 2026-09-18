@@ -84,7 +84,7 @@ object SubtitleExporter {
         }
         return buildString {
             appendLine("[Script Info]")
-            appendLine("Title: ClearCut Export")
+            appendLine("Title: ClearCut 导出")
             appendLine("ScriptType: v4.00+")
             appendLine("WrapStyle: 0")
             appendLine("ScaledBorderAndShadow: yes")
