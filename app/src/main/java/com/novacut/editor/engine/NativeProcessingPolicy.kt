@@ -89,13 +89,13 @@ object NativeProcessingPolicy {
         }
 
         fun userMessage(): String = when (this) {
-            is Oversized -> "File is too large for $operation"
+            is Oversized -> "文件过大，无法执行 $operation"
             is UnsupportedFormat -> formatLabel?.let { "$operation 不支持此格式（$it）" }
                 ?: "Unsupported file format for $operation"
         }
 
         fun diagnosticMessage(): String = when (this) {
-            is Oversized -> "$operation: input $actualBytes bytes exceeds limit $maxBytes"
+            is Oversized -> "$operation：输入大小 $actualBytes 字节，超过上限 $maxBytes"
             is UnsupportedFormat -> buildString {
                 append("$operation: unsupported")
                 formatLabel?.let { append(" format=$it") }
