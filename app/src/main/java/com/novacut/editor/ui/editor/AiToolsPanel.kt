@@ -269,7 +269,7 @@ fun AiToolsPanel(
 
     PremiumEditorPanel(
         title = stringResource(R.string.ai_tools_title),
-        subtitle = "Stage on-device assists, model downloads, and clip-aware magic.",
+        subtitle = "集中使用本机 AI 辅助、模型下载和片段感知工具。",
         icon = Icons.Default.AutoAwesome,
         accent = ClearCutAccents.Mauve,
         onClose = onClose,
@@ -284,7 +284,7 @@ fun AiToolsPanel(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "Creative stack",
+                        text = "创作工具栈",
                         style = MaterialTheme.typography.titleMedium,
                         color = semanticColors.text
                     )
@@ -307,7 +307,7 @@ fun AiToolsPanel(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     PremiumPanelPill(
-                        text = "${readyTools.size} ready",
+                        text = "${readyTools.size} 个可用",
                         accent = ClearCutAccents.Mauve
                     )
                     PremiumPanelPill(
@@ -504,7 +504,7 @@ fun AiToolsPanel(
                     if (normalizedProgress > 0f) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = "Processing now",
+                                text = "正在处理",
                                 style = MaterialTheme.typography.titleSmall,
                                 color = semanticColors.text
                             )
@@ -533,7 +533,7 @@ fun AiToolsPanel(
                         )
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = "Processing now",
+                                text = "正在处理",
                                 style = MaterialTheme.typography.titleSmall,
                                 color = semanticColors.text
                             )
