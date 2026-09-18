@@ -172,19 +172,19 @@ fun CaptionStyleGallery(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     StyleMetric(
-                        title = "Karaoke",
+                        title = "卡拉 OK",
                         value = karaokeTemplates.size.toString(),
                         accent = ClearCutAccents.Yellow,
                         modifier = Modifier.width(metricWidth.coerceAtLeast(0.dp))
                     )
                     StyleMetric(
-                        title = "Editorial",
+                        title = "编辑型",
                         value = editorialTemplates.size.toString(),
                         accent = ClearCutAccents.Mauve,
                         modifier = Modifier.width(metricWidth.coerceAtLeast(0.dp))
                     )
                     StyleMetric(
-                        title = "Accessible",
+                        title = "无障碍",
                         value = accessibilityTemplates.size.toString(),
                         accent = ClearCutAccents.Green,
                         modifier = Modifier.width(metricWidth.coerceAtLeast(0.dp))
@@ -448,7 +448,7 @@ private fun CaptionStylePreview(template: CaptionStyleTemplate) {
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Hello ",
+                text = "你好，",
                 color = highlightColor,
                 fontSize = previewSize.sp,
                 fontWeight = FontWeight.Bold,
@@ -462,7 +462,7 @@ private fun CaptionStylePreview(template: CaptionStyleTemplate) {
                 )
             )
             Text(
-                text = "World",
+                text = "世界",
                 color = textColor,
                 fontSize = previewSize.sp,
                 fontWeight = FontWeight.Bold,
