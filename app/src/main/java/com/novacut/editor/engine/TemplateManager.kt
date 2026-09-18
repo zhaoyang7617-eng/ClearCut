@@ -115,7 +115,7 @@ class TemplateManager @Inject constructor(
 
         val effectTypes = tracks.flatMap { it.clips }.flatMap { it.effects }
             .map { it.type.displayName }.distinct().take(3)
-        val effectSummary = if (effectTypes.isEmpty()) "No effects"
+        val effectSummary = if (effectTypes.isEmpty()) "无效果"
             else effectTypes.joinToString(", ")
 
         val template = UserTemplate(
@@ -522,7 +522,7 @@ class TemplateManager @Inject constructor(
 
     private fun importedNameCandidate(baseName: String, suffix: String): String {
         val maxBaseChars = (MAX_TEMPLATE_NAME_CHARS - suffix.length).coerceAtLeast(1)
-        val boundedBase = baseName.take(maxBaseChars).trim().ifBlank { "Untitled Template".take(maxBaseChars) }
+        val boundedBase = baseName.take(maxBaseChars).trim().ifBlank { "未命名模板".take(maxBaseChars) }
         return "$boundedBase$suffix"
     }
 
@@ -555,7 +555,7 @@ class TemplateManager @Inject constructor(
     }
 
     private fun normalizeTemplateName(raw: String): String {
-        return normalizeDisplayText(raw, fallback = "Untitled Template", maxChars = MAX_TEMPLATE_NAME_CHARS)
+        return normalizeDisplayText(raw, fallback = "未命名模板", maxChars = MAX_TEMPLATE_NAME_CHARS)
     }
 
     private fun normalizeTemplateDescription(raw: String): String {
