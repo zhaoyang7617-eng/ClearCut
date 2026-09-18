@@ -15,50 +15,50 @@ data class Transition(
 }
 
 enum class TransitionEasing(val displayName: String) {
-    LINEAR("Linear"),
-    EASE_IN("Ease In"),
-    EASE_OUT("Ease Out"),
-    EASE_IN_OUT("Ease In/Out")
+    LINEAR("线性"),
+    EASE_IN("缓入"),
+    EASE_OUT("缓出"),
+    EASE_IN_OUT("缓入缓出")
 }
 
 enum class TransitionType(val displayName: String) {
-    DISSOLVE("Dissolve"),
-    FADE_BLACK("Fade to Black"),
-    FADE_WHITE("Fade to White"),
-    WIPE_LEFT("Wipe Left"),
-    WIPE_RIGHT("Wipe Right"),
-    WIPE_UP("Wipe Up"),
-    WIPE_DOWN("Wipe Down"),
-    SLIDE_LEFT("Slide Left"),
-    SLIDE_RIGHT("Slide Right"),
-    ZOOM_IN("Zoom In"),
-    ZOOM_OUT("Zoom Out"),
-    SPIN("Spin"),
-    FLIP("Flip"),
-    CUBE("Cube"),
-    RIPPLE("Ripple"),
-    PIXELATE("Pixelate"),
-    DIRECTIONAL_WARP("Directional Warp"),
-    WIND("Wind"),
-    MORPH("Morph"),
-    GLITCH("Glitch"),
-    CIRCLE_OPEN("Circle Open"),
-    CROSS_ZOOM("Cross Zoom"),
-    DREAMY("Dreamy"),
-    HEART("Heart"),
-    SWIRL("Swirl"),
-    DOOR_OPEN("Door Open"),
-    BURN("Burn"),
-    RADIAL_WIPE("Radial Wipe"),
-    MOSAIC_REVEAL("Mosaic Reveal"),
-    BOUNCE("Bounce"),
-    LENS_FLARE("Lens Flare"),
-    PAGE_CURL("Page Curl"),
-    CROSS_WARP("Cross Warp"),
-    ANGULAR("Angular"),
-    KALEIDOSCOPE("Kaleidoscope"),
-    SQUARES_WIRE("Squares Wire"),
-    COLOR_PHASE("Color Phase")
+    DISSOLVE("叠化"),
+    FADE_BLACK("淡出至黑"),
+    FADE_WHITE("淡出至白"),
+    WIPE_LEFT("左擦除"),
+    WIPE_RIGHT("右擦除"),
+    WIPE_UP("上擦除"),
+    WIPE_DOWN("下擦除"),
+    SLIDE_LEFT("左滑"),
+    SLIDE_RIGHT("右滑"),
+    ZOOM_IN("放大"),
+    ZOOM_OUT("缩小"),
+    SPIN("旋转"),
+    FLIP("翻转"),
+    CUBE("立方体"),
+    RIPPLE("波纹"),
+    PIXELATE("像素化"),
+    DIRECTIONAL_WARP("定向扭曲"),
+    WIND("风吹"),
+    MORPH("变形"),
+    GLITCH("故障"),
+    CIRCLE_OPEN("圆形展开"),
+    CROSS_ZOOM("交叉缩放"),
+    DREAMY("梦幻"),
+    HEART("心形"),
+    SWIRL("漩涡"),
+    DOOR_OPEN("开门"),
+    BURN("燃烧"),
+    RADIAL_WIPE("径向擦除"),
+    MOSAIC_REVEAL("马赛克揭示"),
+    BOUNCE("弹跳"),
+    LENS_FLARE("镜头光晕"),
+    PAGE_CURL("卷页"),
+    CROSS_WARP("交叉扭曲"),
+    ANGULAR("角度切换"),
+    KALEIDOSCOPE("万花筒"),
+    SQUARES_WIRE("方格线"),
+    COLOR_PHASE("色彩相位")
 }
 
 @Immutable
@@ -110,10 +110,10 @@ data class TimelineRange(
 }
 
 enum class GlobalTransitionType(val displayName: String) {
-    FADE_FROM_BLACK("Fade from Black"),
-    FADE_TO_BLACK("Fade to Black"),
-    FADE_FROM_WHITE("Fade from White"),
-    FADE_TO_WHITE("Fade to White"),
+    FADE_FROM_BLACK("从黑场淡入"),
+    FADE_TO_BLACK("淡出至黑"),
+    FADE_FROM_WHITE("从白场淡入"),
+    FADE_TO_WHITE("淡出至白"),
 }
 
 @Immutable
