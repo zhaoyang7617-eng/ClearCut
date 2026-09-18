@@ -44,9 +44,9 @@ data class ProjectColorPolicy(
      * confidence engine will warn when that pairing actually matters.
      */
     enum class DisplayTransform(val displayName: String) {
-        NONE("Pass through"),
-        BT2390_TONEMAP("BT.2390 tone-map to SDR"),
-        HABLE_TONEMAP("Hable tone-map to SDR"),
+        NONE("直通"),
+        BT2390_TONEMAP("BT.2390 色调映射至 SDR"),
+        HABLE_TONEMAP("Hable 色调映射至 SDR"),
     }
 
     /**
