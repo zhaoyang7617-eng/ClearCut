@@ -120,8 +120,8 @@ class AudioMasteringEngine @Inject constructor() {
         val PRESETS = listOf(
             MasteringChain(
                 id = "podcast_voice",
-                displayName = "Podcast Voice",
-                description = "Warm, close-mic talk. Rolls off rumble, tames sibilance, bus-compressed for consistent level.",
+                displayName = "播客人声",
+                description = "温暖的近距离人声。削减低频轰鸣、控制齿音，并通过总线压缩保持稳定响度。",
                 highPassHz = 80f,
                 eqBands = listOf(
                     EqBand(180f, -2f, 1.2f),   // mud cut
@@ -138,8 +138,8 @@ class AudioMasteringEngine @Inject constructor() {
             ),
             MasteringChain(
                 id = "music_master",
-                displayName = "Music Master",
-                description = "Balanced master for music-only tracks. Gentle bus compression, target streaming loudness.",
+                displayName = "音乐母带",
+                description = "适合纯音乐轨道的均衡母带。使用轻度总线压缩，并匹配流媒体响度目标。",
                 highPassHz = 25f,
                 eqBands = listOf(
                     EqBand(60f, 1f, 0.8f),
@@ -153,8 +153,8 @@ class AudioMasteringEngine @Inject constructor() {
             ),
             MasteringChain(
                 id = "dialogue_clean",
-                displayName = "Dialogue Clean",
-                description = "Film/vlog dialogue. Aggressive noise reduction, broadcast EBU R128 target.",
+                displayName = "对白净化",
+                description = "适合电影或 Vlog 对白。采用较强降噪，并以广播 EBU R128 为响度目标。",
                 highPassHz = 100f,
                 eqBands = listOf(
                     EqBand(300f, -1.5f, 1.4f),
@@ -171,7 +171,7 @@ class AudioMasteringEngine @Inject constructor() {
             MasteringChain(
                 id = "asmr",
                 displayName = "ASMR",
-                description = "Close-mic whisper content. Preserve dynamic range, zero denoise, target quiet playback.",
+                description = "适合近距离耳语内容。保留动态范围，不进行降噪，并以安静播放为目标。",
                 highPassHz = 40f,
                 eqBands = listOf(
                     EqBand(5000f, -1f, 0.9f),  // tame mouth sounds
@@ -187,8 +187,8 @@ class AudioMasteringEngine @Inject constructor() {
             ),
             MasteringChain(
                 id = "social_loud",
-                displayName = "Social Loud",
-                description = "TikTok / Reels. Loud, punchy, compressed for phone speaker playback.",
+                displayName = "社交高响度",
+                description = "适合 TikTok / Reels。响度更高、冲击更强，并针对手机扬声器播放进行压缩。",
                 highPassHz = 60f,
                 eqBands = listOf(
                     EqBand(80f, 2f, 0.8f),
