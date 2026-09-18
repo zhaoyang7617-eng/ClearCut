@@ -262,7 +262,7 @@ fun TextEditorSheet(
             ) {
                 Text(stringResource(R.string.text_editor_font), color = semanticColors.subtextStrong, style = MaterialTheme.typography.labelLarge)
                 Text(
-                    text = "Import",
+                    text = "导入",
                     color = ClearCutAccents.Mauve,
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier
