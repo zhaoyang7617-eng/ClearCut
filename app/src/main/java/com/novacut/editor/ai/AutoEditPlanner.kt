@@ -265,8 +265,8 @@ class AutoEditPlanner {
             .take(2)
             .map { it.second }
             .toMutableList()
-        if (reasons.isEmpty()) reasons += "Usable source window"
-        if (beatAligned) reasons += "Cut aligned to detected beat"
+        if (reasons.isEmpty()) reasons += "可用源素材区间"
+        if (beatAligned) reasons += "剪切点已对齐检测到的节拍"
         return reasons
     }
 
